@@ -30,7 +30,9 @@ OpenAI 신청 경로는 [Plugins 대시보드](https://platform.openai.com/plugi
 
 - 2026-10-08: 첫 공개 커밋 `0d3c1f1`을 `main`에 푸시했다. 저장소는 PUBLIC이며 원격 기본 브랜치는 `main`이다.
 - README·지원·개인정보·이용 안내·두 marketplace 파일을 인증 없는 HTTP 요청으로 읽고 로컬 내용과 같음을 확인했다. manifest의 웹사이트·지원·개인정보·약관 URL도 HTTP 200과 프로젝트·게시자 내용을 확인했다.
-- 공식 디렉터리: 아직 업로드·심사 신청·승인·게시하지 않았다. GitHub 공개와 자체 marketplace 배포만으로 공식 등재를 주장하지 않는다.
+- 공개 저장소의 `9f5d4cf`를 새 임시 경로에 복제해 npm 설치 없이 `doctor`와 보고서 4개 형식의 채우기·원본 보존을 확인했다.
+- 실행 코드와 검사기 커밋 `9a7c25e`의 [GitHub Actions](https://github.com/yback1223/fill-documents/actions/runs/37729210480)가 성공했다. Ubuntu Node 20·22, Windows Node 22, macOS Node 22에서 각각 setup, 63개 테스트, build, ZIP 32회 검사가 모두 통과했다.
+- 공식 디렉터리 포털 작업 시작 전 상태: 업로드·심사 신청·승인·게시를 아직 하지 않았다. GitHub 공개와 자체 marketplace 배포만으로 공식 등재를 주장하지 않는다.
 
 공식 근거:
 
