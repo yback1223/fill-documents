@@ -2,7 +2,7 @@ import fs from 'node:fs/promises';
 import path from 'node:path';
 import os from 'node:os';
 import assert from 'node:assert/strict';
-import { fileURLToPath } from 'node:url';
+import { fileURLToPath, pathToFileURL } from 'node:url';
 import { createRequire } from 'node:module';
 import { createHash } from 'node:crypto';
 import { spawnSync } from 'node:child_process';
@@ -84,7 +84,7 @@ try {
     const extractedSkill = path.join(destination, kind === 'plugin' ? 'fill-documents/skills/fill-documents' : 'fill-documents');
     const cli = path.join(extractedSkill, 'bin/fill-documents.mjs');
     const command = (args, expectedStatus = 0) => {
-      const result = spawnSync(process.execPath, ['--import', guard, cli, ...args], { cwd: temporary, encoding: 'utf8', timeout: 45000, env: { ...process.env, NODE_PATH: '' } });
+      const result = spawnSync(process.execPath, ['--import', pathToFileURL(guard).href, cli, ...args], { cwd: temporary, encoding: 'utf8', timeout: 45000, env: { ...process.env, NODE_PATH: '' } });
       assert.equal(result.status, expectedStatus, `${kind} ${args[0]}: ${result.stderr || result.stdout}`);
       const response = JSON.parse(expectedStatus === 0 ? result.stdout : result.stderr);
       assert.equal(response.ok, expectedStatus === 0);
