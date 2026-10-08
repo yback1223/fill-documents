@@ -8,6 +8,7 @@ import { normalizeFields, checkValues } from '../lib/fields.mjs';
 import { publishNewFile, sha256, readJson } from '../lib/io.mjs';
 import { registerTemplate, findTemplate, listTemplates } from '../lib/catalog.mjs';
 import { assertSafeZip } from '../lib/zip-safety.mjs';
+import { inspectDocument, fillDocument } from '../lib/engine.mjs';
 
 const fields = normalizeFields([{ name: 'title', type: 'text', maxLength: 3 }, { name: 'approved', type: 'checkbox' }]);
 async function workspace(t) {
@@ -22,6 +23,38 @@ test('required fields reject omission, whitespace, unknown values, and prototype
   assert.throws(() => normalizeFields([{ name: 'constructor', type: 'text' }]), { code: 'E_FIELDS' });
   assert.equal(checkValues({ title: '한😀글', approved: false }, fields).approved, false);
   assert.throws(() => checkValues({ title: '한😀글자', approved: false }, fields), { code: 'E_FIELDS' });
+});
+
+test('repeat rows validate every required column and copy input without losing Unicode', () => {
+  const schema = normalizeFields([{ name: 'activities', type: 'rows', maxRows: 2, columns: [
+    { name: 'month', type: 'text', maxLength: 3 }, { name: 'description', type: 'text', maxLength: 4 },
+  ] }]);
+  const input = { activities: [{ month: '1월', description: '한😀글' }] };
+  const checked = checkValues(input, schema);
+  assert.equal(checked.activities[0].description, '한😀글');
+  assert.equal(Object.getPrototypeOf(checked.activities[0]), null);
+  checked.activities[0].month = '2월';
+  assert.equal(input.activities[0].month, '1월');
+  for (const rows of [[], [null], ['text'], [{ month: '1월' }], [{ month: '1월', description: ' ' }], [{ month: '1월', description: '길이초과다' }], [{ month: '1월', description: 'a\u0000' }], [{ month: '1월', description: 'ok', extra: 'x' }], Array(3).fill(input.activities[0])]) {
+    assert.throws(() => checkValues({ activities: rows }, schema), { code: 'E_FIELDS' });
+  }
+  for (const extra of [{ maxRows: 101 }, { columns: [] }, { columns: [{ name: 'constructor', type: 'text', maxLength: 2 }] }, { columns: [{ name: 'nested', type: 'rows', maxRows: 2, columns: [] }] }]) {
+    assert.throws(() => normalizeFields([{ ...schema[0], ...extra }]), { code: 'E_FIELDS' });
+  }
+  const large = normalizeFields([{ name: 'rows', type: 'rows', maxRows: 100, columns: [{ name: 'text', type: 'text', maxLength: 10000 }] }]);
+  assert.throws(() => checkValues({ rows: Array(51).fill({ text: 'x'.repeat(10000) }) }, large), { code: 'E_FIELDS' });
+});
+
+test('layout profiles reject wrong version, format, source hash and registered HWPX before adapter execution', async () => {
+  const bytes = Buffer.from('%PDF-fake source');
+  const profile = { version: 1, format: 'pdf', templateSha256: sha256(bytes) };
+  const context = { filePath: 'example.pdf' };
+  await assert.rejects(inspectDocument(bytes, { ...context, layoutProfile: { ...profile, version: 2 } }), { code: 'E_INPUT' });
+  await assert.rejects(inspectDocument(bytes, { ...context, layoutProfile: { ...profile, format: 'hwpx' } }), { code: 'E_UNSUPPORTED' });
+  await assert.rejects(inspectDocument(bytes, { ...context, layoutProfile: { ...profile, templateSha256: '0'.repeat(64) } }), { code: 'E_TEMPLATE_CHANGED' });
+  await assert.rejects(fillDocument({ target: 'never-read.pdf', layoutProfile: profile }), { code: 'E_INPUT' });
+  const zip = new PizZip().file('content.xml', '<root/>').generate({ type: 'nodebuffer' });
+  await assert.rejects(inspectDocument(zip, { filePath: 'example.hwpx', manifest: {}, layoutProfile: { ...profile, format: 'hwpx', templateSha256: sha256(zip) } }), { code: 'E_UNSUPPORTED' });
 });
 test('concurrent outputs publish exactly once and never replace an existing file', async t => {
   const root = await workspace(t);

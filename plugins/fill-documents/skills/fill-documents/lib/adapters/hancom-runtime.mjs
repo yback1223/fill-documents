@@ -1,12 +1,33 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { inflateRawSync, gunzipSync } from 'node:zlib';
+import { inflateRawSync, gunzipSync, gzipSync } from 'node:zlib';
 import CFB from 'cfb';
 import { HwpDocument, initSync } from '@rhwp/core';
 import { FillError, requireCondition } from '../errors.mjs';
 
 let initialized;
+
+// These two exact, inert Hancom defaults are metadata, not a general script allowlist.
+const neutralScripts = new Map([
+  ['Scripts/JScriptVersion', Buffer.from('0100000000000000', 'hex')],
+  ['Scripts/DefaultJScript', Buffer.from('00000000000000000000000000000000ffffffff', 'hex')],
+]);
+
+function verifyNeutralScripts(scripts, flags) {
+  if (scripts.size === 0) return;
+  requireCondition(flags === 1 && scripts.size === neutralScripts.size, 'E_UNSUPPORTED', '중립 기본 메타데이터 외의 HWP 스크립트는 지원하지 않습니다.');
+  for (const [path, content] of scripts) {
+    const expected = neutralScripts.get(path);
+    requireCondition(expected, 'E_UNSUPPORTED', '중립 기본 메타데이터 외의 HWP 스크립트는 지원하지 않습니다.');
+    let inflated;
+    try { inflated = inflateRawSync(content, { maxOutputLength: expected.length, info: true }); }
+    catch { throw new FillError('E_UNSUPPORTED', 'HWP 기본 스크립트 메타데이터를 확인할 수 없습니다.'); }
+    // Hancom's known defaults retain the gzip CRC/size footer after raw deflate.
+    const trailer = content.subarray(inflated.engine.bytesWritten);
+    requireCondition(inflated.buffer.equals(expected) && (trailer.length === 0 || trailer.equals(gzipSync(expected).subarray(-8))), 'E_UNSUPPORTED', '중립 기본 메타데이터 외의 HWP 스크립트는 지원하지 않습니다.');
+  }
+}
 
 export async function initHancom(context = {}) {
   initialized ??= (async () => {
@@ -41,14 +62,16 @@ export function hwpContainer(bytes) {
   const flags = Buffer.from(header).readUInt32LE(36);
   requireCondition((flags & ~1) === 0, 'E_UNSUPPORTED', '암호화·배포용·서명·스크립트 등 추가 기능이 있는 HWP는 지원하지 않습니다.');
   const streams = new Map();
+  const scripts = new Map();
   let expanded = 0;
   for (let index = 0; index < doc.FullPaths.length; index++) {
     const path = doc.FullPaths[index].replace(/^[^/]+\//, '');
     const entry = doc.FileIndex[index];
     if (entry.type !== 2) continue;
-    requireCondition(!/(^|\/)(Scripts|ViewText|DocHistory|XMLTemplate|_xmlsignatures|signatures|ObjectPool)(\/|$)/i.test(path), 'E_UNSUPPORTED', '스크립트·서명·변경 기록·실행 개체가 있는 HWP는 지원하지 않습니다.');
+    requireCondition(!/(^|\/)(ViewText|DocHistory|XMLTemplate|_xmlsignatures|signatures|ObjectPool)(\/|$)/i.test(path), 'E_UNSUPPORTED', '서명·변경 기록·실행 개체가 있는 HWP는 지원하지 않습니다.');
     requireCondition(!/^BinData\//i.test(path) || /\.(?:png|jpe?g|gif|bmp|tiff?)$/i.test(path), 'E_UNSUPPORTED', 'HWP 내장 개체는 정적 이미지 형식만 지원합니다.');
     const content = Buffer.from(entry.content);
+    if (/(^|\/)Scripts(\/|$)/i.test(path)) scripts.set(path, content);
     requireCondition(!streams.has(path) && content.length <= 32 * 1024 * 1024, 'E_INPUT', 'HWP 스트림이 중복되거나 너무 큽니다.');
     if (/^(BodyText\/Section\d+|DocInfo)$/.test(path) && (flags & 1)) {
       try { expanded += inflateRawSync(content, { maxOutputLength: 32 * 1024 * 1024 }).length; } catch { throw new FillError('E_INPUT', 'HWP 압축 스트림이 손상되었거나 너무 큽니다.'); }
@@ -56,6 +79,7 @@ export function hwpContainer(bytes) {
     requireCondition(expanded <= 128 * 1024 * 1024, 'E_INPUT', 'HWP 압축 해제 크기 제한을 초과했습니다.');
     streams.set(path, content);
   }
+  verifyNeutralScripts(scripts, flags);
   requireCondition([...streams.keys()].some(path => /^BodyText\/Section\d+$/.test(path)) && streams.has('DocInfo'), 'E_INPUT', '필수 HWP 스트림이 없습니다.');
   return streams;
 }

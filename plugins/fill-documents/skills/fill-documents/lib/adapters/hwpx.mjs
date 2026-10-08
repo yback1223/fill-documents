@@ -3,6 +3,8 @@ import { validateHwpx } from 'kordoc';
 import { FillError, requireCondition } from '../errors.mjs';
 import { assertSafeZip } from '../zip-safety.mjs';
 import { ancestor, checkedValues, fieldList, placeholders, scanXml, spliceText, visualWarning, xmlEscape } from './hancom-utils.mjs';
+import { checkHwpxFlowReferences, createParagraphFlowPlan, planHwpxFlow } from './hwpx-flow.mjs';
+import { checkedRepeatValues, inspectHwpxRepeat, planHwpxRepeat, tableLayoutTarget, validateHwpxTableLayout } from './hwpx-repeat.mjs';
 
 const HP = 'http://www.hancom.co.kr/hwpml/2011/paragraph';
 const ENGINE = 'fill-documents XML patch + kordoc@4.19.2 validation';
@@ -113,28 +115,57 @@ function replaceGroup(group, values, xml, allNodes) {
 }
 
 export async function inspect(bytes, context = {}) {
-  const { parts } = await open(bytes);
-  const fields = fieldList(parts.flatMap(part => model(part.xml).occurrences));
+  const { zip, parts } = await open(bytes);
+  const models = parts.map(part => ({ ...part, ...model(part.xml) }));
+  const repeated = context.layoutProfile ? inspectHwpxRepeat(bytes, zip, models, context) : undefined;
+  const fields = [...fieldList((repeated?.outsideModels ?? models).flatMap(part => part.occurrences)), ...(repeated ? [repeated.field] : [])];
   return { format: 'hwpx', fields, engine: ENGINE, warnings: [visualWarning] };
 }
 
 export async function fill(bytes, values, context = {}) {
   const { zip, parts } = await open(bytes);
   const models = parts.map(part => ({ ...part, ...model(part.xml) }));
-  const fields = fieldList(models.flatMap(part => part.occurrences));
+  const repeated = context.layoutProfile ? inspectHwpxRepeat(bytes, zip, models, context) : undefined;
+  requireCondition(!repeated || context.overflow === 'flow', 'E_INPUT', 'HWPX 반복 프로필은 overflow=flow와 함께 사용하세요.');
+  const workingModels = repeated?.outsideModels ?? models;
+  const fields = [...fieldList(workingModels.flatMap(part => part.occurrences)), ...(repeated ? [repeated.field] : [])];
   requireCondition(fields.length > 0, 'E_FIELDS', '채울 수 있는 명시적 HWPX 필드가 없습니다.');
-  checkedValues(fields, values, context);
+  if (repeated) values = checkedRepeatValues(values, fields, context);
+  else checkedValues(fields, values, context);
   const changed = new Set();
-  for (const part of models) {
-    const edits = part.groups.flatMap(group => replaceGroup(group, values, part.xml, part.nodes));
+  const paragraphPlan = context.overflow === 'flow' ? createParagraphFlowPlan(zip) : undefined;
+  const scalarEdits = new Map(workingModels.map(part => [part.path, part.groups.flatMap(group => replaceGroup(group, values, part.xml, part.nodes))]));
+  const repetition = repeated ? planHwpxRepeat(repeated, values[repeated.field.name], paragraphPlan, scalarEdits.get(repeated.part.path)) : undefined;
+  const flowModels = repeated ? workingModels.map(part => ({ ...part, occurrences: part.occurrences.filter(field => ancestor(field.group.paragraph, node => node.local === 'tbl') !== repeated.table) })) : workingModels;
+  const flow = context.overflow === 'flow' ? planHwpxFlow(zip, flowModels, paragraphPlan) : undefined;
+  if (repetition) flow.layout.changedContainers.push(repetition.changes);
+  if (flow?.headerXml) {
+    zip.file('Contents/header.xml', flow.headerXml);
+    changed.add('Contents/header.xml');
+  }
+  for (const part of workingModels) {
+    const edits = [...scalarEdits.get(part.path).filter(edit => !(repeated && part.path === repeated.part.path && edit.start >= repeated.table.start && edit.end <= repeated.table.end)), ...(flow?.partEdits.get(part.path) ?? []), ...(repetition && part.path === repeated.part.path ? repetition.edits : [])];
     if (!edits.length) continue;
     const updated = spliceText(part.xml, edits);
     const after = model(updated);
-    requireCondition(after.groups.length === part.groups.length, 'E_PRESERVATION', '치환 후 문단 개수가 달라졌습니다.');
-    for (let index = 0; index < part.groups.length; index++) {
-      const group = part.groups[index];
+    let beforeGroups = part.groups;
+    let afterGroups = after.groups;
+    if (repetition && part.path === repeated.part.path) {
+      const table = after.nodes.find(node => node.local === 'tbl' && node.attrs.id === repetition.tableId);
+      const rows = table.children.filter(node => node.local === 'tr');
+      const omitted = new Set(repeated.rows.slice(repetition.start, repeated.region.bodyRows.end + 1));
+      const inserted = new Set(rows.slice(repetition.start, repetition.start + repetition.count));
+      beforeGroups = beforeGroups.filter(group => !omitted.has(ancestor(group.paragraph, node => node.local === 'tr')));
+      afterGroups = afterGroups.filter(group => !inserted.has(ancestor(group.paragraph, node => node.local === 'tr')));
+      const actual = after.groups.filter(group => inserted.has(ancestor(group.paragraph, node => node.local === 'tr'))).map(group => group.text);
+      const expected = values[repeated.field.name].flatMap(row => repeated.region.columns.map(column => row[column.name].replace(/\r\n?/g, '\n')));
+      requireCondition(JSON.stringify(actual) === JSON.stringify(expected), 'E_PRESERVATION', '반복 행의 입력값 또는 순서가 달라졌습니다.');
+    }
+    requireCondition(afterGroups.length === beforeGroups.length, 'E_PRESERVATION', '치환 후 비대상 문단 개수가 달라졌습니다.');
+    for (let index = 0; index < beforeGroups.length; index++) {
+      const group = beforeGroups[index];
       const expected = spliceText(group.text, group.fields.map(field => ({ start: field.start, end: field.end, replacement: values[field.name].replace(/\r\n?/g, '\n') })));
-      requireCondition(after.groups[index].text === expected, 'E_PRESERVATION', 'HWPX 입력값의 완전한 적용을 확인할 수 없습니다.');
+      requireCondition(afterGroups[index].text === expected, 'E_PRESERVATION', 'HWPX 입력값의 완전한 적용을 확인할 수 없습니다.');
     }
     zip.file(part.path, updated);
     changed.add(part.path);
@@ -142,12 +173,43 @@ export async function fill(bytes, values, context = {}) {
   zip.file('mimetype', 'application/hwp+zip', { compression: 'STORE' });
   const output = zip.generate({ type: 'uint8array', compression: 'DEFLATE' });
   const reopened = await open(output);
+  if (flow) checkHwpxFlowReferences(reopened.zip, reopened.parts);
+  if (flow) {
+    const targets = [];
+    for (const part of reopened.parts.map(part => ({ ...part, ...model(part.xml) }))) {
+      if (repetition && part.path === repetition.part) {
+        const table = part.nodes.find(node => node.local === 'tbl' && node.attrs.id === repetition.tableId);
+        targets.push(tableLayoutTarget(part, table, repetition.field, Array.from({ length: repetition.count }, (_, index) => repetition.start + index), true, repetition.headerRows));
+      }
+      const originalPart = workingModels.find(item => item.path === part.path);
+      const rows = new Map();
+      for (const field of originalPart.occurrences) {
+        const row = ancestor(field.group.paragraph, node => node.local === 'tr');
+        if (!row || row.children.filter(node => node.local === 'tc').length < 2) continue;
+        const table = ancestor(row, node => node.local === 'tbl');
+        // Repeated header rows intentionally occur on multiple pages. A scalar in
+        // a trailing row still has the ordinary no-split contract after reindexing.
+        if (table === repeated?.table && repeated.region.headerRows.includes(repeated.rows.indexOf(row))) continue;
+        const key = `${table.start}:${row.start}`;
+        const old = rows.get(key);
+        if (!old || values[field.name].length > values[old.field.name].length) rows.set(key, { row, table, field });
+      }
+      for (const { row, table, field } of rows.values()) {
+        const allTables = originalPart.nodes.filter(node => node.local === 'tbl');
+        const newTable = part.nodes.filter(node => node.local === 'tbl')[allTables.indexOf(table)];
+        let rowIndex = table.children.filter(node => node.local === 'tr').indexOf(row);
+        if (table === repeated?.table && rowIndex > repeated.region.bodyRows.end) rowIndex += repetition.count - (repeated.region.bodyRows.end - repetition.start + 1);
+        targets.push(tableLayoutTarget(part, newTable, field.name, [rowIndex]));
+      }
+    }
+    flow.layout.pagination = await validateHwpxTableLayout(output, targets, context);
+  }
   const original = new PizZip(bytes);
   requireCondition(Object.keys(reopened.zip.files).length === Object.keys(original.files).length, 'E_PRESERVATION', 'HWPX ZIP 항목 개수가 달라졌습니다.');
   for (const [path, entry] of Object.entries(original.files)) {
     if (!entry.dir && !changed.has(path)) requireCondition(Buffer.from(entry.asUint8Array()).equals(Buffer.from(reopened.zip.file(path).asUint8Array())), 'E_PRESERVATION', 'HWPX 비대상 데이터가 달라졌습니다.');
   }
-  return { bytes: output, engine: ENGINE, checks: [{ name: 'hwpx-structure', status: 'passed' }, { name: 'exact-field-values', status: 'passed' }, { name: 'untouched-entries', status: 'passed' }], warnings: [visualWarning, '기존 미리보기 데이터는 보존되므로 문서 본문을 열어 결과를 확인하세요.'] };
+  return { bytes: output, engine: ENGINE, checks: [{ name: 'hwpx-structure', status: 'passed' }, { name: 'exact-field-values', status: 'passed' }, { name: 'untouched-entries', status: 'passed' }], warnings: [visualWarning, '기존 미리보기 데이터는 보존되므로 문서 본문을 열어 결과를 확인하세요.'], ...(flow ? { layout: flow.layout, visualValidation: 'not-performed' } : {}) };
 }
 
 export async function validate(bytes, context = {}) {

@@ -1,6 +1,17 @@
 {
   "name": "fill-documents",
-  "owner": { "name": "yback" },
-  "metadata": { "description": "Local document templates and filling tools by yback." },
-  "plugins": [{ "name": "fill-documents", "source": "./plugins/fill-documents", "description": "HWP·HWPX·Word·PDF 템플릿 제공 및 채우기", "version": "0.1.0" }]
+  "owner": {
+    "name": "yback"
+  },
+  "metadata": {
+    "description": "Local document templates and filling tools by yback."
+  },
+  "plugins": [
+    {
+      "name": "fill-documents",
+      "source": "./plugins/fill-documents",
+      "description": "HWP·HWPX·Word·PDF 템플릿 제공 및 채우기",
+      "version": "0.2.0"
+    }
+  ]
 }

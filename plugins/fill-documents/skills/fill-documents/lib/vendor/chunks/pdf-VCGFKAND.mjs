@@ -2219,11 +2219,11 @@ var require_fontkit_umd = __commonJS({
         return str;
       }
       function arrayToHash(array) {
-        var hash = {};
+        var hash2 = {};
         array.forEach(function(val, idx) {
-          hash[val] = true;
+          hash2[val] = true;
         });
-        return hash;
+        return hash2;
       }
       function formatValue(ctx, value, recurseTimes) {
         if (ctx.customInspect && value && isFunction(value.inspect) && // Filter out the util module, it's inspect function is special
@@ -30023,7 +30023,7 @@ var require_fontkit_umd = __commonJS({
             return [x, y];
           });
         };
-        _proto.translate = function translate(x, y) {
+        _proto.translate = function translate2(x, y) {
           return this.transform(1, 0, 0, 1, x, y);
         };
         _proto.rotate = function rotate(angle) {
@@ -30437,15 +30437,15 @@ var require_fontkit_umd = __commonJS({
           var cbox = new BBox(glyph2.xMin, glyph2.yMin, glyph2.xMax, glyph2.yMax);
           return Object.freeze(cbox);
         };
-        _proto2._parseGlyphCoord = function _parseGlyphCoord(stream, prev, _short, same) {
+        _proto2._parseGlyphCoord = function _parseGlyphCoord(stream, prev, _short, same2) {
           if (_short) {
             var val = stream.readUInt8();
-            if (!same) {
+            if (!same2) {
               val = -val;
             }
             val += prev;
           } else {
-            if (same) {
+            if (same2) {
               var val = prev;
             } else {
               var val = prev + stream.readInt16BE();
@@ -31904,7 +31904,7 @@ var require_fontkit_umd = __commonJS({
           var xPoints = [];
           var yPoints = [];
           var flags = [];
-          var same = 0;
+          var same2 = 0;
           var lastX = 0, lastY = 0, lastFlag = 0;
           var pointCount = 0;
           for (var i2 = 0; i2 < path2.commands.length; i2++) {
@@ -31928,13 +31928,13 @@ var require_fontkit_umd = __commonJS({
               }
               flag = this._encodePoint(x, lastX, xPoints, flag, X_SHORT_VECTOR$1, SAME_X$1);
               flag = this._encodePoint(y, lastY, yPoints, flag, Y_SHORT_VECTOR$1, SAME_Y$1);
-              if (flag === lastFlag && same < 255) {
+              if (flag === lastFlag && same2 < 255) {
                 flags[flags.length - 1] |= REPEAT$1;
-                same++;
+                same2++;
               } else {
-                if (same > 0) {
-                  flags.push(same);
-                  same = 0;
+                if (same2 > 0) {
+                  flags.push(same2);
+                  same2 = 0;
                 }
                 flags.push(flag);
                 lastFlag = flag;
@@ -38696,42 +38696,42 @@ var require_PDFNumber = __commonJS({
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var index_1 = require_utils2();
     var PDFObject_1 = tslib_1.__importDefault(require_PDFObject());
-    var PDFNumber = (
+    var PDFNumber5 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFNumber2, _super);
-        function PDFNumber2(value) {
+        tslib_1.__extends(PDFNumber6, _super);
+        function PDFNumber6(value) {
           var _this = _super.call(this) || this;
           _this.numberValue = value;
           _this.stringValue = index_1.numberToString(value);
           return _this;
         }
-        PDFNumber2.prototype.asNumber = function() {
+        PDFNumber6.prototype.asNumber = function() {
           return this.numberValue;
         };
-        PDFNumber2.prototype.value = function() {
+        PDFNumber6.prototype.value = function() {
           return this.numberValue;
         };
-        PDFNumber2.prototype.clone = function() {
-          return PDFNumber2.of(this.numberValue);
+        PDFNumber6.prototype.clone = function() {
+          return PDFNumber6.of(this.numberValue);
         };
-        PDFNumber2.prototype.toString = function() {
+        PDFNumber6.prototype.toString = function() {
           return this.stringValue;
         };
-        PDFNumber2.prototype.sizeInBytes = function() {
+        PDFNumber6.prototype.sizeInBytes = function() {
           return this.stringValue.length;
         };
-        PDFNumber2.prototype.copyBytesInto = function(buffer, offset) {
+        PDFNumber6.prototype.copyBytesInto = function(buffer, offset) {
           offset += index_1.copyStringIntoBuffer(this.stringValue, buffer, offset);
           return this.stringValue.length;
         };
-        PDFNumber2.of = function(value) {
-          return new PDFNumber2(value);
+        PDFNumber6.of = function(value) {
+          return new PDFNumber6(value);
         };
-        return PDFNumber2;
+        return PDFNumber6;
       })(PDFObject_1.default)
     );
-    exports.default = PDFNumber;
+    exports.default = PDFNumber5;
   }
 });
 
@@ -38745,39 +38745,39 @@ var require_PDFArray = __commonJS({
     var PDFObject_1 = tslib_1.__importDefault(require_PDFObject());
     var CharCodes_1 = tslib_1.__importDefault(require_CharCodes());
     var errors_1 = require_errors2();
-    var PDFArray2 = (
+    var PDFArray3 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFArray3, _super);
-        function PDFArray3(context) {
+        tslib_1.__extends(PDFArray4, _super);
+        function PDFArray4(context) {
           var _this = _super.call(this) || this;
           _this.array = [];
           _this.context = context;
           return _this;
         }
-        PDFArray3.prototype.size = function() {
+        PDFArray4.prototype.size = function() {
           return this.array.length;
         };
-        PDFArray3.prototype.push = function(object) {
+        PDFArray4.prototype.push = function(object) {
           this.array.push(object);
         };
-        PDFArray3.prototype.insert = function(index, object) {
+        PDFArray4.prototype.insert = function(index, object) {
           this.array.splice(index, 0, object);
         };
-        PDFArray3.prototype.indexOf = function(object) {
+        PDFArray4.prototype.indexOf = function(object) {
           var index = this.array.indexOf(object);
           return index === -1 ? void 0 : index;
         };
-        PDFArray3.prototype.remove = function(index) {
+        PDFArray4.prototype.remove = function(index) {
           this.array.splice(index, 1);
         };
-        PDFArray3.prototype.set = function(idx, object) {
+        PDFArray4.prototype.set = function(idx, object) {
           this.array[idx] = object;
         };
-        PDFArray3.prototype.get = function(index) {
+        PDFArray4.prototype.get = function(index) {
           return this.array[index];
         };
-        PDFArray3.prototype.lookupMaybe = function(index) {
+        PDFArray4.prototype.lookupMaybe = function(index) {
           var _a;
           var types = [];
           for (var _i = 1; _i < arguments.length; _i++) {
@@ -38785,7 +38785,7 @@ var require_PDFArray = __commonJS({
           }
           return (_a = this.context).lookupMaybe.apply(_a, tslib_1.__spreadArrays([this.get(index)], types));
         };
-        PDFArray3.prototype.lookup = function(index) {
+        PDFArray4.prototype.lookup = function(index) {
           var _a;
           var types = [];
           for (var _i = 1; _i < arguments.length; _i++) {
@@ -38793,7 +38793,7 @@ var require_PDFArray = __commonJS({
           }
           return (_a = this.context).lookup.apply(_a, tslib_1.__spreadArrays([this.get(index)], types));
         };
-        PDFArray3.prototype.asRectangle = function() {
+        PDFArray4.prototype.asRectangle = function() {
           if (this.size() !== 4)
             throw new errors_1.PDFArrayIsNotRectangleError(this.size());
           var lowerLeftX = this.lookup(0, PDFNumber_1.default).asNumber();
@@ -38806,17 +38806,17 @@ var require_PDFArray = __commonJS({
           var height = upperRightY - lowerLeftY;
           return { x, y, width, height };
         };
-        PDFArray3.prototype.asArray = function() {
+        PDFArray4.prototype.asArray = function() {
           return this.array.slice();
         };
-        PDFArray3.prototype.clone = function(context) {
-          var clone = PDFArray3.withContext(context || this.context);
+        PDFArray4.prototype.clone = function(context) {
+          var clone = PDFArray4.withContext(context || this.context);
           for (var idx = 0, len = this.size(); idx < len; idx++) {
             clone.push(this.array[idx]);
           }
           return clone;
         };
-        PDFArray3.prototype.toString = function() {
+        PDFArray4.prototype.toString = function() {
           var arrayString = "[ ";
           for (var idx = 0, len = this.size(); idx < len; idx++) {
             arrayString += this.get(idx).toString();
@@ -38825,14 +38825,14 @@ var require_PDFArray = __commonJS({
           arrayString += "]";
           return arrayString;
         };
-        PDFArray3.prototype.sizeInBytes = function() {
+        PDFArray4.prototype.sizeInBytes = function() {
           var size = 3;
           for (var idx = 0, len = this.size(); idx < len; idx++) {
             size += this.get(idx).sizeInBytes() + 1;
           }
           return size;
         };
-        PDFArray3.prototype.copyBytesInto = function(buffer, offset) {
+        PDFArray4.prototype.copyBytesInto = function(buffer, offset) {
           var initialOffset = offset;
           buffer[offset++] = CharCodes_1.default.LeftSquareBracket;
           buffer[offset++] = CharCodes_1.default.Space;
@@ -38843,7 +38843,7 @@ var require_PDFArray = __commonJS({
           buffer[offset++] = CharCodes_1.default.RightSquareBracket;
           return offset - initialOffset;
         };
-        PDFArray3.prototype.scalePDFNumbers = function(x, y) {
+        PDFArray4.prototype.scalePDFNumbers = function(x, y) {
           for (var idx = 0, len = this.size(); idx < len; idx++) {
             var el = this.lookup(idx);
             if (el instanceof PDFNumber_1.default) {
@@ -38852,13 +38852,13 @@ var require_PDFArray = __commonJS({
             }
           }
         };
-        PDFArray3.withContext = function(context) {
-          return new PDFArray3(context);
+        PDFArray4.withContext = function(context) {
+          return new PDFArray4(context);
         };
-        return PDFArray3;
+        return PDFArray4;
       })(PDFObject_1.default)
     );
-    exports.default = PDFArray2;
+    exports.default = PDFArray3;
   }
 });
 
@@ -39002,11 +39002,11 @@ var require_PDFName = __commonJS({
     };
     var ENFORCER = {};
     var pool = /* @__PURE__ */ new Map();
-    var PDFName2 = (
+    var PDFName5 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFName3, _super);
-        function PDFName3(enforcer, name) {
+        tslib_1.__extends(PDFName6, _super);
+        function PDFName6(enforcer, name) {
           var _this = this;
           if (enforcer !== ENFORCER)
             throw new errors_1.PrivateConstructorError("PDFName");
@@ -39020,7 +39020,7 @@ var require_PDFName = __commonJS({
           _this.encodedName = encodedName;
           return _this;
         }
-        PDFName3.prototype.asBytes = function() {
+        PDFName6.prototype.asBytes = function() {
           var bytes = [];
           var hex = "";
           var escaped = false;
@@ -39052,67 +39052,67 @@ var require_PDFName = __commonJS({
           }
           return new Uint8Array(bytes);
         };
-        PDFName3.prototype.decodeText = function() {
+        PDFName6.prototype.decodeText = function() {
           var bytes = this.asBytes();
           return String.fromCharCode.apply(String, Array.from(bytes));
         };
-        PDFName3.prototype.asString = function() {
+        PDFName6.prototype.asString = function() {
           return this.encodedName;
         };
-        PDFName3.prototype.value = function() {
+        PDFName6.prototype.value = function() {
           return this.encodedName;
         };
-        PDFName3.prototype.clone = function() {
+        PDFName6.prototype.clone = function() {
           return this;
         };
-        PDFName3.prototype.toString = function() {
+        PDFName6.prototype.toString = function() {
           return this.encodedName;
         };
-        PDFName3.prototype.sizeInBytes = function() {
+        PDFName6.prototype.sizeInBytes = function() {
           return this.encodedName.length;
         };
-        PDFName3.prototype.copyBytesInto = function(buffer, offset) {
+        PDFName6.prototype.copyBytesInto = function(buffer, offset) {
           offset += utils_1.copyStringIntoBuffer(this.encodedName, buffer, offset);
           return this.encodedName.length;
         };
-        PDFName3.of = function(name) {
+        PDFName6.of = function(name) {
           var decodedValue = decodeName(name);
           var instance = pool.get(decodedValue);
           if (!instance) {
-            instance = new PDFName3(ENFORCER, decodedValue);
+            instance = new PDFName6(ENFORCER, decodedValue);
             pool.set(decodedValue, instance);
           }
           return instance;
         };
-        PDFName3.Length = PDFName3.of("Length");
-        PDFName3.FlateDecode = PDFName3.of("FlateDecode");
-        PDFName3.Resources = PDFName3.of("Resources");
-        PDFName3.Font = PDFName3.of("Font");
-        PDFName3.XObject = PDFName3.of("XObject");
-        PDFName3.ExtGState = PDFName3.of("ExtGState");
-        PDFName3.Contents = PDFName3.of("Contents");
-        PDFName3.Type = PDFName3.of("Type");
-        PDFName3.Parent = PDFName3.of("Parent");
-        PDFName3.MediaBox = PDFName3.of("MediaBox");
-        PDFName3.Page = PDFName3.of("Page");
-        PDFName3.Annots = PDFName3.of("Annots");
-        PDFName3.TrimBox = PDFName3.of("TrimBox");
-        PDFName3.ArtBox = PDFName3.of("ArtBox");
-        PDFName3.BleedBox = PDFName3.of("BleedBox");
-        PDFName3.CropBox = PDFName3.of("CropBox");
-        PDFName3.Rotate = PDFName3.of("Rotate");
-        PDFName3.Title = PDFName3.of("Title");
-        PDFName3.Author = PDFName3.of("Author");
-        PDFName3.Subject = PDFName3.of("Subject");
-        PDFName3.Creator = PDFName3.of("Creator");
-        PDFName3.Keywords = PDFName3.of("Keywords");
-        PDFName3.Producer = PDFName3.of("Producer");
-        PDFName3.CreationDate = PDFName3.of("CreationDate");
-        PDFName3.ModDate = PDFName3.of("ModDate");
-        return PDFName3;
+        PDFName6.Length = PDFName6.of("Length");
+        PDFName6.FlateDecode = PDFName6.of("FlateDecode");
+        PDFName6.Resources = PDFName6.of("Resources");
+        PDFName6.Font = PDFName6.of("Font");
+        PDFName6.XObject = PDFName6.of("XObject");
+        PDFName6.ExtGState = PDFName6.of("ExtGState");
+        PDFName6.Contents = PDFName6.of("Contents");
+        PDFName6.Type = PDFName6.of("Type");
+        PDFName6.Parent = PDFName6.of("Parent");
+        PDFName6.MediaBox = PDFName6.of("MediaBox");
+        PDFName6.Page = PDFName6.of("Page");
+        PDFName6.Annots = PDFName6.of("Annots");
+        PDFName6.TrimBox = PDFName6.of("TrimBox");
+        PDFName6.ArtBox = PDFName6.of("ArtBox");
+        PDFName6.BleedBox = PDFName6.of("BleedBox");
+        PDFName6.CropBox = PDFName6.of("CropBox");
+        PDFName6.Rotate = PDFName6.of("Rotate");
+        PDFName6.Title = PDFName6.of("Title");
+        PDFName6.Author = PDFName6.of("Author");
+        PDFName6.Subject = PDFName6.of("Subject");
+        PDFName6.Creator = PDFName6.of("Creator");
+        PDFName6.Keywords = PDFName6.of("Keywords");
+        PDFName6.Producer = PDFName6.of("Producer");
+        PDFName6.CreationDate = PDFName6.of("CreationDate");
+        PDFName6.ModDate = PDFName6.of("ModDate");
+        return PDFName6;
       })(PDFObject_1.default)
     );
-    exports.default = PDFName2;
+    exports.default = PDFName5;
   }
 });
 
@@ -39124,36 +39124,36 @@ var require_PDFNull = __commonJS({
     var tslib_1 = (init_tslib_es6(), __toCommonJS(tslib_es6_exports));
     var PDFObject_1 = tslib_1.__importDefault(require_PDFObject());
     var CharCodes_1 = tslib_1.__importDefault(require_CharCodes());
-    var PDFNull = (
+    var PDFNull2 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFNull2, _super);
-        function PDFNull2() {
+        tslib_1.__extends(PDFNull3, _super);
+        function PDFNull3() {
           return _super !== null && _super.apply(this, arguments) || this;
         }
-        PDFNull2.prototype.asNull = function() {
+        PDFNull3.prototype.asNull = function() {
           return null;
         };
-        PDFNull2.prototype.clone = function() {
+        PDFNull3.prototype.clone = function() {
           return this;
         };
-        PDFNull2.prototype.toString = function() {
+        PDFNull3.prototype.toString = function() {
           return "null";
         };
-        PDFNull2.prototype.sizeInBytes = function() {
+        PDFNull3.prototype.sizeInBytes = function() {
           return 4;
         };
-        PDFNull2.prototype.copyBytesInto = function(buffer, offset) {
+        PDFNull3.prototype.copyBytesInto = function(buffer, offset) {
           buffer[offset++] = CharCodes_1.default.n;
           buffer[offset++] = CharCodes_1.default.u;
           buffer[offset++] = CharCodes_1.default.l;
           buffer[offset++] = CharCodes_1.default.l;
           return 4;
         };
-        return PDFNull2;
+        return PDFNull3;
       })(PDFObject_1.default)
     );
-    exports.default = new PDFNull();
+    exports.default = new PDFNull2();
   }
 });
 
@@ -39167,29 +39167,29 @@ var require_PDFDict = __commonJS({
     var PDFNull_1 = tslib_1.__importDefault(require_PDFNull());
     var PDFObject_1 = tslib_1.__importDefault(require_PDFObject());
     var CharCodes_1 = tslib_1.__importDefault(require_CharCodes());
-    var PDFDict2 = (
+    var PDFDict5 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFDict3, _super);
-        function PDFDict3(map, context) {
+        tslib_1.__extends(PDFDict6, _super);
+        function PDFDict6(map, context) {
           var _this = _super.call(this) || this;
           _this.dict = map;
           _this.context = context;
           return _this;
         }
-        PDFDict3.prototype.keys = function() {
+        PDFDict6.prototype.keys = function() {
           return Array.from(this.dict.keys());
         };
-        PDFDict3.prototype.values = function() {
+        PDFDict6.prototype.values = function() {
           return Array.from(this.dict.values());
         };
-        PDFDict3.prototype.entries = function() {
+        PDFDict6.prototype.entries = function() {
           return Array.from(this.dict.entries());
         };
-        PDFDict3.prototype.set = function(key, value) {
+        PDFDict6.prototype.set = function(key, value) {
           this.dict.set(key, value);
         };
-        PDFDict3.prototype.get = function(key, preservePDFNull) {
+        PDFDict6.prototype.get = function(key, preservePDFNull) {
           if (preservePDFNull === void 0) {
             preservePDFNull = false;
           }
@@ -39198,11 +39198,11 @@ var require_PDFDict = __commonJS({
             return void 0;
           return value;
         };
-        PDFDict3.prototype.has = function(key) {
+        PDFDict6.prototype.has = function(key) {
           var value = this.dict.get(key);
           return value !== void 0 && value !== PDFNull_1.default;
         };
-        PDFDict3.prototype.lookupMaybe = function(key) {
+        PDFDict6.prototype.lookupMaybe = function(key) {
           var _a;
           var types = [];
           for (var _i = 1; _i < arguments.length; _i++) {
@@ -39214,7 +39214,7 @@ var require_PDFDict = __commonJS({
             return void 0;
           return value;
         };
-        PDFDict3.prototype.lookup = function(key) {
+        PDFDict6.prototype.lookup = function(key) {
           var _a;
           var types = [];
           for (var _i = 1; _i < arguments.length; _i++) {
@@ -39226,13 +39226,13 @@ var require_PDFDict = __commonJS({
             return void 0;
           return value;
         };
-        PDFDict3.prototype.delete = function(key) {
+        PDFDict6.prototype.delete = function(key) {
           return this.dict.delete(key);
         };
-        PDFDict3.prototype.asMap = function() {
+        PDFDict6.prototype.asMap = function() {
           return new Map(this.dict);
         };
-        PDFDict3.prototype.uniqueKey = function(tag) {
+        PDFDict6.prototype.uniqueKey = function(tag) {
           if (tag === void 0) {
             tag = "";
           }
@@ -39243,8 +39243,8 @@ var require_PDFDict = __commonJS({
           }
           return key;
         };
-        PDFDict3.prototype.clone = function(context) {
-          var clone = PDFDict3.withContext(context || this.context);
+        PDFDict6.prototype.clone = function(context) {
+          var clone = PDFDict6.withContext(context || this.context);
           var entries = this.entries();
           for (var idx = 0, len = entries.length; idx < len; idx++) {
             var _a = entries[idx], key = _a[0], value = _a[1];
@@ -39252,7 +39252,7 @@ var require_PDFDict = __commonJS({
           }
           return clone;
         };
-        PDFDict3.prototype.toString = function() {
+        PDFDict6.prototype.toString = function() {
           var dictString = "<<\n";
           var entries = this.entries();
           for (var idx = 0, len = entries.length; idx < len; idx++) {
@@ -39262,7 +39262,7 @@ var require_PDFDict = __commonJS({
           dictString += ">>";
           return dictString;
         };
-        PDFDict3.prototype.sizeInBytes = function() {
+        PDFDict6.prototype.sizeInBytes = function() {
           var size = 5;
           var entries = this.entries();
           for (var idx = 0, len = entries.length; idx < len; idx++) {
@@ -39271,7 +39271,7 @@ var require_PDFDict = __commonJS({
           }
           return size;
         };
-        PDFDict3.prototype.copyBytesInto = function(buffer, offset) {
+        PDFDict6.prototype.copyBytesInto = function(buffer, offset) {
           var initialOffset = offset;
           buffer[offset++] = CharCodes_1.default.LessThan;
           buffer[offset++] = CharCodes_1.default.LessThan;
@@ -39288,16 +39288,16 @@ var require_PDFDict = __commonJS({
           buffer[offset++] = CharCodes_1.default.GreaterThan;
           return offset - initialOffset;
         };
-        PDFDict3.withContext = function(context) {
-          return new PDFDict3(/* @__PURE__ */ new Map(), context);
+        PDFDict6.withContext = function(context) {
+          return new PDFDict6(/* @__PURE__ */ new Map(), context);
         };
-        PDFDict3.fromMapWithContext = function(map, context) {
-          return new PDFDict3(map, context);
+        PDFDict6.fromMapWithContext = function(map, context) {
+          return new PDFDict6(map, context);
         };
-        return PDFDict3;
+        return PDFDict6;
       })(PDFObject_1.default)
     );
-    exports.default = PDFDict2;
+    exports.default = PDFDict5;
   }
 });
 
@@ -39312,36 +39312,36 @@ var require_PDFStream = __commonJS({
     var PDFNumber_1 = tslib_1.__importDefault(require_PDFNumber());
     var PDFObject_1 = tslib_1.__importDefault(require_PDFObject());
     var CharCodes_1 = tslib_1.__importDefault(require_CharCodes());
-    var PDFStream2 = (
+    var PDFStream4 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFStream3, _super);
-        function PDFStream3(dict) {
+        tslib_1.__extends(PDFStream5, _super);
+        function PDFStream5(dict) {
           var _this = _super.call(this) || this;
           _this.dict = dict;
           return _this;
         }
-        PDFStream3.prototype.clone = function(_context) {
+        PDFStream5.prototype.clone = function(_context) {
           throw new errors_1.MethodNotImplementedError(this.constructor.name, "clone");
         };
-        PDFStream3.prototype.getContentsString = function() {
+        PDFStream5.prototype.getContentsString = function() {
           throw new errors_1.MethodNotImplementedError(this.constructor.name, "getContentsString");
         };
-        PDFStream3.prototype.getContents = function() {
+        PDFStream5.prototype.getContents = function() {
           throw new errors_1.MethodNotImplementedError(this.constructor.name, "getContents");
         };
-        PDFStream3.prototype.getContentsSize = function() {
+        PDFStream5.prototype.getContentsSize = function() {
           throw new errors_1.MethodNotImplementedError(this.constructor.name, "getContentsSize");
         };
-        PDFStream3.prototype.updateDict = function() {
+        PDFStream5.prototype.updateDict = function() {
           var contentsSize = this.getContentsSize();
           this.dict.set(PDFName_1.default.Length, PDFNumber_1.default.of(contentsSize));
         };
-        PDFStream3.prototype.sizeInBytes = function() {
+        PDFStream5.prototype.sizeInBytes = function() {
           this.updateDict();
           return this.dict.sizeInBytes() + this.getContentsSize() + 18;
         };
-        PDFStream3.prototype.toString = function() {
+        PDFStream5.prototype.toString = function() {
           this.updateDict();
           var streamString = this.dict.toString();
           streamString += "\nstream\n";
@@ -39349,7 +39349,7 @@ var require_PDFStream = __commonJS({
           streamString += "\nendstream";
           return streamString;
         };
-        PDFStream3.prototype.copyBytesInto = function(buffer, offset) {
+        PDFStream5.prototype.copyBytesInto = function(buffer, offset) {
           this.updateDict();
           var initialOffset = offset;
           offset += this.dict.copyBytesInto(buffer, offset);
@@ -39377,10 +39377,10 @@ var require_PDFStream = __commonJS({
           buffer[offset++] = CharCodes_1.default.m;
           return offset - initialOffset;
         };
-        return PDFStream3;
+        return PDFStream5;
       })(PDFObject_1.default)
     );
-    exports.default = PDFStream2;
+    exports.default = PDFStream4;
   }
 });
 
@@ -41112,16 +41112,16 @@ var require_PDFHexString = __commonJS({
     var CharCodes_1 = tslib_1.__importDefault(require_CharCodes());
     var utils_1 = require_utils2();
     var errors_1 = require_errors2();
-    var PDFHexString = (
+    var PDFHexString3 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFHexString2, _super);
-        function PDFHexString2(value) {
+        tslib_1.__extends(PDFHexString4, _super);
+        function PDFHexString4(value) {
           var _this = _super.call(this) || this;
           _this.value = value;
           return _this;
         }
-        PDFHexString2.prototype.asBytes = function() {
+        PDFHexString4.prototype.asBytes = function() {
           var hex = this.value + (this.value.length % 2 === 1 ? "0" : "");
           var hexLength = hex.length;
           var bytes = new Uint8Array(hex.length / 2);
@@ -41135,52 +41135,52 @@ var require_PDFHexString = __commonJS({
           }
           return bytes;
         };
-        PDFHexString2.prototype.decodeText = function() {
+        PDFHexString4.prototype.decodeText = function() {
           var bytes = this.asBytes();
           if (utils_1.hasUtf16BOM(bytes))
             return utils_1.utf16Decode(bytes);
           return utils_1.pdfDocEncodingDecode(bytes);
         };
-        PDFHexString2.prototype.decodeDate = function() {
+        PDFHexString4.prototype.decodeDate = function() {
           var text = this.decodeText();
           var date = utils_1.parseDate(text);
           if (!date)
             throw new errors_1.InvalidPDFDateStringError(text);
           return date;
         };
-        PDFHexString2.prototype.asString = function() {
+        PDFHexString4.prototype.asString = function() {
           return this.value;
         };
-        PDFHexString2.prototype.clone = function() {
-          return PDFHexString2.of(this.value);
+        PDFHexString4.prototype.clone = function() {
+          return PDFHexString4.of(this.value);
         };
-        PDFHexString2.prototype.toString = function() {
+        PDFHexString4.prototype.toString = function() {
           return "<" + this.value + ">";
         };
-        PDFHexString2.prototype.sizeInBytes = function() {
+        PDFHexString4.prototype.sizeInBytes = function() {
           return this.value.length + 2;
         };
-        PDFHexString2.prototype.copyBytesInto = function(buffer, offset) {
+        PDFHexString4.prototype.copyBytesInto = function(buffer, offset) {
           buffer[offset++] = CharCodes_1.default.LessThan;
           offset += utils_1.copyStringIntoBuffer(this.value, buffer, offset);
           buffer[offset++] = CharCodes_1.default.GreaterThan;
           return this.value.length + 2;
         };
-        PDFHexString2.of = function(value) {
-          return new PDFHexString2(value);
+        PDFHexString4.of = function(value) {
+          return new PDFHexString4(value);
         };
-        PDFHexString2.fromText = function(value) {
+        PDFHexString4.fromText = function(value) {
           var encoded = utils_1.utf16Encode(value);
           var hex = "";
           for (var idx = 0, len = encoded.length; idx < len; idx++) {
             hex += utils_1.toHexStringOfMinLength(encoded[idx], 4);
           }
-          return new PDFHexString2(hex);
+          return new PDFHexString4(hex);
         };
-        return PDFHexString2;
+        return PDFHexString4;
       })(PDFObject_1.default)
     );
-    exports.default = PDFHexString;
+    exports.default = PDFHexString3;
   }
 });
 
@@ -51785,11 +51785,11 @@ var require_PDFSignature = __commonJS({
     var PDFField_1 = tslib_1.__importDefault(require_PDFField());
     var core_1 = require_core();
     var utils_1 = require_utils2();
-    var PDFSignature = (
+    var PDFSignature2 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFSignature2, _super);
-        function PDFSignature2(acroSignature, ref, doc) {
+        tslib_1.__extends(PDFSignature3, _super);
+        function PDFSignature3(acroSignature, ref, doc) {
           var _this = _super.call(this, acroSignature, ref, doc) || this;
           utils_1.assertIs(acroSignature, "acroSignature", [
             [core_1.PDFAcroSignature, "PDFAcroSignature"]
@@ -51797,16 +51797,16 @@ var require_PDFSignature = __commonJS({
           _this.acroField = acroSignature;
           return _this;
         }
-        PDFSignature2.prototype.needsAppearancesUpdate = function() {
+        PDFSignature3.prototype.needsAppearancesUpdate = function() {
           return false;
         };
-        PDFSignature2.of = function(acroSignature, ref, doc) {
-          return new PDFSignature2(acroSignature, ref, doc);
+        PDFSignature3.of = function(acroSignature, ref, doc) {
+          return new PDFSignature3(acroSignature, ref, doc);
         };
-        return PDFSignature2;
+        return PDFSignature3;
       })(PDFField_1.default)
     );
-    exports.default = PDFSignature;
+    exports.default = PDFSignature2;
   }
 });
 
@@ -51827,24 +51827,24 @@ var require_PDFTextField = __commonJS({
     var alignment_2 = require_alignment();
     var core_1 = require_core();
     var utils_1 = require_utils2();
-    var PDFTextField2 = (
+    var PDFTextField4 = (
       /** @class */
       (function(_super) {
-        tslib_1.__extends(PDFTextField3, _super);
-        function PDFTextField3(acroText, ref, doc) {
+        tslib_1.__extends(PDFTextField5, _super);
+        function PDFTextField5(acroText, ref, doc) {
           var _this = _super.call(this, acroText, ref, doc) || this;
           utils_1.assertIs(acroText, "acroText", [[core_1.PDFAcroText, "PDFAcroText"]]);
           _this.acroField = acroText;
           return _this;
         }
-        PDFTextField3.prototype.getText = function() {
+        PDFTextField5.prototype.getText = function() {
           var value = this.acroField.getValue();
           if (!value && this.isRichFormatted()) {
             throw new errors_1.RichTextFieldReadError(this.getName());
           }
           return value === null || value === void 0 ? void 0 : value.decodeText();
         };
-        PDFTextField3.prototype.setText = function(text) {
+        PDFTextField5.prototype.setText = function(text) {
           utils_1.assertOrUndefined(text, "text", ["string"]);
           var maxLength = this.getMaxLength();
           if (maxLength !== void 0 && text && text.length > maxLength) {
@@ -51858,19 +51858,19 @@ var require_PDFTextField = __commonJS({
             this.acroField.removeValue();
           }
         };
-        PDFTextField3.prototype.getAlignment = function() {
+        PDFTextField5.prototype.getAlignment = function() {
           var quadding = this.acroField.getQuadding();
           return quadding === 0 ? alignment_2.TextAlignment.Left : quadding === 1 ? alignment_2.TextAlignment.Center : quadding === 2 ? alignment_2.TextAlignment.Right : alignment_2.TextAlignment.Left;
         };
-        PDFTextField3.prototype.setAlignment = function(alignment) {
+        PDFTextField5.prototype.setAlignment = function(alignment) {
           utils_1.assertIsOneOf(alignment, "alignment", alignment_2.TextAlignment);
           this.markAsDirty();
           this.acroField.setQuadding(alignment);
         };
-        PDFTextField3.prototype.getMaxLength = function() {
+        PDFTextField5.prototype.getMaxLength = function() {
           return this.acroField.getMaxLength();
         };
-        PDFTextField3.prototype.setMaxLength = function(maxLength) {
+        PDFTextField5.prototype.setMaxLength = function(maxLength) {
           utils_1.assertRangeOrUndefined(maxLength, "maxLength", 0, Number.MAX_SAFE_INTEGER);
           this.markAsDirty();
           if (maxLength === void 0) {
@@ -51883,11 +51883,11 @@ var require_PDFTextField = __commonJS({
             this.acroField.setMaxLength(maxLength);
           }
         };
-        PDFTextField3.prototype.removeMaxLength = function() {
+        PDFTextField5.prototype.removeMaxLength = function() {
           this.markAsDirty();
           this.acroField.removeMaxLength();
         };
-        PDFTextField3.prototype.setImage = function(image) {
+        PDFTextField5.prototype.setImage = function(image) {
           var fieldAlignment = this.getAlignment();
           var alignment = fieldAlignment === alignment_2.TextAlignment.Center ? alignment_1.ImageAlignment.Center : fieldAlignment === alignment_2.TextAlignment.Right ? alignment_1.ImageAlignment.Right : alignment_1.ImageAlignment.Left;
           var widgets = this.acroField.getWidgets();
@@ -51898,62 +51898,62 @@ var require_PDFTextField = __commonJS({
           }
           this.markAsClean();
         };
-        PDFTextField3.prototype.setFontSize = function(fontSize) {
+        PDFTextField5.prototype.setFontSize = function(fontSize) {
           utils_1.assertPositive(fontSize, "fontSize");
           this.acroField.setFontSize(fontSize);
           this.markAsDirty();
         };
-        PDFTextField3.prototype.isMultiline = function() {
+        PDFTextField5.prototype.isMultiline = function() {
           return this.acroField.hasFlag(core_1.AcroTextFlags.Multiline);
         };
-        PDFTextField3.prototype.enableMultiline = function() {
+        PDFTextField5.prototype.enableMultiline = function() {
           this.markAsDirty();
           this.acroField.setFlagTo(core_1.AcroTextFlags.Multiline, true);
         };
-        PDFTextField3.prototype.disableMultiline = function() {
+        PDFTextField5.prototype.disableMultiline = function() {
           this.markAsDirty();
           this.acroField.setFlagTo(core_1.AcroTextFlags.Multiline, false);
         };
-        PDFTextField3.prototype.isPassword = function() {
+        PDFTextField5.prototype.isPassword = function() {
           return this.acroField.hasFlag(core_1.AcroTextFlags.Password);
         };
-        PDFTextField3.prototype.enablePassword = function() {
+        PDFTextField5.prototype.enablePassword = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.Password, true);
         };
-        PDFTextField3.prototype.disablePassword = function() {
+        PDFTextField5.prototype.disablePassword = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.Password, false);
         };
-        PDFTextField3.prototype.isFileSelector = function() {
+        PDFTextField5.prototype.isFileSelector = function() {
           return this.acroField.hasFlag(core_1.AcroTextFlags.FileSelect);
         };
-        PDFTextField3.prototype.enableFileSelection = function() {
+        PDFTextField5.prototype.enableFileSelection = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.FileSelect, true);
         };
-        PDFTextField3.prototype.disableFileSelection = function() {
+        PDFTextField5.prototype.disableFileSelection = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.FileSelect, false);
         };
-        PDFTextField3.prototype.isSpellChecked = function() {
+        PDFTextField5.prototype.isSpellChecked = function() {
           return !this.acroField.hasFlag(core_1.AcroTextFlags.DoNotSpellCheck);
         };
-        PDFTextField3.prototype.enableSpellChecking = function() {
+        PDFTextField5.prototype.enableSpellChecking = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.DoNotSpellCheck, false);
         };
-        PDFTextField3.prototype.disableSpellChecking = function() {
+        PDFTextField5.prototype.disableSpellChecking = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.DoNotSpellCheck, true);
         };
-        PDFTextField3.prototype.isScrollable = function() {
+        PDFTextField5.prototype.isScrollable = function() {
           return !this.acroField.hasFlag(core_1.AcroTextFlags.DoNotScroll);
         };
-        PDFTextField3.prototype.enableScrolling = function() {
+        PDFTextField5.prototype.enableScrolling = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.DoNotScroll, false);
         };
-        PDFTextField3.prototype.disableScrolling = function() {
+        PDFTextField5.prototype.disableScrolling = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.DoNotScroll, true);
         };
-        PDFTextField3.prototype.isCombed = function() {
+        PDFTextField5.prototype.isCombed = function() {
           return this.acroField.hasFlag(core_1.AcroTextFlags.Comb) && !this.isMultiline() && !this.isPassword() && !this.isFileSelector() && this.getMaxLength() !== void 0;
         };
-        PDFTextField3.prototype.enableCombing = function() {
+        PDFTextField5.prototype.enableCombing = function() {
           if (this.getMaxLength() === void 0) {
             var msg = "PDFTextFields must have a max length in order to be combed";
             console.warn(msg);
@@ -51964,20 +51964,20 @@ var require_PDFTextField = __commonJS({
           this.disableFileSelection();
           this.acroField.setFlagTo(core_1.AcroTextFlags.Comb, true);
         };
-        PDFTextField3.prototype.disableCombing = function() {
+        PDFTextField5.prototype.disableCombing = function() {
           this.markAsDirty();
           this.acroField.setFlagTo(core_1.AcroTextFlags.Comb, false);
         };
-        PDFTextField3.prototype.isRichFormatted = function() {
+        PDFTextField5.prototype.isRichFormatted = function() {
           return this.acroField.hasFlag(core_1.AcroTextFlags.RichText);
         };
-        PDFTextField3.prototype.enableRichFormatting = function() {
+        PDFTextField5.prototype.enableRichFormatting = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.RichText, true);
         };
-        PDFTextField3.prototype.disableRichFormatting = function() {
+        PDFTextField5.prototype.disableRichFormatting = function() {
           this.acroField.setFlagTo(core_1.AcroTextFlags.RichText, false);
         };
-        PDFTextField3.prototype.addToPage = function(page, options) {
+        PDFTextField5.prototype.addToPage = function(page, options) {
           var _a, _b, _c, _d, _e, _f, _g;
           utils_1.assertIs(page, "page", [[PDFPage_1.default, "PDFPage"]]);
           PDFField_1.assertFieldAppearanceOptions(options);
@@ -52010,7 +52010,7 @@ var require_PDFTextField = __commonJS({
           this.updateWidgetAppearance(widget, font);
           page.node.addAnnot(widgetRef);
         };
-        PDFTextField3.prototype.needsAppearancesUpdate = function() {
+        PDFTextField5.prototype.needsAppearancesUpdate = function() {
           var _a;
           if (this.isDirty())
             return true;
@@ -52023,11 +52023,11 @@ var require_PDFTextField = __commonJS({
           }
           return false;
         };
-        PDFTextField3.prototype.defaultUpdateAppearances = function(font) {
+        PDFTextField5.prototype.defaultUpdateAppearances = function(font) {
           utils_1.assertIs(font, "font", [[PDFFont_1.default, "PDFFont"]]);
           this.updateAppearances(font);
         };
-        PDFTextField3.prototype.updateAppearances = function(font, provider) {
+        PDFTextField5.prototype.updateAppearances = function(font, provider) {
           utils_1.assertIs(font, "font", [[PDFFont_1.default, "PDFFont"]]);
           utils_1.assertOrUndefined(provider, "provider", [Function]);
           var widgets = this.acroField.getWidgets();
@@ -52037,18 +52037,18 @@ var require_PDFTextField = __commonJS({
           }
           this.markAsClean();
         };
-        PDFTextField3.prototype.updateWidgetAppearance = function(widget, font, provider) {
+        PDFTextField5.prototype.updateWidgetAppearance = function(widget, font, provider) {
           var apProvider = provider !== null && provider !== void 0 ? provider : appearances_1.defaultTextFieldAppearanceProvider;
           var appearances = appearances_1.normalizeAppearance(apProvider(this, widget, font));
           this.updateWidgetAppearanceWithFont(widget, font, appearances);
         };
-        PDFTextField3.of = function(acroText, ref, doc) {
-          return new PDFTextField3(acroText, ref, doc);
+        PDFTextField5.of = function(acroText, ref, doc) {
+          return new PDFTextField5(acroText, ref, doc);
         };
-        return PDFTextField3;
+        return PDFTextField5;
       })(PDFField_1.default)
     );
-    exports.default = PDFTextField2;
+    exports.default = PDFTextField4;
   }
 });
 
@@ -52728,10 +52728,10 @@ var require_PDFDocument = __commonJS({
     var PDFEmbeddedFile_1 = tslib_1.__importDefault(require_PDFEmbeddedFile());
     var PDFJavaScript_1 = tslib_1.__importDefault(require_PDFJavaScript());
     var JavaScriptEmbedder_1 = tslib_1.__importDefault(require_JavaScriptEmbedder());
-    var PDFDocument2 = (
+    var PDFDocument3 = (
       /** @class */
       (function() {
-        function PDFDocument3(context, ignoreEncryption, updateMetadata) {
+        function PDFDocument4(context, ignoreEncryption, updateMetadata) {
           var _this = this;
           this.defaultWordBreaks = [" "];
           this.computePages = function() {
@@ -52770,7 +52770,7 @@ var require_PDFDocument = __commonJS({
           if (updateMetadata)
             this.updateInfoDict();
         }
-        PDFDocument3.load = function(pdf, options) {
+        PDFDocument4.load = function(pdf, options) {
           if (options === void 0) {
             options = {};
           }
@@ -52788,12 +52788,12 @@ var require_PDFDocument = __commonJS({
                   return [4, core_1.PDFParser.forBytesWithOptions(bytes, parseSpeed, throwOnInvalidObject, capNumbers).parseDocument()];
                 case 1:
                   context = _f.sent();
-                  return [2, new PDFDocument3(context, ignoreEncryption, updateMetadata)];
+                  return [2, new PDFDocument4(context, ignoreEncryption, updateMetadata)];
               }
             });
           });
         };
-        PDFDocument3.create = function(options) {
+        PDFDocument4.create = function(options) {
           if (options === void 0) {
             options = {};
           }
@@ -52806,14 +52806,14 @@ var require_PDFDocument = __commonJS({
               pageTreeRef = context.register(pageTree);
               catalog = core_1.PDFCatalog.withContextAndPages(context, pageTreeRef);
               context.trailerInfo.Root = context.register(catalog);
-              return [2, new PDFDocument3(context, false, updateMetadata)];
+              return [2, new PDFDocument4(context, false, updateMetadata)];
             });
           });
         };
-        PDFDocument3.prototype.registerFontkit = function(fontkit2) {
+        PDFDocument4.prototype.registerFontkit = function(fontkit2) {
           this.fontkit = fontkit2;
         };
-        PDFDocument3.prototype.getForm = function() {
+        PDFDocument4.prototype.getForm = function() {
           var form = this.formCache.access();
           if (form.hasXFA()) {
             console.warn("Removing XFA form data as pdf-lib does not support reading or writing XFA");
@@ -52821,63 +52821,63 @@ var require_PDFDocument = __commonJS({
           }
           return form;
         };
-        PDFDocument3.prototype.getTitle = function() {
+        PDFDocument4.prototype.getTitle = function() {
           var title = this.getInfoDict().lookup(core_1.PDFName.Title);
           if (!title)
             return void 0;
           assertIsLiteralOrHexString(title);
           return title.decodeText();
         };
-        PDFDocument3.prototype.getAuthor = function() {
+        PDFDocument4.prototype.getAuthor = function() {
           var author = this.getInfoDict().lookup(core_1.PDFName.Author);
           if (!author)
             return void 0;
           assertIsLiteralOrHexString(author);
           return author.decodeText();
         };
-        PDFDocument3.prototype.getSubject = function() {
+        PDFDocument4.prototype.getSubject = function() {
           var subject = this.getInfoDict().lookup(core_1.PDFName.Subject);
           if (!subject)
             return void 0;
           assertIsLiteralOrHexString(subject);
           return subject.decodeText();
         };
-        PDFDocument3.prototype.getKeywords = function() {
+        PDFDocument4.prototype.getKeywords = function() {
           var keywords = this.getInfoDict().lookup(core_1.PDFName.Keywords);
           if (!keywords)
             return void 0;
           assertIsLiteralOrHexString(keywords);
           return keywords.decodeText();
         };
-        PDFDocument3.prototype.getCreator = function() {
+        PDFDocument4.prototype.getCreator = function() {
           var creator = this.getInfoDict().lookup(core_1.PDFName.Creator);
           if (!creator)
             return void 0;
           assertIsLiteralOrHexString(creator);
           return creator.decodeText();
         };
-        PDFDocument3.prototype.getProducer = function() {
+        PDFDocument4.prototype.getProducer = function() {
           var producer = this.getInfoDict().lookup(core_1.PDFName.Producer);
           if (!producer)
             return void 0;
           assertIsLiteralOrHexString(producer);
           return producer.decodeText();
         };
-        PDFDocument3.prototype.getCreationDate = function() {
+        PDFDocument4.prototype.getCreationDate = function() {
           var creationDate = this.getInfoDict().lookup(core_1.PDFName.CreationDate);
           if (!creationDate)
             return void 0;
           assertIsLiteralOrHexString(creationDate);
           return creationDate.decodeDate();
         };
-        PDFDocument3.prototype.getModificationDate = function() {
+        PDFDocument4.prototype.getModificationDate = function() {
           var modificationDate = this.getInfoDict().lookup(core_1.PDFName.ModDate);
           if (!modificationDate)
             return void 0;
           assertIsLiteralOrHexString(modificationDate);
           return modificationDate.decodeDate();
         };
-        PDFDocument3.prototype.setTitle = function(title, options) {
+        PDFDocument4.prototype.setTitle = function(title, options) {
           utils_1.assertIs(title, "title", ["string"]);
           var key = core_1.PDFName.of("Title");
           this.getInfoDict().set(key, core_1.PDFHexString.fromText(title));
@@ -52886,63 +52886,63 @@ var require_PDFDocument = __commonJS({
             prefs.setDisplayDocTitle(true);
           }
         };
-        PDFDocument3.prototype.setAuthor = function(author) {
+        PDFDocument4.prototype.setAuthor = function(author) {
           utils_1.assertIs(author, "author", ["string"]);
           var key = core_1.PDFName.of("Author");
           this.getInfoDict().set(key, core_1.PDFHexString.fromText(author));
         };
-        PDFDocument3.prototype.setSubject = function(subject) {
+        PDFDocument4.prototype.setSubject = function(subject) {
           utils_1.assertIs(subject, "author", ["string"]);
           var key = core_1.PDFName.of("Subject");
           this.getInfoDict().set(key, core_1.PDFHexString.fromText(subject));
         };
-        PDFDocument3.prototype.setKeywords = function(keywords) {
+        PDFDocument4.prototype.setKeywords = function(keywords) {
           utils_1.assertIs(keywords, "keywords", [Array]);
           var key = core_1.PDFName.of("Keywords");
           this.getInfoDict().set(key, core_1.PDFHexString.fromText(keywords.join(" ")));
         };
-        PDFDocument3.prototype.setCreator = function(creator) {
+        PDFDocument4.prototype.setCreator = function(creator) {
           utils_1.assertIs(creator, "creator", ["string"]);
           var key = core_1.PDFName.of("Creator");
           this.getInfoDict().set(key, core_1.PDFHexString.fromText(creator));
         };
-        PDFDocument3.prototype.setProducer = function(producer) {
+        PDFDocument4.prototype.setProducer = function(producer) {
           utils_1.assertIs(producer, "creator", ["string"]);
           var key = core_1.PDFName.of("Producer");
           this.getInfoDict().set(key, core_1.PDFHexString.fromText(producer));
         };
-        PDFDocument3.prototype.setLanguage = function(language) {
+        PDFDocument4.prototype.setLanguage = function(language) {
           utils_1.assertIs(language, "language", ["string"]);
           var key = core_1.PDFName.of("Lang");
           this.catalog.set(key, core_1.PDFString.of(language));
         };
-        PDFDocument3.prototype.setCreationDate = function(creationDate) {
+        PDFDocument4.prototype.setCreationDate = function(creationDate) {
           utils_1.assertIs(creationDate, "creationDate", [[Date, "Date"]]);
           var key = core_1.PDFName.of("CreationDate");
           this.getInfoDict().set(key, core_1.PDFString.fromDate(creationDate));
         };
-        PDFDocument3.prototype.setModificationDate = function(modificationDate) {
+        PDFDocument4.prototype.setModificationDate = function(modificationDate) {
           utils_1.assertIs(modificationDate, "modificationDate", [[Date, "Date"]]);
           var key = core_1.PDFName.of("ModDate");
           this.getInfoDict().set(key, core_1.PDFString.fromDate(modificationDate));
         };
-        PDFDocument3.prototype.getPageCount = function() {
+        PDFDocument4.prototype.getPageCount = function() {
           if (this.pageCount === void 0)
             this.pageCount = this.getPages().length;
           return this.pageCount;
         };
-        PDFDocument3.prototype.getPages = function() {
+        PDFDocument4.prototype.getPages = function() {
           return this.pageCache.access();
         };
-        PDFDocument3.prototype.getPage = function(index) {
+        PDFDocument4.prototype.getPage = function(index) {
           var pages = this.getPages();
           utils_1.assertRange(index, "index", 0, pages.length - 1);
           return pages[index];
         };
-        PDFDocument3.prototype.getPageIndices = function() {
+        PDFDocument4.prototype.getPageIndices = function() {
           return utils_1.range(0, this.getPageCount());
         };
-        PDFDocument3.prototype.removePage = function(index) {
+        PDFDocument4.prototype.removePage = function(index) {
           var pageCount = this.getPageCount();
           if (this.pageCount === 0)
             throw new errors_1.RemovePageFromEmptyDocumentError();
@@ -52950,11 +52950,11 @@ var require_PDFDocument = __commonJS({
           this.catalog.removeLeafNode(index);
           this.pageCount = pageCount - 1;
         };
-        PDFDocument3.prototype.addPage = function(page) {
+        PDFDocument4.prototype.addPage = function(page) {
           utils_1.assertIs(page, "page", ["undefined", [PDFPage_1.default, "PDFPage"], Array]);
           return this.insertPage(this.getPageCount(), page);
         };
-        PDFDocument3.prototype.insertPage = function(index, page) {
+        PDFDocument4.prototype.insertPage = function(index, page) {
           var pageCount = this.getPageCount();
           utils_1.assertRange(index, "index", 0, pageCount);
           utils_1.assertIs(page, "page", ["undefined", [PDFPage_1.default, "PDFPage"], Array]);
@@ -52972,13 +52972,13 @@ var require_PDFDocument = __commonJS({
           this.pageCount = pageCount + 1;
           return page;
         };
-        PDFDocument3.prototype.copyPages = function(srcDoc, indices) {
+        PDFDocument4.prototype.copyPages = function(srcDoc, indices) {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
             var copier, srcPages, copiedPages, idx, len, srcPage, copiedPage, ref;
             return tslib_1.__generator(this, function(_a) {
               switch (_a.label) {
                 case 0:
-                  utils_1.assertIs(srcDoc, "srcDoc", [[PDFDocument3, "PDFDocument"]]);
+                  utils_1.assertIs(srcDoc, "srcDoc", [[PDFDocument4, "PDFDocument"]]);
                   utils_1.assertIs(indices, "indices", [Array]);
                   return [4, srcDoc.flush()];
                 case 1:
@@ -52997,13 +52997,13 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.copy = function() {
+        PDFDocument4.prototype.copy = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
             var pdfCopy, contentPages, idx, len;
             return tslib_1.__generator(this, function(_a) {
               switch (_a.label) {
                 case 0:
-                  return [4, PDFDocument3.create()];
+                  return [4, PDFDocument4.create()];
                 case 1:
                   pdfCopy = _a.sent();
                   return [4, pdfCopy.copyPages(this, this.getPageIndices())];
@@ -53039,7 +53039,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.addJavaScript = function(name, script) {
+        PDFDocument4.prototype.addJavaScript = function(name, script) {
           utils_1.assertIs(name, "name", ["string"]);
           utils_1.assertIs(script, "script", ["string"]);
           var embedder = JavaScriptEmbedder_1.default.for(script, name);
@@ -53047,7 +53047,7 @@ var require_PDFDocument = __commonJS({
           var javaScript = PDFJavaScript_1.default.of(ref, this, embedder);
           this.javaScripts.push(javaScript);
         };
-        PDFDocument3.prototype.attach = function(attachment, name, options) {
+        PDFDocument4.prototype.attach = function(attachment, name, options) {
           if (options === void 0) {
             options = {};
           }
@@ -53075,7 +53075,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.embedFont = function(font, options) {
+        PDFDocument4.prototype.embedFont = function(font, options) {
           if (options === void 0) {
             options = {};
           }
@@ -53118,7 +53118,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.embedStandardFont = function(font, customName) {
+        PDFDocument4.prototype.embedStandardFont = function(font, customName) {
           utils_1.assertIs(font, "font", ["string"]);
           if (!utils_1.isStandardFont(font)) {
             throw new TypeError("`font` must be one of type `StandardFonts`");
@@ -53129,7 +53129,7 @@ var require_PDFDocument = __commonJS({
           this.fonts.push(pdfFont);
           return pdfFont;
         };
-        PDFDocument3.prototype.embedJpg = function(jpg) {
+        PDFDocument4.prototype.embedJpg = function(jpg) {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
             var bytes, embedder, ref, pdfImage;
             return tslib_1.__generator(this, function(_a) {
@@ -53148,7 +53148,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.embedPng = function(png) {
+        PDFDocument4.prototype.embedPng = function(png) {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
             var bytes, embedder, ref, pdfImage;
             return tslib_1.__generator(this, function(_a) {
@@ -53167,7 +53167,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.embedPdf = function(pdf, indices) {
+        PDFDocument4.prototype.embedPdf = function(pdf, indices) {
           if (indices === void 0) {
             indices = [0];
           }
@@ -53180,14 +53180,14 @@ var require_PDFDocument = __commonJS({
                     "string",
                     Uint8Array,
                     ArrayBuffer,
-                    [PDFDocument3, "PDFDocument"]
+                    [PDFDocument4, "PDFDocument"]
                   ]);
                   utils_1.assertIs(indices, "indices", [Array]);
-                  if (!(pdf instanceof PDFDocument3)) return [3, 1];
+                  if (!(pdf instanceof PDFDocument4)) return [3, 1];
                   _a = pdf;
                   return [3, 3];
                 case 1:
-                  return [4, PDFDocument3.load(pdf)];
+                  return [4, PDFDocument4.load(pdf)];
                 case 2:
                   _a = _b.sent();
                   _b.label = 3;
@@ -53199,7 +53199,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.embedPage = function(page, boundingBox, transformationMatrix) {
+        PDFDocument4.prototype.embedPage = function(page, boundingBox, transformationMatrix) {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
             var embeddedPage;
             return tslib_1.__generator(this, function(_a) {
@@ -53214,7 +53214,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.embedPages = function(pages, boundingBoxes, transformationMatrices) {
+        PDFDocument4.prototype.embedPages = function(pages, boundingBoxes, transformationMatrices) {
           if (boundingBoxes === void 0) {
             boundingBoxes = [];
           }
@@ -53264,7 +53264,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.flush = function() {
+        PDFDocument4.prototype.flush = function() {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
             return tslib_1.__generator(this, function(_a) {
               switch (_a.label) {
@@ -53292,7 +53292,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.save = function(options) {
+        PDFDocument4.prototype.save = function(options) {
           if (options === void 0) {
             options = {};
           }
@@ -53322,7 +53322,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.saveAsBase64 = function(options) {
+        PDFDocument4.prototype.saveAsBase64 = function(options) {
           if (options === void 0) {
             options = {};
           }
@@ -53342,7 +53342,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.findPageForAnnotationRef = function(ref) {
+        PDFDocument4.prototype.findPageForAnnotationRef = function(ref) {
           var pages = this.getPages();
           for (var idx = 0, len = pages.length; idx < len; idx++) {
             var page = pages[idx];
@@ -53353,7 +53353,7 @@ var require_PDFDocument = __commonJS({
           }
           return void 0;
         };
-        PDFDocument3.prototype.embedAll = function(embeddables) {
+        PDFDocument4.prototype.embedAll = function(embeddables) {
           return tslib_1.__awaiter(this, void 0, void 0, function() {
             var idx, len;
             return tslib_1.__generator(this, function(_a) {
@@ -53379,7 +53379,7 @@ var require_PDFDocument = __commonJS({
             });
           });
         };
-        PDFDocument3.prototype.updateInfoDict = function() {
+        PDFDocument4.prototype.updateInfoDict = function() {
           var pdfLib = "pdf-lib (https://github.com/Hopding/pdf-lib)";
           var now = /* @__PURE__ */ new Date();
           var info = this.getInfoDict();
@@ -53390,7 +53390,7 @@ var require_PDFDocument = __commonJS({
           if (!info.get(core_1.PDFName.of("CreationDate")))
             this.setCreationDate(now);
         };
-        PDFDocument3.prototype.getInfoDict = function() {
+        PDFDocument4.prototype.getInfoDict = function() {
           var existingInfo = this.context.lookup(this.context.trailerInfo.Info);
           if (existingInfo instanceof core_1.PDFDict)
             return existingInfo;
@@ -53398,15 +53398,15 @@ var require_PDFDocument = __commonJS({
           this.context.trailerInfo.Info = this.context.register(newInfo);
           return newInfo;
         };
-        PDFDocument3.prototype.assertFontkit = function() {
+        PDFDocument4.prototype.assertFontkit = function() {
           if (!this.fontkit)
             throw new errors_1.FontkitNotRegisteredError();
           return this.fontkit;
         };
-        return PDFDocument3;
+        return PDFDocument4;
       })()
     );
-    exports.default = PDFDocument2;
+    exports.default = PDFDocument3;
     function assertIsLiteralOrHexString(pdfObject) {
       if (!(pdfObject instanceof core_1.PDFHexString) && !(pdfObject instanceof core_1.PDFString)) {
         throw new core_1.UnexpectedObjectTypeError([core_1.PDFHexString, core_1.PDFString], pdfObject);
@@ -54346,15 +54346,600 @@ var require_cjs = __commonJS({
 
 // lib/adapters/pdf.mjs
 var import_fontkit = __toESM(require_fontkit_umd(), 1);
-var import_pdf_lib = __toESM(require_cjs(), 1);
+var import_pdf_lib4 = __toESM(require_cjs(), 1);
 import { readFile } from "node:fs/promises";
 import path from "node:path";
 import { fileURLToPath } from "node:url";
+import { createHash as createHash2 } from "node:crypto";
+
+// lib/adapters/pdf-flow.mjs
+var import_pdf_lib3 = __toESM(require_cjs(), 1);
+
+// lib/adapters/pdf-flow-legacy.mjs
+var import_pdf_lib2 = __toESM(require_cjs(), 1);
+
+// lib/adapters/pdf-layout.mjs
+var import_pdf_lib = __toESM(require_cjs(), 1);
+import { createHash } from "node:crypto";
+var hash = (value) => createHash("sha256").update(value).digest("hex");
+var layoutError = (message, details = {}) => {
+  throw new FillError("E_LAYOUT", message, { region: "continuation-page", reason: "unrepresentable-layout", ...details });
+};
+var corrupt = () => {
+  throw new FillError("E_PRESERVATION", "PDF \uC774\uC5B4\uC4F0\uAE30 \uD544\uB4DC\uC640 \uB9E4\uD551\uC774 \uC77C\uCE58\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+};
+var plain = (value) => value !== null && typeof value === "object" && !Array.isArray(value);
+var exactKeys = (value, required, optional = []) => plain(value) && required.every((key) => Object.hasOwn(value, key)) && Object.keys(value).every((key) => required.includes(key) || optional.includes(key));
+var same = (left, right) => JSON.stringify(left) === JSON.stringify(right);
+var appearanceDictionary = (stream) => JSON.stringify(stream.dict.entries().filter(([key]) => key.decodeText() !== "Length").map(([key, value]) => [key.decodeText(), value.toString()]).sort(([left], [right]) => left.localeCompare(right)));
+var validBox = (box) => exactKeys(box, ["x", "y", "width", "height"]) && Object.values(box).every(Number.isFinite) && box.width > 0 && box.height > 0;
+var inside = (inner, outer) => inner.x >= outer.x && inner.y >= outer.y && inner.x + inner.width <= outer.x + outer.width && inner.y + inner.height <= outer.y + outer.height;
+var overlaps = (a, b) => a.x < b.x + b.width && a.x + a.width > b.x && a.y < b.y + b.height && a.y + a.height > b.y;
+function fontSizeOf(field) {
+  const matches = [...(field.getDefaultAppearance() ?? "").matchAll(/\/[^\s]+\s+(\d*\.\d+|\d+)\s+Tf/g)];
+  const size = Number(matches.at(-1)?.[1]);
+  return size > 0 ? size : void 0;
+}
+function fieldPages(doc, field) {
+  const widgets = new Set(field.acroField.getWidgets().map((widget) => widget.dict));
+  return doc.getPages().flatMap((page, index) => {
+    const annotations = page.node.Annots();
+    return annotations && Array.from({ length: annotations.size() }, (_, i) => annotations.lookup(i)).some((object) => widgets.has(object)) ? [index + 1] : [];
+  });
+}
+function textLayout(field, widget, text, font, size) {
+  const dimensions = (0, import_pdf_lib.adjustDimsForRotation)(widget.getRectangle(), (0, import_pdf_lib.reduceRotation)(widget.getAppearanceCharacteristics()?.getRotation()));
+  const inset = (widget.getBorderStyle()?.getWidth() ?? 0) + 1;
+  const bounds = { x: inset, y: inset, width: dimensions.width - inset * 2, height: dimensions.height - inset * 2 };
+  const fontSize = size ?? fontSizeOf(widget) ?? fontSizeOf(field.acroField) ?? 10;
+  const options = { font, fontSize, bounds, alignment: field.getAlignment() };
+  const layout = field.isMultiline() ? (0, import_pdf_lib.layoutMultilineText)(text, options) : (0, import_pdf_lib.layoutSinglelineText)(text, options);
+  return {
+    bounds,
+    fontSize,
+    lines: field.isMultiline() ? layout.lines : [layout.line],
+    descent: font.heightAtSize(fontSize) - font.heightAtSize(fontSize, { descender: false })
+  };
+}
+function layoutFits({ bounds, lines, descent }) {
+  return bounds.width > 0 && bounds.height > 0 && lines.filter((line) => line.text.trim()).every((line) => line.x >= bounds.x - 0.01 && line.x + line.width <= bounds.x + bounds.width + 0.01 && line.y - descent >= bounds.y - 0.01 && line.y + line.height <= bounds.y + bounds.height + 0.01);
+}
+function geometryOf(field) {
+  const widget = field.acroField.getWidgets()[0];
+  return {
+    rectangle: widget.getRectangle(),
+    borderWidth: widget.getBorderStyle()?.getWidth() ?? 0,
+    alignment: field.getAlignment(),
+    fontSize: fontSizeOf(widget) ?? fontSizeOf(field.acroField) ?? 10
+  };
+}
+function pageGeometry(page) {
+  return { media: page.getMediaBox(), crop: page.getCropBox(), rotation: page.getRotation().angle };
+}
+function supportedField(doc, field, sourcePage, { multiline = false } = {}) {
+  if (!(field instanceof import_pdf_lib.PDFTextField) || field.isReadOnly() || multiline && !field.isMultiline() || field.acroField.getWidgets().length !== 1 || !same(fieldPages(doc, field), [sourcePage])) return false;
+  const page = doc.getPage(sourcePage - 1), { media, crop, rotation } = pageGeometry(page);
+  const widget = field.acroField.getWidgets()[0], rect = widget.getRectangle();
+  return validBox(media) && validBox(crop) && media.x === 0 && media.y === 0 && crop.x === 0 && crop.y === 0 && rotation === 0 && (widget.getAppearanceCharacteristics()?.getRotation() ?? 0) === 0 && validBox(rect) && inside(rect, crop) && inside(crop, media) && Number.isFinite(geometryOf(field).borderWidth) && geometryOf(field).borderWidth >= 0;
+}
+function prepareLayoutProfile(doc, fields, aliases, profile, bytes) {
+  const plans = /* @__PURE__ */ new Map();
+  if (profile === void 0) return plans;
+  if (!exactKeys(profile, ["version", "format", "templateSha256", "continuations"]) || profile.version !== 1 || profile.format !== "pdf" || typeof profile.templateSha256 !== "string" || !/^[a-f0-9]{64}$/.test(profile.templateSha256) || !Array.isArray(profile.continuations) || !profile.continuations.length || profile.continuations.length > 1e3) {
+    layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uC124\uC815 \uD615\uC2DD\uC774 \uC62C\uBC14\uB974\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { reason: "invalid-profile" });
+  }
+  if (hash(bytes) !== profile.templateSha256) throw new FillError("E_TEMPLATE_CHANGED", "PDF \uC774\uC5B4\uC4F0\uAE30 \uC124\uC815\uACFC \uC6D0\uBCF8 \uD30C\uC77C\uC774 \uB2E4\uB985\uB2C8\uB2E4.");
+  const byAlias = new Map(fields.map((field) => [aliases.get(field.getName()), field]));
+  const widgetRectangles = new Map(doc.getForm().getFields().flatMap((field) => field.acroField.getWidgets().map((widget) => [widget.dict, widget.getRectangle()])));
+  const pageRectangles = doc.getPages().map((page) => {
+    const annotations = page.node.Annots();
+    return annotations ? Array.from({ length: annotations.size() }, (_, index) => widgetRectangles.get(annotations.lookup(index))).filter(Boolean) : [];
+  });
+  const sourceFooters = /* @__PURE__ */ new Map();
+  for (const settings of profile.continuations) {
+    if (!exactKeys(settings, ["field", "sourcePage", "repeatFields", "label", "labelBox", "sourceFooterBox"], ["footer", "footerBox"]) || typeof settings.field !== "string" || plans.has(settings.field) || !Number.isInteger(settings.sourcePage) || settings.sourcePage < 1 || settings.sourcePage > doc.getPageCount() || !Array.isArray(settings.repeatFields) || settings.repeatFields.length > 1e3 || settings.repeatFields.some((name) => typeof name !== "string") || new Set(settings.repeatFields).size !== settings.repeatFields.length || Object.hasOwn(settings, "footer") !== Object.hasOwn(settings, "footerBox")) layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uD544\uB4DC \uC124\uC815\uC774 \uC62C\uBC14\uB974\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { reason: "invalid-profile" });
+    for (const [key, maximum] of [["label", 80], ["footer", 240]]) {
+      if (key === "footer" && settings.footer === void 0) continue;
+      if (typeof settings[key] !== "string" || !settings[key].trim() || settings[key].length > maximum || /[\u0000-\u001f\u007f\ufffe\uffff\uD800-\uDFFF]/u.test(settings[key])) {
+        layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uC548\uB0B4 \uBB38\uAD6C\uB294 \uC720\uD6A8\uD55C \uD55C \uC904 \uBB38\uC790\uC5F4\uC774\uC5B4\uC57C \uD569\uB2C8\uB2E4.", { reason: "invalid-profile" });
+      }
+    }
+    const field = byAlias.get(settings.field);
+    if (!supportedField(doc, field, settings.sourcePage, { multiline: true })) layoutError("PDF \uC774\uC5B4\uC4F0\uAE30\uB294 \uD55C \uD398\uC774\uC9C0\uC758 \uC218\uD3C9 \uB2E4\uC911 \uD589 \uD544\uB4DC\uB9CC \uC9C0\uC6D0\uD569\uB2C8\uB2E4.", { field: settings.field, reason: "unsupported-geometry" });
+    const page = doc.getPage(settings.sourcePage - 1);
+    const rectangles = pageRectangles[settings.sourcePage - 1];
+    const boxes = [settings.labelBox, ...settings.footerBox ? [settings.footerBox] : []];
+    for (const box of [...boxes, settings.sourceFooterBox]) {
+      if (!validBox(box) || !inside(box, page.getCropBox()) || rectangles.some((rect) => overlaps(box, rect))) layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uC548\uB0B4 \uC601\uC5ED\uC774 \uD398\uC774\uC9C0 \uB610\uB294 \uAE30\uC874 \uD544\uB4DC\uC640 \uACB9\uCE69\uB2C8\uB2E4.", { field: settings.field, reason: "invalid-label-box" });
+    }
+    if (boxes.length > 1 && overlaps(...boxes)) layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uC548\uB0B4 \uC601\uC5ED\uB07C\uB9AC \uACB9\uCE69\uB2C8\uB2E4.", { field: settings.field, reason: "invalid-label-box" });
+    const previousFooters = sourceFooters.get(settings.sourcePage) ?? [];
+    if (previousFooters.some((box) => overlaps(box, settings.sourceFooterBox))) layoutError("\uC6D0\uB798 \uD398\uC774\uC9C0\uC758 \uC774\uC5B4\uC4F0\uAE30 \uC548\uB0B4 \uC601\uC5ED\uB07C\uB9AC \uACB9\uCE69\uB2C8\uB2E4.", { field: settings.field, reason: "invalid-label-box" });
+    sourceFooters.set(settings.sourcePage, [...previousFooters, settings.sourceFooterBox]);
+    const repeat = settings.repeatFields.map((name) => byAlias.get(name));
+    if (settings.repeatFields.includes(settings.field) || repeat.some((item) => !supportedField(doc, item, settings.sourcePage))) layoutError("\uBC18\uBCF5 \uBB38\uB9E5\uC740 \uAC19\uC740 \uD398\uC774\uC9C0\uC758 \uC77C\uBC18 \uD14D\uC2A4\uD2B8 \uD544\uB4DC\uC5EC\uC57C \uD569\uB2C8\uB2E4.", { field: settings.field, reason: "invalid-repeat-field" });
+    plans.set(settings.field, {
+      field,
+      repeat,
+      settings,
+      geometry: geometryOf(field),
+      page: pageGeometry(page),
+      templateSha256: profile.templateSha256,
+      profileSha256: hash(JSON.stringify(profile))
+    });
+  }
+  return plans;
+}
+function labelPosition(text, box, font) {
+  const size = 9, height = font.heightAtSize(size), descent = height - font.heightAtSize(size, { descender: false });
+  const characters = new Set(font.getCharacterSet());
+  if ([...text].some((character) => !characters.has(character.codePointAt(0))) || font.widthOfTextAtSize(text, size) > box.width + 0.01 || height + descent > box.height + 0.01) {
+    layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uC548\uB0B4 \uBB38\uAD6C\uAC00 \uC9C0\uC815\uB41C \uC5EC\uBC31\uC5D0 \uB4E4\uC5B4\uAC00\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { reason: "label-overflow" });
+  }
+  return { x: box.x, y: box.y + descent, size };
+}
+function contentRecords(page) {
+  const contents = page.node.Contents();
+  const values = contents instanceof import_pdf_lib.PDFArray ? contents.asArray() : contents ? [page.node.get(import_pdf_lib.PDFName.of("Contents"))] : [];
+  return values.map((value) => {
+    const stream = page.doc.context.lookup(value);
+    if (!(stream instanceof import_pdf_lib.PDFStream)) corrupt();
+    return { ref: value.toString(), sha256: hash(stream.getContents()) };
+  });
+}
+function verifySourceGraphics(page) {
+  const contents = page.node.Contents();
+  const streams = contents instanceof import_pdf_lib.PDFArray ? contents.asArray().map((value) => page.doc.context.lookup(value)) : contents ? [contents] : [];
+  let text;
+  try {
+    text = streams.map((stream) => Buffer.from((0, import_pdf_lib.decodePDFRawStream)(stream).decode()).toString("latin1")).join("\n");
+  } catch {
+    layoutError("\uC6D0\uB798 PDF \uD398\uC774\uC9C0\uC758 \uADF8\uB798\uD53D \uC0C1\uD0DC\uB97C \uD655\uC778\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", { reason: "unsupported-source-graphics" });
+  }
+  const delimiter = (character) => /[\x00\t\n\f\r ()<>\[\]{}/%]/.test(character);
+  let index = 0, depth = 0;
+  while (index < text.length) {
+    const character = text[index];
+    if (/[\x00\t\n\f\r ]/.test(character)) {
+      index += 1;
+      continue;
+    }
+    if (character === "%") {
+      while (index < text.length && !/[\r\n]/.test(text[index])) index += 1;
+      continue;
+    }
+    if (character === "/") {
+      index += 1;
+      while (index < text.length && !delimiter(text[index])) index += 1;
+      continue;
+    }
+    if (character === "(") {
+      index += 1;
+      let nesting = 1;
+      while (index < text.length && nesting > 0) {
+        if (text[index] === "\\") {
+          index += 2;
+          continue;
+        }
+        if (text[index] === "(") nesting += 1;
+        if (text[index] === ")") nesting -= 1;
+        index += 1;
+      }
+      if (nesting) layoutError("\uC6D0\uB798 PDF \uD398\uC774\uC9C0\uC758 \uBB38\uC790\uC5F4\uC774 \uB05D\uB098\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { reason: "unsupported-source-graphics" });
+      continue;
+    }
+    if (character === "<" && text[index + 1] !== "<") {
+      const end = text.indexOf(">", index + 1);
+      if (end < 0 || /[^0-9a-fA-F\x00\t\n\f\r ]/.test(text.slice(index + 1, end))) layoutError("\uC6D0\uB798 PDF \uD398\uC774\uC9C0\uC758 \uBB38\uC790\uC5F4\uC744 \uD574\uC11D\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", { reason: "unsupported-source-graphics" });
+      index = end + 1;
+      continue;
+    }
+    if (character === "<" && text[index + 1] === "<") {
+      index += 2;
+      continue;
+    }
+    if (delimiter(character)) {
+      index += 1;
+      continue;
+    }
+    const start = index;
+    while (index < text.length && !delimiter(text[index])) index += 1;
+    const token = text.slice(start, index);
+    if (token === "BI") layoutError("\uC778\uB77C\uC778 \uC774\uBBF8\uC9C0\uAC00 \uC788\uB294 \uC6D0\uB798 PDF \uD398\uC774\uC9C0\uB294 \uC774\uC5B4\uC4F0\uAE30 \uBC30\uACBD\uC73C\uB85C \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { reason: "unsupported-source-graphics" });
+    if (token === "q") depth += 1;
+    if (token === "Q") depth -= 1;
+    if (depth < 0) layoutError("\uC6D0\uB798 PDF \uD398\uC774\uC9C0\uC758 \uADF8\uB798\uD53D \uC0C1\uD0DC \uBCF5\uC6D0\uC774 \uB9DE\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { reason: "unbalanced-source-graphics" });
+  }
+  if (depth !== 0) layoutError("\uC6D0\uB798 PDF \uD398\uC774\uC9C0\uC758 \uADF8\uB798\uD53D \uC0C1\uD0DC\uAC00 \uB2EB\uD788\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.", { reason: "unbalanced-source-graphics" });
+}
+function pageSnapshot(doc, count) {
+  return doc.getPages().slice(0, count).map((page) => ({
+    ...pageGeometry(page),
+    streams: contentRecords(page),
+    annotations: page.node.Annots()?.asArray().map((ref) => ref.toString()) ?? [],
+    resources: page.node.Resources()?.toString() ?? null
+  }));
+}
+function addSourceNotes(doc, entries, font) {
+  const grouped = /* @__PURE__ */ new Map();
+  for (const entry of entries) grouped.set(entry.sourcePage, [...grouped.get(entry.sourcePage) ?? [], entry]);
+  for (const [number, notes] of grouped) {
+    const page = doc.getPage(number - 1);
+    const resources = (page.node.Resources() ?? doc.context.obj({})).clone(doc.context);
+    for (const name of ["Font", "XObject", "ExtGState"]) {
+      const dictionary = resources.lookupMaybe(import_pdf_lib.PDFName.of(name), import_pdf_lib.PDFDict);
+      if (dictionary) resources.set(import_pdf_lib.PDFName.of(name), dictionary.clone(doc.context));
+    }
+    const fonts = resources.lookupMaybe(import_pdf_lib.PDFName.of("Font"), import_pdf_lib.PDFDict) ?? doc.context.obj({});
+    resources.set(import_pdf_lib.PDFName.of("Font"), fonts);
+    let index = 1;
+    while (fonts.has(import_pdf_lib.PDFName.of(`ContinuationNote${index}`))) index += 1;
+    const fontName = `ContinuationNote${index}`;
+    fonts.set(import_pdf_lib.PDFName.of(fontName), font.ref);
+    page.node.set(import_pdf_lib.PDFName.of("Resources"), resources);
+    const operations = notes.map((entry) => {
+      const text = `${entry.settings.label}: page ${entry.addedPages[0]}`;
+      const { x, y, size } = labelPosition(text, entry.settings.sourceFooterBox, font);
+      return `q
+0 g
+BT
+/${fontName} ${size} Tf
+1 0 0 1 ${import_pdf_lib.PDFNumber.of(x)} ${import_pdf_lib.PDFNumber.of(y)} Tm
+${font.encodeText(text)} Tj
+ET
+Q
+`;
+    }).join("");
+    const original = page.node.Contents();
+    const oldValues = original instanceof import_pdf_lib.PDFArray ? original.asArray() : original ? [page.node.get(import_pdf_lib.PDFName.of("Contents"))] : [];
+    const note = doc.context.register(doc.context.flateStream(operations));
+    const push = doc.context.register(doc.context.flateStream("q\n")), pop = doc.context.register(doc.context.flateStream("Q\n"));
+    page.node.set(import_pdf_lib.PDFName.of("Contents"), doc.context.obj([push, ...oldValues, pop, note]));
+    for (const entry of notes) entry.sourceNote = { ref: note.toString(), sha256: hash(doc.context.lookup(note).getContents()) };
+  }
+}
+function verifyWidgetGraph(doc) {
+  const owner = /* @__PURE__ */ new Map(), seen = /* @__PURE__ */ new Set();
+  for (const field of doc.getForm().getFields()) {
+    for (const widget of field.acroField.getWidgets()) {
+      if (owner.has(widget.dict)) corrupt();
+      owner.set(widget.dict, field);
+    }
+  }
+  for (const page of doc.getPages()) {
+    const annotations = page.node.Annots();
+    for (let i = 0; annotations && i < annotations.size(); i += 1) {
+      const widget = annotations.lookup(i);
+      if (!(widget instanceof import_pdf_lib.PDFDict) || widget.lookup(import_pdf_lib.PDFName.of("Subtype"))?.toString() !== "/Widget") continue;
+      const field = owner.get(widget), parent = widget.get(import_pdf_lib.PDFName.of("Parent")), pointer = widget.get(import_pdf_lib.PDFName.of("P"));
+      if (!field || seen.has(widget) || parent && widget !== field.acroField.dict && parent.toString() !== field.ref.toString() || pointer && pointer.toString() !== page.ref.toString()) corrupt();
+      seen.add(widget);
+    }
+  }
+  if (seen.size !== owner.size) corrupt();
+}
+function normalAppearance(field) {
+  const widget = field.acroField.getWidgets()[0], appearance = widget.getAppearances()?.normal;
+  if (!(appearance instanceof import_pdf_lib.PDFStream)) layoutError("\uBC18\uBCF5 \uBB38\uB9E5\uC758 \uD45C\uC2DC \uC2A4\uD2B8\uB9BC\uC744 \uC77D\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", { reason: "unsupported-appearance" });
+  const box = appearance.dict.lookupMaybe(import_pdf_lib.PDFName.of("BBox"), import_pdf_lib.PDFArray)?.asArray().map((value) => value instanceof import_pdf_lib.PDFNumber ? value.asNumber() : NaN);
+  const matrix = appearance.dict.lookupMaybe(import_pdf_lib.PDFName.of("Matrix"), import_pdf_lib.PDFArray)?.asArray().map((value) => value instanceof import_pdf_lib.PDFNumber ? value.asNumber() : NaN) ?? [1, 0, 0, 1, 0, 0];
+  const rect = widget.getRectangle();
+  if (!box || box.length !== 4 || !box.every(Number.isFinite) || !same(matrix, [1, 0, 0, 1, 0, 0]) || Math.abs(box[0]) > 0.01 || Math.abs(box[1]) > 0.01 || Math.abs(box[2] - rect.width) > 0.01 || Math.abs(box[3] - rect.height) > 0.01) {
+    layoutError("\uBC18\uBCF5 \uBB38\uB9E5\uC758 \uD45C\uC2DC \uC88C\uD45C\uACC4\uB97C \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { reason: "unsupported-appearance" });
+  }
+  return appearance;
+}
+
+// lib/adapters/pdf-flow-legacy.mjs
+var KEY = import_pdf_lib2.PDFName.of("FillDocumentsFlow");
+var BOX = { x: 48, y: 54, width: 499.28, height: 680 };
+var MAX_PAGES = 256;
+function readLegacyContinuations(doc) {
+  if (!doc.catalog.has(KEY)) return null;
+  try {
+    const dictionary = doc.catalog.lookup(KEY, import_pdf_lib2.PDFDict);
+    if (dictionary.lookup(import_pdf_lib2.PDFName.of("Version"), import_pdf_lib2.PDFNumber).asNumber() !== 2) return corrupt();
+    const originalPageCount = dictionary.lookup(import_pdf_lib2.PDFName.of("OriginalPages"), import_pdf_lib2.PDFNumber).asNumber();
+    const encoded = dictionary.lookup(import_pdf_lib2.PDFName.of("Entries"), import_pdf_lib2.PDFHexString).decodeText();
+    if (encoded.length > 5e5) return corrupt();
+    const entries = JSON.parse(encoded);
+    if (!Number.isInteger(originalPageCount) || originalPageCount < 1 || originalPageCount >= doc.getPageCount() || !Array.isArray(entries) || !entries.length || entries.length > 1e3) return corrupt();
+    const fields = new Map(doc.getForm().getFields().map((field) => [field.getName(), field]));
+    const origins = /* @__PURE__ */ new Set(), chunks = /* @__PURE__ */ new Set(), pages = /* @__PURE__ */ new Set();
+    const lowerEdge = /* @__PURE__ */ new Map();
+    let nextPage = originalPageCount + 1;
+    for (const entry of entries) {
+      if (!entry || typeof entry !== "object" || typeof entry.origin !== "string" || !/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(entry.origin) || typeof entry.sourceName !== "string" || !Number.isFinite(entry.fontSize) || entry.fontSize <= 0 || !Number.isInteger(entry.length) || entry.length < 1 || entry.length > 2e4 || !/^[0-9a-f]{64}$/.test(entry.sha256) || typeof entry.reference !== "string" || !Array.isArray(entry.originalPages) || !Array.isArray(entry.chunkFields) || !entry.chunkFields.length || entry.chunkFields.length > 1e4 || !Array.isArray(entry.addedPages) || !entry.addedPages.length || entry.addedPages.length > MAX_PAGES || !Array.isArray(entry.chunkPages) || entry.chunkPages.length !== entry.chunkFields.length || origins.has(entry.sourceName)) return corrupt();
+      origins.add(entry.sourceName);
+      if (entry.reference !== `\uBCC4\uC9C0 ${entry.addedPages[0]}\uCABD \uCC38\uC870`) return corrupt();
+      for (const page of entry.addedPages) {
+        if (!Number.isInteger(page) || page !== nextPage || page > doc.getPageCount() || pages.has(page)) return corrupt();
+        pages.add(page);
+        nextPage += 1;
+      }
+      if (JSON.stringify([...new Set(entry.chunkPages)]) !== JSON.stringify(entry.addedPages)) return corrupt();
+      const source = fields.get(entry.sourceName);
+      if (!(source instanceof import_pdf_lib2.PDFTextField) || source.getText() !== entry.reference || JSON.stringify(fieldPages(doc, source)) !== JSON.stringify(entry.originalPages) || entry.originalPages.some((page) => !Number.isInteger(page) || page < 1 || page > originalPageCount)) return corrupt();
+      let value = "";
+      for (const [index, name] of entry.chunkFields.entries()) {
+        const page = entry.chunkPages[index];
+        if (typeof name !== "string" || !/^continuation_[a-f0-9]{24}_\d+$/.test(name) || chunks.has(name) || origins.has(name) || !Number.isInteger(page) || page <= originalPageCount || page > doc.getPageCount() || index > 0 && page < entry.chunkPages[index - 1] || name !== `continuation_${hash(entry.sourceName).slice(0, 24)}_${index + 1}`) return corrupt();
+        chunks.add(name);
+        const field = fields.get(name);
+        if (!(field instanceof import_pdf_lib2.PDFTextField) || !field.isMultiline() || field.isReadOnly() || JSON.stringify(fieldPages(doc, field)) !== JSON.stringify([page]) || field.acroField.getWidgets().length !== 1) return corrupt();
+        const rectangle = field.acroField.getWidgets()[0].getRectangle();
+        if (Math.abs(rectangle.x - BOX.x) > 0.01 || rectangle.width > BOX.width + 0.01 || rectangle.y < BOX.y - 0.01 || rectangle.y + rectangle.height > (lowerEdge.get(page) ?? BOX.y + BOX.height) + 0.01) return corrupt();
+        lowerEdge.set(page, rectangle.y);
+        value += field.getText() ?? "";
+      }
+      if (value.length !== entry.length || hash(value) !== entry.sha256) return corrupt();
+    }
+    if ([...origins].some((name) => chunks.has(name)) || pages.size !== doc.getPageCount() - originalPageCount) return corrupt();
+    return { originalPageCount, entries, chunks };
+  } catch (error) {
+    if (error instanceof FillError) throw error;
+    return corrupt();
+  }
+}
+
+// lib/adapters/pdf-flow.mjs
+var KEY2 = import_pdf_lib3.PDFName.of("FillDocumentsFlow");
+var MAX_PAGES2 = 256;
+function paginateText(value, field, font, size) {
+  const widget = field.acroField.getWidgets()[0];
+  const full = textLayout(field, widget, value, font, size);
+  if (full.lines.some((line) => line.text.trim() && line.width > full.bounds.width + 0.01)) {
+    layoutError("\uACF5\uBC31\uC73C\uB85C \uB098\uB20C \uC218 \uC5C6\uB294 \uBB38\uC790\uC5F4\uC774 \uC6D0\uB798 PDF \uCE78\uBCF4\uB2E4 \uB113\uC2B5\uB2C8\uB2E4.", { field: field.getName(), reason: "unbreakable-run" });
+  }
+  const graphemeEnds = new Set([...new Intl.Segmenter("ko", { granularity: "grapheme" }).segment(value)].map((part) => part.index + part.segment.length));
+  const ends = [...value.matchAll(/\r\n|\r|\n|[^\S\r\n]+/gu)].map((match) => match.index + match[0].length).filter((end) => graphemeEnds.has(end));
+  if (ends.at(-1) !== value.length) ends.push(value.length);
+  const chunks = [];
+  let offset = 0, firstEnd = 0;
+  while (offset < value.length) {
+    let low = firstEnd, high = ends.length - 1, best = -1;
+    while (low <= high) {
+      const middle = Math.floor((low + high) / 2);
+      if (layoutFits(textLayout(field, widget, value.slice(offset, ends[middle]), font, size))) {
+        best = middle;
+        low = middle + 1;
+      } else high = middle - 1;
+    }
+    if (best < 0 || ends[best] <= offset) layoutError("\uC6D0\uB798 PDF \uCE78\uC5D0 \uC774\uC5B4\uC4F0\uAE30 \uBCF8\uBB38\uC744 \uBC30\uCE58\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", { field: field.getName(), reason: "no-progress" });
+    chunks.push(value.slice(offset, ends[best]));
+    offset = ends[best];
+    firstEnd = best + 1;
+    if (chunks.length > MAX_PAGES2 + 1) layoutError("PDF \uCD94\uAC00 \uD398\uC774\uC9C0 \uC218\uAC00 256\uCABD\uC744 \uB118\uC2B5\uB2C8\uB2E4.");
+  }
+  if (chunks.join("") !== value) corrupt();
+  return chunks;
+}
+function verifyContinuationBounds(field, font, size) {
+  if (field.acroField.getWidgets().some((widget) => !layoutFits(textLayout(field, widget, field.getText() ?? "", font, size)))) {
+    layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uB0B4\uC6A9\uC774 \uC6D0\uB798 \uD45C\uC2DC \uC601\uC5ED\uC744 \uB118\uC2B5\uB2C8\uB2E4.", { field: field.getName() });
+  }
+}
+function planContinuation(doc, field, origin, value, font, plan) {
+  if (!plan) layoutError("\uC774 PDF \uC591\uC2DD\uC758 \uC774\uC5B4\uC4F0\uAE30 \uC124\uC815\uC774 \uD544\uC694\uD569\uB2C8\uB2E4.", { field: origin, reason: "continuation-template-required" });
+  const chunks = paginateText(value, field, font, plan.geometry.fontSize);
+  if (chunks.length < 2) layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uACC4\uD68D\uC774 \uC2E4\uC81C \uB118\uCE68\uACFC \uC77C\uCE58\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { field: origin });
+  return {
+    ...plan,
+    chunks,
+    origin,
+    sourceName: field.getName(),
+    originalPages: fieldPages(doc, field),
+    sourcePage: plan.settings.sourcePage,
+    fontSize: plan.geometry.fontSize,
+    prefixLength: chunks[0].length,
+    length: value.length,
+    sha256: hash(value)
+  };
+}
+async function embedBackground(doc, donor, sourcePage) {
+  const page = donor.getPage(sourcePage - 1);
+  for (const name of ["Resources", "MediaBox", "CropBox", "Rotate"]) {
+    const value = page.node.getInheritableAttribute(import_pdf_lib3.PDFName.of(name));
+    if (value) page.node.set(import_pdf_lib3.PDFName.of(name), value);
+  }
+  const allowed = /* @__PURE__ */ new Set(["Type", "Contents", "Resources", "MediaBox", "CropBox", "Rotate"]);
+  for (const key of page.node.keys()) if (!allowed.has(key.decodeText())) page.node.delete(key);
+  if (!page.node.Contents()) page.node.set(import_pdf_lib3.PDFName.of("Contents"), donor.context.register(donor.context.flateStream("")));
+  return doc.embedPage(page);
+}
+function appendBody(doc, page, plan, name, value, font) {
+  const field = doc.getForm().createTextField(name);
+  field.enableMultiline();
+  field.setAlignment(plan.geometry.alignment);
+  field.addToPage(page, {
+    ...plan.geometry.rectangle,
+    font,
+    borderWidth: 0,
+    textColor: void 0,
+    backgroundColor: void 0,
+    borderColor: void 0
+  });
+  const widget = field.acroField.getWidgets()[0], sourceWidget = plan.field.acroField.getWidgets()[0];
+  for (const key of ["MK", "BS"]) {
+    const visual = sourceWidget.dict.lookupMaybe(import_pdf_lib3.PDFName.of(key), import_pdf_lib3.PDFDict);
+    if (visual) widget.dict.set(import_pdf_lib3.PDFName.of(key), visual.clone(doc.context));
+  }
+  widget.setRectangle(plan.geometry.rectangle);
+  widget.setDefaultAppearance(sourceWidget.getDefaultAppearance() ?? plan.field.acroField.getDefaultAppearance() ?? "0 g");
+  field.setFontSize(plan.fontSize);
+  field.setText(value);
+  field.updateAppearances(font);
+  verifyContinuationBounds(field, font, plan.fontSize);
+}
+async function appendContinuations(doc, sourceBytes, plans, font) {
+  const count = plans.reduce((total, plan) => total + plan.chunks.length - 1, 0);
+  if (count > MAX_PAGES2 || doc.getPageCount() + count > 4096) layoutError("PDF \uCD94\uAC00 \uB610\uB294 \uC804\uCCB4 \uD398\uC774\uC9C0 \uC218\uAC00 \uC9C0\uC6D0 \uBC94\uC704\uB97C \uB118\uC2B5\uB2C8\uB2E4.");
+  if (!plans.length) return [];
+  for (const sourcePage of new Set(plans.map((plan) => plan.sourcePage))) verifySourceGraphics(doc.getPage(sourcePage - 1));
+  const donor = await import_pdf_lib3.PDFDocument.load(sourceBytes, { updateMetadata: false, throwOnInvalidObject: true });
+  const backgrounds = /* @__PURE__ */ new Map(), existing = new Set(doc.getForm().getFields().map((field) => field.getName()));
+  const entries = [];
+  for (const plan of plans) {
+    if (!backgrounds.has(plan.sourcePage)) backgrounds.set(plan.sourcePage, await embedBackground(doc, donor, plan.sourcePage));
+    const background = backgrounds.get(plan.sourcePage);
+    const entry = {
+      origin: plan.origin,
+      sourceName: plan.sourceName,
+      originalPages: plan.originalPages,
+      sourcePage: plan.sourcePage,
+      prefixLength: plan.prefixLength,
+      chunkFields: [],
+      chunkPages: [],
+      addedPages: [],
+      fontSize: plan.fontSize,
+      length: plan.length,
+      sha256: plan.sha256,
+      templateSha256: plan.templateSha256,
+      profileSha256: plan.profileSha256,
+      geometry: plan.geometry,
+      page: plan.page,
+      settings: plan.settings,
+      repeatContexts: []
+    };
+    const repeats = plan.repeat.map((field) => {
+      const appearance = normalAppearance(field);
+      const ref = doc.context.getObjectRef(appearance) ?? doc.context.register(appearance);
+      const record = {
+        sourceName: field.getName(),
+        valueSha256: hash(field.getText() ?? ""),
+        appearanceSha256: hash(appearance.getContents()),
+        appearanceDictionary: appearanceDictionary(appearance),
+        bindings: []
+      };
+      entry.repeatContexts.push(record);
+      return { record, ref, rectangle: field.acroField.getWidgets()[0].getRectangle() };
+    });
+    for (let index = 1; index < plan.chunks.length; index += 1) {
+      const name = `continuation_${hash(plan.sourceName).slice(0, 24)}_${index}`;
+      if (existing.has(name)) layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uD544\uB4DC \uC774\uB984\uC774 \uAE30\uC874 \uC774\uB984\uACFC \uCDA9\uB3CC\uD569\uB2C8\uB2E4.", { field: plan.origin });
+      existing.add(name);
+      const page = doc.addPage([plan.page.media.width, plan.page.media.height]);
+      page.setCropBox(plan.page.crop.x, plan.page.crop.y, plan.page.crop.width, plan.page.crop.height);
+      const pageNumber = doc.getPageCount();
+      page.drawPage(background, { x: 0, y: 0, width: plan.page.media.width, height: plan.page.media.height });
+      for (const { record, ref, rectangle } of repeats) {
+        const key = page.node.newXObject("Context", ref);
+        page.pushOperators((0, import_pdf_lib3.pushGraphicsState)(), (0, import_pdf_lib3.translate)(rectangle.x, rectangle.y), (0, import_pdf_lib3.drawObject)(key), (0, import_pdf_lib3.popGraphicsState)());
+        record.bindings.push({ page: pageNumber, key: key.decodeText(), ref: ref.toString() });
+      }
+      const label = `${plan.settings.label} - part ${index + 1} of ${plan.chunks.length} - original form page ${plan.sourcePage}`;
+      page.drawText(label, { ...labelPosition(label, plan.settings.labelBox, font), font, color: (0, import_pdf_lib3.rgb)(0, 0, 0) });
+      if (plan.settings.footer) page.drawText(plan.settings.footer, { ...labelPosition(plan.settings.footer, plan.settings.footerBox, font), font, color: (0, import_pdf_lib3.rgb)(0, 0, 0) });
+      appendBody(doc, page, plan, name, plan.chunks[index], font);
+      entry.chunkFields.push(name);
+      entry.chunkPages.push(pageNumber);
+      entry.addedPages.push(pageNumber);
+    }
+    entries.push(entry);
+  }
+  return entries;
+}
+function writeContinuations(doc, originalPageCount, entries) {
+  if (!entries.length) return;
+  const encoded = JSON.stringify(entries);
+  if (encoded.length > 5e5) layoutError("PDF \uC774\uC5B4\uC4F0\uAE30 \uB9E4\uD551 \uD06C\uAE30\uAC00 \uC9C0\uC6D0 \uBC94\uC704\uB97C \uB118\uC2B5\uB2C8\uB2E4.");
+  doc.catalog.set(KEY2, doc.context.obj({ Version: 3, OriginalPages: originalPageCount, Entries: import_pdf_lib3.PDFHexString.fromText(encoded) }));
+}
+function verifyRepeatContexts(doc, entry, fields, originalPageCount) {
+  if (!Array.isArray(entry.repeatContexts) || entry.repeatContexts.length > 1e3 || !Array.isArray(entry.settings?.repeatFields) || entry.repeatContexts.length !== entry.settings.repeatFields.length) corrupt();
+  const names = /* @__PURE__ */ new Set();
+  for (const context of entry.repeatContexts) {
+    const field = fields.get(context?.sourceName);
+    if (!context || names.has(context.sourceName) || context.sourceName === entry.sourceName || !supportedField(doc, field, entry.sourcePage) || entry.sourcePage > originalPageCount || hash(field.getText() ?? "") !== context.valueSha256 || !/^[a-f0-9]{64}$/.test(context.appearanceSha256) || typeof context.appearanceDictionary !== "string" || !Array.isArray(context.bindings) || context.bindings.length !== entry.addedPages.length) corrupt();
+    names.add(context.sourceName);
+    for (const [index, binding] of context.bindings.entries()) {
+      if (!binding || binding.page !== entry.addedPages[index] || typeof binding.key !== "string" || !/^Context-\d+$/.test(binding.key) || typeof binding.ref !== "string") corrupt();
+      const xObjects = doc.getPage(binding.page - 1).node.Resources()?.lookupMaybe(import_pdf_lib3.PDFName.of("XObject"), import_pdf_lib3.PDFDict);
+      const raw = xObjects?.get(import_pdf_lib3.PDFName.of(binding.key));
+      const appearance = xObjects?.lookup(import_pdf_lib3.PDFName.of(binding.key));
+      if (!raw || raw.toString() !== binding.ref || !(appearance instanceof import_pdf_lib3.PDFStream) || hash(appearance.getContents()) !== context.appearanceSha256 || appearanceDictionary(appearance) !== context.appearanceDictionary) corrupt();
+    }
+  }
+}
+function readContinuations(doc) {
+  if (!doc.catalog.has(KEY2)) return null;
+  try {
+    const dictionary = doc.catalog.lookup(KEY2, import_pdf_lib3.PDFDict);
+    const version = dictionary.lookup(import_pdf_lib3.PDFName.of("Version"), import_pdf_lib3.PDFNumber).asNumber();
+    if (version === 2) return { ...readLegacyContinuations(doc), version };
+    if (version !== 3) return corrupt();
+    const originalPageCount = dictionary.lookup(import_pdf_lib3.PDFName.of("OriginalPages"), import_pdf_lib3.PDFNumber).asNumber();
+    const encoded = dictionary.lookup(import_pdf_lib3.PDFName.of("Entries"), import_pdf_lib3.PDFHexString).decodeText();
+    if (encoded.length > 5e5) return corrupt();
+    const entries = JSON.parse(encoded);
+    if (!Number.isInteger(originalPageCount) || originalPageCount < 1 || originalPageCount >= doc.getPageCount() || doc.getPageCount() > 4096 || !Array.isArray(entries) || !entries.length || entries.length > 1e3 || doc.getPageCount() - originalPageCount > MAX_PAGES2) return corrupt();
+    verifyWidgetGraph(doc);
+    const fields = new Map(doc.getForm().getFields().map((field) => [field.getName(), field]));
+    const origins = /* @__PURE__ */ new Set(), chunks = /* @__PURE__ */ new Set();
+    let nextPage = originalPageCount + 1;
+    for (const entry of entries) {
+      if (!entry || typeof entry.origin !== "string" || !/^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(entry.origin) || typeof entry.sourceName !== "string" || origins.has(entry.sourceName) || !Number.isInteger(entry.sourcePage) || entry.sourcePage < 1 || entry.sourcePage > originalPageCount || !Number.isFinite(entry.fontSize) || entry.fontSize <= 0 || !Number.isInteger(entry.length) || entry.length < 1 || entry.length > 2e4 || !Number.isInteger(entry.prefixLength) || entry.prefixLength < 1 || entry.prefixLength >= entry.length || ![entry.sha256, entry.templateSha256, entry.profileSha256].every((value2) => typeof value2 === "string" && /^[a-f0-9]{64}$/.test(value2)) || !Array.isArray(entry.chunkFields) || !entry.chunkFields.length || entry.chunkFields.length > MAX_PAGES2 || !same(entry.chunkPages, entry.addedPages) || !Array.isArray(entry.addedPages) || entry.chunkFields.length !== entry.addedPages.length || !same(entry.originalPages, [entry.sourcePage])) return corrupt();
+      origins.add(entry.sourceName);
+      const source = fields.get(entry.sourceName);
+      if (!supportedField(doc, source, entry.sourcePage, { multiline: true }) || source.getText()?.length !== entry.prefixLength || !same(geometryOf(source), entry.geometry) || entry.geometry.fontSize !== entry.fontSize || !same(pageGeometry(doc.getPage(entry.sourcePage - 1)), entry.page)) return corrupt();
+      const note = entry.sourceNote;
+      if (!note || !contentRecords(doc.getPage(entry.sourcePage - 1)).some((record) => record.ref === note.ref && record.sha256 === note.sha256)) return corrupt();
+      let value = source.getText();
+      for (const [index, name] of entry.chunkFields.entries()) {
+        const pageNumber = entry.addedPages[index];
+        if (pageNumber !== nextPage || pageNumber > doc.getPageCount() || typeof name !== "string" || name !== `continuation_${hash(entry.sourceName).slice(0, 24)}_${index + 1}` || chunks.has(name) || origins.has(name)) return corrupt();
+        nextPage += 1;
+        chunks.add(name);
+        const field = fields.get(name), page = doc.getPage(pageNumber - 1);
+        if (!supportedField(doc, field, pageNumber, { multiline: true }) || !same(geometryOf(field), entry.geometry) || !same(pageGeometry(page), entry.page) || field.acroField.getWidgets()[0].dict.get(import_pdf_lib3.PDFName.of("P"))?.toString() !== page.ref.toString() || page.node.Annots()?.size() !== 1 || !field.getText()?.length) return corrupt();
+        value += field.getText();
+      }
+      if (value.length !== entry.length || hash(value) !== entry.sha256) return corrupt();
+      verifyRepeatContexts(doc, entry, fields, originalPageCount);
+    }
+    if (nextPage !== doc.getPageCount() + 1 || [...origins].some((name) => chunks.has(name)) || entries.some((entry) => entry.repeatContexts.some((context) => origins.has(context.sourceName)))) return corrupt();
+    return { version, originalPageCount, entries, chunks };
+  } catch (error) {
+    if (error instanceof FillError && error.code === "E_PRESERVATION") throw error;
+    return corrupt();
+  }
+}
+
+// lib/adapters/pdf.mjs
 var FIELD_NAME = /^[A-Za-z][A-Za-z0-9_]{0,63}$/;
 var ENGINE = "pdf-lib@1.17.1";
 var DEFAULT_ROOT = fileURLToPath(new URL("../..", import.meta.url));
 var VISUAL_WARNING = "PDF\uC758 \uD544\uB4DC \uAC12\xB7appearance \uAD6C\uC870\uB97C \uD655\uC778\uD588\uC2B5\uB2C8\uB2E4. \uBDF0\uC5B4\uC5D0\uC11C\uC758 \uCD5C\uC885 \uD398\uC774\uC9C0 \uD45C\uC2DC\uB294 \uBCC4\uB3C4 \uD655\uC778\uC774 \uD544\uC694\uD569\uB2C8\uB2E4.";
+var validName = (name) => FIELD_NAME.test(name) && !["constructor", "prototype", "__proto__"].includes(name);
+function aliasesOf(fields) {
+  const names = new Set(fields.map((field) => field.getName()).filter(validName));
+  const aliases = /* @__PURE__ */ new Map();
+  for (const field of fields) {
+    const name = field.getName();
+    if (validName(name)) {
+      aliases.set(name, name);
+      continue;
+    }
+    const hash2 = createHash2("sha256").update(name).digest("hex");
+    let length = 12;
+    while (names.has(`field_${hash2.slice(0, length)}`) && length < 56) length += 4;
+    const alias = `field_${hash2.slice(0, length)}`;
+    if (names.has(alias)) throw new FillError("E_FIELDS", "PDF \uD544\uB4DC \uBCC4\uCE6D\uC774 \uCDA9\uB3CC\uD569\uB2C8\uB2E4.");
+    names.add(alias);
+    aliases.set(name, alias);
+  }
+  return aliases;
+}
 function refuseActiveContent(doc) {
+  const rawForm = doc.catalog.lookupMaybe(import_pdf_lib4.PDFName.of("AcroForm"), import_pdf_lib4.PDFDict);
+  if (rawForm?.has(import_pdf_lib4.PDFName.of("XFA"))) throw new FillError("E_UNSUPPORTED", "XFA PDF\uB294 \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+  const signatureFields = doc.catalog.has(import_pdf_lib4.PDFName.of("AcroForm")) ? doc.getForm().getFields().filter((field) => field instanceof import_pdf_lib4.PDFSignature) : [];
+  const emptySignatures = /* @__PURE__ */ new Set();
+  for (const field of signatureFields) {
+    const value = field.acroField.dict.lookup(import_pdf_lib4.PDFName.of("V"));
+    if (value && value !== import_pdf_lib4.PDFNull) throw new FillError("E_UNSUPPORTED", "\uC11C\uBA85\uB41C PDF\uB294 \uC218\uC815\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
+    emptySignatures.add(field.acroField.dict);
+  }
   const pending = doc.context.enumerateIndirectObjects().map(([, object]) => object);
   const seen = /* @__PURE__ */ new Set();
   while (pending.length) {
@@ -54362,27 +54947,30 @@ function refuseActiveContent(doc) {
     if (!object || seen.has(object)) continue;
     seen.add(object);
     if (seen.size > 1e5) throw new FillError("E_UNSUPPORTED", "PDF \uAC1D\uCCB4 \uC218\uAC00 \uC9C0\uC6D0 \uBC94\uC704\uB97C \uB118\uC5C8\uC2B5\uB2C8\uB2E4.");
-    if (object instanceof import_pdf_lib.PDFStream) {
+    if (object instanceof import_pdf_lib4.PDFStream) {
       pending.push(object.dict);
       continue;
     }
-    if (object instanceof import_pdf_lib.PDFArray) {
+    if (object instanceof import_pdf_lib4.PDFArray) {
       for (let i = 0; i < object.size(); i += 1) pending.push(object.lookup(i));
       continue;
     }
-    if (!(object instanceof import_pdf_lib.PDFDict)) continue;
+    if (!(object instanceof import_pdf_lib4.PDFDict)) continue;
     for (const key of object.keys()) {
       const name = key.decodeText();
-      if (["XFA", "ByteRange", "Perms", "DocMDP", "SigFlags"].includes(name)) {
+      if (["XFA", "ByteRange", "Perms", "DocMDP"].includes(name)) {
         throw new FillError("E_UNSUPPORTED", "XFA \uB610\uB294 \uC804\uC790\uC11C\uBA85 PDF\uB294 \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
       }
       if (["JavaScript", "JS", "AA", "OpenAction", "RichMediaContent", "EmbeddedFiles", "EF"].includes(name)) {
         throw new FillError("E_UNSUPPORTED", "\uC2E4\uD589 \uB3D9\uC791 \uB610\uB294 \uCCA8\uBD80 \uD30C\uC77C\uC774 \uD3EC\uD568\uB41C PDF\uB294 \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
       }
       const value = object.lookup(key);
-      if (value instanceof import_pdf_lib.PDFName) {
+      if (name === "SigFlags" && (!(value instanceof import_pdf_lib4.PDFNumber) || ![0, 1, 3].includes(value.asNumber()) || object !== doc.getForm().acroForm.dict || value.asNumber() !== 0 && !emptySignatures.size)) {
+        throw new FillError("E_UNSUPPORTED", "\uD655\uC778\uD560 \uC218 \uC5C6\uB294 PDF \uC11C\uBA85 \uC0C1\uD0DC\uC785\uB2C8\uB2E4.");
+      }
+      if (value instanceof import_pdf_lib4.PDFName) {
         const valueName = value.decodeText();
-        if ((name === "FT" || name === "Type") && valueName === "Sig") {
+        if (valueName === "Sig" && (name === "Type" || name === "FT" && !emptySignatures.has(object))) {
           throw new FillError("E_UNSUPPORTED", "\uC804\uC790\uC11C\uBA85 \uD544\uB4DC\uAC00 \uC788\uB294 PDF\uB294 \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
         }
         if (name === "S" && ["JavaScript", "Launch", "SubmitForm", "ImportData", "Rendition", "Movie", "Sound", "GoToR", "GoToE"].includes(valueName)) {
@@ -54399,7 +54987,7 @@ async function loadPdf(bytes) {
     throw new FillError("E_INPUT", "\uC644\uC804\uD55C PDF \uD30C\uC77C\uC774 \uC544\uB2D9\uB2C8\uB2E4.");
   }
   try {
-    const doc = await import_pdf_lib.PDFDocument.load(copy, { updateMetadata: false, throwOnInvalidObject: true });
+    const doc = await import_pdf_lib4.PDFDocument.load(copy, { updateMetadata: false, throwOnInvalidObject: true });
     if (doc.isEncrypted) throw new FillError("E_UNSUPPORTED", "\uC554\uD638\uD654\uB41C PDF\uB294 \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
     refuseActiveContent(doc);
     if (!doc.getPageCount()) throw new FillError("E_INPUT", "PDF\uC5D0 \uD398\uC774\uC9C0\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.");
@@ -54414,10 +55002,11 @@ async function loadPdf(bytes) {
 }
 function fieldsOf(doc) {
   try {
-    if (!doc.catalog.has(import_pdf_lib.PDFName.of("AcroForm"))) return [];
+    if (!doc.catalog.has(import_pdf_lib4.PDFName.of("AcroForm"))) return [];
     const fields = doc.getForm().getFields();
     const names = /* @__PURE__ */ new Set();
     const pageWidgets = /* @__PURE__ */ new Set();
+    const knownWidgets = /* @__PURE__ */ new Set();
     for (const page of doc.getPages()) {
       const annotations = page.node.Annots();
       if (!annotations) continue;
@@ -54425,13 +55014,15 @@ function fieldsOf(doc) {
     }
     for (const field of fields) {
       const name = field.getName();
-      if (!FIELD_NAME.test(name) || names.has(name)) throw new FillError("E_FIELDS", "PDF \uD544\uB4DC \uC774\uB984\uC774 \uC720\uD6A8\uD558\uC9C0 \uC54A\uAC70\uB098 \uC911\uBCF5\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
+      if (!name || name.length > 4096 || names.has(name)) throw new FillError("E_FIELDS", "PDF \uD544\uB4DC \uC774\uB984\uC774 \uC720\uD6A8\uD558\uC9C0 \uC54A\uAC70\uB098 \uC911\uBCF5\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
       names.add(name);
-      if (!(field instanceof import_pdf_lib.PDFTextField) && !(field instanceof import_pdf_lib.PDFCheckBox)) {
+      for (const widget of field.acroField.getWidgets()) knownWidgets.add(widget.dict);
+      if (field instanceof import_pdf_lib4.PDFSignature) continue;
+      if (!(field instanceof import_pdf_lib4.PDFTextField) && !(field instanceof import_pdf_lib4.PDFCheckBox)) {
         throw new FillError("E_UNSUPPORTED", "PDF \uD14D\uC2A4\uD2B8\uC640 \uCCB4\uD06C\uBC15\uC2A4 \uD544\uB4DC\uB9CC \uC9C0\uC6D0\uD569\uB2C8\uB2E4.");
       }
       if (field.isReadOnly()) throw new FillError("E_UNSUPPORTED", "\uC77D\uAE30 \uC804\uC6A9 PDF \uD544\uB4DC\uB294 \uCC44\uC6B8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
-      if (field instanceof import_pdf_lib.PDFTextField && (field.isRichFormatted() || field.isPassword() || field.isFileSelector() || field.isCombed())) {
+      if (field instanceof import_pdf_lib4.PDFTextField && (field.isRichFormatted() || field.isPassword() || field.isFileSelector() || field.isCombed())) {
         throw new FillError("E_UNSUPPORTED", "\uC11C\uC2DD \uC788\uB294 \uD14D\uC2A4\uD2B8\xB7\uC554\uD638\xB7\uD30C\uC77C \uC120\uD0DD\xB7\uBD84\uD560 \uCE78 PDF \uD544\uB4DC\uB294 \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
       }
       const widgets = field.acroField.getWidgets();
@@ -54443,58 +55034,53 @@ function fieldsOf(doc) {
         }
       }
     }
-    return fields;
+    for (const annotation of pageWidgets) {
+      if (annotation instanceof import_pdf_lib4.PDFDict && annotation.lookup(import_pdf_lib4.PDFName.of("Subtype"))?.toString() === "/Widget" && !knownWidgets.has(annotation)) {
+        throw new FillError("E_UNSUPPORTED", "\uD544\uB4DC \uD2B8\uB9AC\uC5D0 \uC5F0\uACB0\uB418\uC9C0 \uC54A\uC740 PDF \uD45C\uC2DC \uC601\uC5ED\uC774 \uC788\uC2B5\uB2C8\uB2E4.");
+      }
+    }
+    return fields.filter((field) => !(field instanceof import_pdf_lib4.PDFSignature));
   } catch (error) {
     if (error instanceof FillError) throw error;
     throw new FillError("E_INPUT", "PDF \uD544\uB4DC \uAD6C\uC870\uAC00 \uC62C\uBC14\uB974\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
   }
 }
-function describe(field) {
+function describe(field, aliases) {
+  const sourceName = field.getName();
+  const name = aliases?.get(sourceName) ?? sourceName;
   return {
-    name: field.getName(),
-    type: field instanceof import_pdf_lib.PDFTextField ? "text" : "checkbox",
+    name,
+    ...name !== sourceName ? { sourceName } : {},
+    type: field instanceof import_pdf_lib4.PDFTextField ? "text" : "checkbox",
     occurrences: field.acroField.getWidgets().length,
-    ...field instanceof import_pdf_lib.PDFTextField ? { multiline: field.isMultiline(), ...field.getMaxLength() !== void 0 ? { maxLength: field.getMaxLength() } : {} } : {}
+    ...field instanceof import_pdf_lib4.PDFTextField ? { multiline: field.isMultiline(), ...field.getMaxLength() !== void 0 ? { maxLength: field.getMaxLength() } : {} } : {}
   };
-}
-function fontSizeOf(field) {
-  const matches = [...(field.getDefaultAppearance() ?? "").matchAll(/\/[^\s]+\s+(\d*\.\d+|\d+)\s+Tf/g)];
-  const size = Number(matches.at(-1)?.[1]);
-  return size > 0 ? size : void 0;
 }
 function checkTextFits(field, text, font) {
   if (!field.isMultiline() && /[\r\n]/.test(text)) {
     throw new FillError("E_FIELDS", "\uD55C \uC904 PDF \uD544\uB4DC\uC5D0\uB294 \uC904\uBC14\uAFC8\uC744 \uC785\uB825\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", { field: field.getName() });
   }
   for (const widget of field.acroField.getWidgets()) {
-    const rotation = (0, import_pdf_lib.reduceRotation)(widget.getAppearanceCharacteristics()?.getRotation());
-    const dimensions = (0, import_pdf_lib.adjustDimsForRotation)(widget.getRectangle(), rotation);
-    const inset = (widget.getBorderStyle()?.getWidth() ?? 0) + 1;
-    const bounds = { x: inset, y: inset, width: dimensions.width - inset * 2, height: dimensions.height - inset * 2 };
-    if (bounds.width <= 0 || bounds.height <= 0) throw new FillError("E_FIELDS", "PDF \uD544\uB4DC \uD45C\uC2DC \uC601\uC5ED\uC774 \uB108\uBB34 \uC791\uC2B5\uB2C8\uB2E4.", { field: field.getName() });
-    const fontSize = fontSizeOf(widget) ?? fontSizeOf(field.acroField) ?? 10;
-    const options = { font, fontSize, bounds, alignment: field.getAlignment() };
-    const layout = field.isMultiline() ? (0, import_pdf_lib.layoutMultilineText)(text, options) : (0, import_pdf_lib.layoutSinglelineText)(text, options);
-    const lines = field.isMultiline() ? layout.lines : [layout.line];
-    if (lines.some((line) => line.width > bounds.width + 0.01 || line.y < bounds.y - 0.01 || line.y + line.height > bounds.y + bounds.height + 0.01)) {
+    const layout = textLayout(field, widget, text, font);
+    if (!layoutFits(layout)) {
       throw new FillError("E_FIELDS", "\uC785\uB825\uD55C \uD14D\uC2A4\uD2B8\uAC00 PDF \uD544\uB4DC \uD45C\uC2DC \uC601\uC5ED\uC744 \uB118\uC2B5\uB2C8\uB2E4. \uB0B4\uC6A9\uC744 \uC904\uC774\uAC70\uB098 \uB354 \uD070 \uC11C\uC2DD\uC744 \uC0AC\uC6A9\uD558\uC138\uC694.", { field: field.getName() });
     }
     const appearance = widget.getDefaultAppearance() ?? field.acroField.getDefaultAppearance() ?? "0 g";
     widget.setDefaultAppearance(`${appearance}
-/FillDocuments ${fontSize} Tf`);
+/FillDocuments ${layout.fontSize} Tf`);
   }
 }
 function embeddedFontPresent(stream) {
-  const resources = stream.dict.lookupMaybe(import_pdf_lib.PDFName.of("Resources"), import_pdf_lib.PDFDict);
-  const fonts = resources?.lookupMaybe(import_pdf_lib.PDFName.of("Font"), import_pdf_lib.PDFDict);
+  const resources = stream.dict.lookupMaybe(import_pdf_lib4.PDFName.of("Resources"), import_pdf_lib4.PDFDict);
+  const fonts = resources?.lookupMaybe(import_pdf_lib4.PDFName.of("Font"), import_pdf_lib4.PDFDict);
   if (!fonts) return false;
   return fonts.keys().some((key) => {
-    const font = fonts.lookup(key, import_pdf_lib.PDFDict);
-    if (!font.has(import_pdf_lib.PDFName.of("ToUnicode"))) return false;
-    const descendants = font.lookupMaybe(import_pdf_lib.PDFName.of("DescendantFonts"), import_pdf_lib.PDFArray);
-    const base = descendants?.lookup(0, import_pdf_lib.PDFDict) ?? font;
-    const descriptor = base.lookupMaybe(import_pdf_lib.PDFName.of("FontDescriptor"), import_pdf_lib.PDFDict);
-    return descriptor?.lookup(import_pdf_lib.PDFName.of("FontFile2")) instanceof import_pdf_lib.PDFStream;
+    const font = fonts.lookup(key, import_pdf_lib4.PDFDict);
+    if (!font.has(import_pdf_lib4.PDFName.of("ToUnicode"))) return false;
+    const descendants = font.lookupMaybe(import_pdf_lib4.PDFName.of("DescendantFonts"), import_pdf_lib4.PDFArray);
+    const base = descendants?.lookup(0, import_pdf_lib4.PDFDict) ?? font;
+    const descriptor = base.lookupMaybe(import_pdf_lib4.PDFName.of("FontDescriptor"), import_pdf_lib4.PDFDict);
+    return descriptor?.lookup(import_pdf_lib4.PDFName.of("FontFile2")) instanceof import_pdf_lib4.PDFStream;
   });
 }
 function verifyAppearances(fields, { requireEmbeddedFont = false } = {}) {
@@ -54502,8 +55088,8 @@ function verifyAppearances(fields, { requireEmbeddedFont = false } = {}) {
     for (const field of fields) {
       for (const widget of field.acroField.getWidgets()) {
         const normal = widget.getAppearances()?.normal;
-        if (field instanceof import_pdf_lib.PDFTextField) {
-          if (!(normal instanceof import_pdf_lib.PDFStream) || normal.getContents().length === 0) {
+        if (field instanceof import_pdf_lib4.PDFTextField) {
+          if (!(normal instanceof import_pdf_lib4.PDFStream) || normal.getContents().length === 0) {
             throw new FillError("E_PRESERVATION", "PDF \uD14D\uC2A4\uD2B8 appearance\uAC00 \uB204\uB77D\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
           }
           if (requireEmbeddedFont && !embeddedFontPresent(normal)) {
@@ -54511,7 +55097,7 @@ function verifyAppearances(fields, { requireEmbeddedFont = false } = {}) {
           }
         } else {
           const state = widget.getAppearanceState();
-          if (!(normal instanceof import_pdf_lib.PDFDict) || !state || !(normal.lookup(state) instanceof import_pdf_lib.PDFStream)) {
+          if (!(normal instanceof import_pdf_lib4.PDFDict) || !state || !(normal.lookup(state) instanceof import_pdf_lib4.PDFStream)) {
             throw new FillError("E_PRESERVATION", "PDF \uCCB4\uD06C\uBC15\uC2A4 appearance\uAC00 \uB204\uB77D\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
           }
         }
@@ -54524,13 +55110,50 @@ function verifyAppearances(fields, { requireEmbeddedFont = false } = {}) {
 }
 async function inspect(bytes, _context = {}) {
   const doc = await loadPdf(bytes);
-  return { format: "pdf", fields: fieldsOf(doc).map(describe), warnings: [], engine: ENGINE };
+  const fields = fieldsOf(doc);
+  const aliases = aliasesOf(fields);
+  const flow = readContinuations(doc);
+  if (!flow) prepareLayoutProfile(doc, fields, aliases, _context.layoutProfile, bytes);
+  return {
+    format: "pdf",
+    fields: fields.filter((field) => !flow?.chunks.has(field.getName())).map((field) => describe(field, aliases)),
+    ...flow ? { continuations: flow.entries } : {},
+    warnings: flow ? ["\uBCC4\uC9C0\uAC00 \uC0DD\uC131\uB41C PDF\uC785\uB2C8\uB2E4. \uB2E4\uC2DC \uCC44\uC6B0\uB824\uBA74 \uC6D0\uBCF8 \uC11C\uC2DD\uC744 \uC0AC\uC6A9\uD558\uC138\uC694."] : [],
+    engine: ENGINE
+  };
+}
+function signatureSnapshot(doc) {
+  const appearance = (object) => object instanceof import_pdf_lib4.PDFStream ? { dictionary: object.dict.toString(), sha256: hash(object.getContents()) } : object instanceof import_pdf_lib4.PDFDict ? object.keys().map((key) => [key.decodeText(), appearance(object.lookup(key))]) : object?.toString() ?? null;
+  const signatures = doc.getForm().getFields().filter((field) => field instanceof import_pdf_lib4.PDFSignature).map((field) => ({
+    name: field.getName(),
+    dictionary: field.acroField.dict.toString(),
+    widgets: field.acroField.getWidgets().map((widget) => ({
+      dictionary: widget.dict.toString(),
+      appearance: appearance(widget.dict.lookup(import_pdf_lib4.PDFName.of("AP")))
+    }))
+  }));
+  return { signatures, flags: doc.getForm().acroForm.dict.get(import_pdf_lib4.PDFName.of("SigFlags"))?.toString() ?? null };
+}
+function fieldStructure(fields, aliases) {
+  return fields.map((field) => ({
+    ...describe(field, aliases),
+    ref: field.ref.toString(),
+    widgets: field.acroField.getWidgets().map((widget) => ({
+      ref: field.doc.context.getObjectRef(widget.dict)?.toString() ?? null,
+      rectangle: widget.getRectangle(),
+      page: widget.dict.get(import_pdf_lib4.PDFName.of("P"))?.toString() ?? null,
+      parent: widget.dict.get(import_pdf_lib4.PDFName.of("Parent"))?.toString() ?? null
+    }))
+  }));
 }
 async function fill(bytes, values, context = {}) {
   const doc = await loadPdf(bytes);
+  if (readContinuations(doc)) throw new FillError("E_UNSUPPORTED", "\uBCC4\uC9C0\uAC00 \uC788\uB294 \uACB0\uACFC PDF\uB294 \uB2E4\uC2DC \uCC44\uC6B8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC6D0\uBCF8 \uC11C\uC2DD\uC744 \uC0AC\uC6A9\uD558\uC138\uC694.");
   const fields = fieldsOf(doc);
   if (!fields.length) throw new FillError("E_FIELDS", "PDF\uC5D0 \uCC44\uC6B8 \uC218 \uC788\uB294 AcroForm \uD544\uB4DC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4.");
-  const names = new Set(fields.map((field) => field.getName()));
+  const aliases = aliasesOf(fields);
+  const profile = prepareLayoutProfile(doc, fields, aliases, context.layoutProfile, bytes);
+  const names = new Set(aliases.values());
   if (!values || typeof values !== "object" || Array.isArray(values) || Object.keys(values).some((name) => !names.has(name))) {
     throw new FillError("E_FIELDS", "PDF \uD544\uB4DC\uC640 \uC785\uB825 \uD0A4\uAC00 \uC77C\uCE58\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
   }
@@ -54548,12 +55171,15 @@ async function fill(bytes, values, context = {}) {
     throw new FillError("E_ENGINE", "PDF \uD55C\uAE00 \uAE00\uAF34\uC744 \uC784\uBCA0\uB529\uD558\uC9C0 \uBABB\uD588\uC2B5\uB2C8\uB2E4.");
   }
   const characterSet = new Set(font.getCharacterSet());
-  const before = fields.map(describe);
+  const before = fieldStructure(fields, aliases);
   const pageCount = doc.getPageCount();
+  const pagesBefore = pageSnapshot(doc, pageCount);
+  const signaturesBefore = signatureSnapshot(doc);
+  const plans = [];
   for (const field of fields) {
-    const name = field.getName();
+    const name = aliases.get(field.getName());
     const value = Object.hasOwn(values, name) ? values[name] : void 0;
-    if (field instanceof import_pdf_lib.PDFTextField) {
+    if (field instanceof import_pdf_lib4.PDFTextField) {
       if (typeof value !== "string" || /[\u0000-\u0008\u000b\u000c\u000e-\u001f\ufffe\uffff]/u.test(value) || /[\uD800-\uDFFF]/u.test(value)) {
         throw new FillError("E_FIELDS", "PDF \uD14D\uC2A4\uD2B8 \uAC12\uC774 \uB204\uB77D\uB418\uC5C8\uAC70\uB098 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.", { field: name });
       }
@@ -54565,16 +55191,50 @@ async function fill(bytes, values, context = {}) {
           throw new FillError("E_UNSUPPORTED", "\uD3EC\uD568\uB41C \uAE00\uAF34\uC774 \uD45C\uD604\uD560 \uC218 \uC5C6\uB294 \uBB38\uC790\uAC00 \uC788\uC2B5\uB2C8\uB2E4.", { field: name });
         }
       }
-      checkTextFits(field, value, font);
-      field.setText(value);
-      field.updateAppearances(font);
+      try {
+        checkTextFits(field, value, font);
+      } catch (error) {
+        if (error.code !== "E_FIELDS" || context.overflow !== "flow") throw error;
+        plans.push(planContinuation(doc, field, name, value, font, profile.get(name)));
+      }
     } else {
       if (typeof value !== "boolean") throw new FillError("E_FIELDS", "PDF \uCCB4\uD06C\uBC15\uC2A4\uC5D0\uB294 true \uB610\uB294 false\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4.", { field: name });
+    }
+  }
+  const overflowing = new Set(plans.map((plan) => plan.sourceName));
+  for (const plan of profile.values()) {
+    if (plan.repeat.some((field) => overflowing.has(field.getName()))) layoutError("\uB118\uCE58\uB294 \uBCF8\uBB38 \uD544\uB4DC\uB294 \uBC18\uBCF5 \uBB38\uB9E5\uC73C\uB85C \uC0AC\uC6A9\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", { field: plan.settings.field, reason: "overflowing-repeat-field" });
+  }
+  for (const field of fields) {
+    const value = values[aliases.get(field.getName())];
+    if (field instanceof import_pdf_lib4.PDFTextField) {
+      const plan = plans.find((item) => item.sourceName === field.getName());
+      const text = plan?.chunks[0] ?? value;
+      checkTextFits(field, text, font);
+      field.setText(text);
+      field.updateAppearances(font);
+    } else {
       if (value) field.check();
       else field.uncheck();
       field.updateAppearances();
     }
   }
+  const continuations = await appendContinuations(doc, bytes, plans, font);
+  addSourceNotes(doc, continuations, font);
+  const expectedPages = pageSnapshot(doc, pageCount);
+  const changedPages = new Set(continuations.map((entry) => entry.sourcePage - 1));
+  for (let index = 0; index < pageCount; index += 1) {
+    if (!changedPages.has(index) && JSON.stringify(expectedPages[index]) !== JSON.stringify(pagesBefore[index])) {
+      throw new FillError("E_PRESERVATION", "\uC774\uC5B4\uC4F0\uAE30 \uC548\uB0B4 \uC678\uC758 \uC6D0\uB798 PDF \uD398\uC774\uC9C0\uAC00 \uBCC0\uACBD\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
+    }
+    if (changedPages.has(index)) {
+      const { streams, resources, ...current } = expectedPages[index];
+      const { streams: original, resources: _resources, ...previous } = pagesBefore[index];
+      if (JSON.stringify(current) !== JSON.stringify(previous) || streams.length !== original.length + 3 || JSON.stringify(streams.slice(1, -2)) !== JSON.stringify(original)) throw new FillError("E_PRESERVATION", "\uC6D0\uB798 PDF \uB0B4\uC6A9 \uC2A4\uD2B8\uB9BC\uC774 \uBCC0\uACBD\uB418\uC5C8\uC2B5\uB2C8\uB2E4.");
+    }
+  }
+  verifyWidgetGraph(doc);
+  writeContinuations(doc, pageCount, continuations);
   let result;
   try {
     result = await doc.save({ updateFieldAppearances: false });
@@ -54583,14 +55243,19 @@ async function fill(bytes, values, context = {}) {
   }
   const reread = await loadPdf(result);
   const rereadFields = fieldsOf(reread);
-  if (pageCount !== reread.getPageCount() || JSON.stringify(before) !== JSON.stringify(rereadFields.map(describe))) {
+  const flow = readContinuations(reread);
+  const originalFields = rereadFields.filter((field) => !flow?.chunks.has(field.getName()));
+  const addedPages = continuations.reduce((count, entry) => count + entry.addedPages.length, 0);
+  if (pageCount + addedPages !== reread.getPageCount() || JSON.stringify(before) !== JSON.stringify(fieldStructure(originalFields, aliases)) || JSON.stringify(expectedPages) !== JSON.stringify(pageSnapshot(reread, pageCount)) || JSON.stringify(signaturesBefore) !== JSON.stringify(signatureSnapshot(reread))) {
     throw new FillError("E_PRESERVATION", "PDF \uD398\uC774\uC9C0 \uB610\uB294 \uD544\uB4DC \uAD6C\uC870\uAC00 \uB2EC\uB77C\uC84C\uC2B5\uB2C8\uB2E4.");
   }
-  for (const field of rereadFields) {
-    const actual = field instanceof import_pdf_lib.PDFTextField ? field.getText() ?? "" : field.isChecked();
-    if (actual !== values[field.getName()]) throw new FillError("E_PRESERVATION", "PDF \uC785\uB825\uAC12 \uC7AC\uC77D\uAE30 \uAC80\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.");
+  for (const field of originalFields) {
+    const continuation = flow?.entries.find((entry) => entry.sourceName === field.getName());
+    const actual = continuation ? (field.getText() ?? "") + continuation.chunkFields.map((name) => reread.getForm().getTextField(name).getText() ?? "").join("") : field instanceof import_pdf_lib4.PDFTextField ? field.getText() ?? "" : field.isChecked();
+    if (actual !== values[aliases.get(field.getName())]) throw new FillError("E_PRESERVATION", "PDF \uC785\uB825\uAC12 \uC7AC\uC77D\uAE30 \uAC80\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.");
   }
   verifyAppearances(rereadFields, { requireEmbeddedFont: true });
+  if (flow) verifyFlowLayout(reread, flow, font, aliasesOf(rereadFields));
   return {
     bytes: result,
     checks: [
@@ -54599,18 +55264,52 @@ async function fill(bytes, values, context = {}) {
       { name: "page-and-field-preservation", status: "pass" },
       { name: "appearance-streams", status: "pass" },
       { name: "embedded-unicode-font", status: "pass" },
-      { name: "text-within-field-bounds", status: "pass" }
+      { name: "text-within-field-bounds", status: "pass" },
+      ...flow ? [{ name: "continuation-values-exact", status: "pass" }] : []
     ],
-    warnings: [VISUAL_WARNING],
-    engine: ENGINE
+    warnings: [VISUAL_WARNING, ...flow ? ["\uBC18\uBCF5 \uBB38\uB9E5\uC740 \uACE0\uC815 \uD45C\uC2DC\uC785\uB2C8\uB2E4. \uC6D0\uB798 \uBB38\uB9E5\uC744 \uBC14\uAFB8\uB824\uBA74 \uC6D0\uBCF8 \uC11C\uC2DD\uACFC \uC218\uC815\uD55C \uC785\uB825\uC73C\uB85C \uB2E4\uC2DC \uC0DD\uC131\uD558\uC138\uC694."] : []],
+    engine: ENGINE,
+    layout: {
+      policy: context.overflow ?? "preserve",
+      strategy: flow ? "continuation-pages" : "existing-fields",
+      pagination: { before: pageCount, after: reread.getPageCount() },
+      continuations
+    }
   };
+}
+function verifyFlowLayout(doc, flow, font, aliases) {
+  for (const entry of flow.entries) {
+    if (aliases.get(entry.sourceName) !== entry.origin) throw new FillError("E_PRESERVATION", "PDF \uC774\uC5B4\uC4F0\uAE30\uC758 \uC6D0\uBCF8 \uD544\uB4DC \uBCC4\uCE6D\uC774 \uC77C\uCE58\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+    if (flow.version === 3 && (entry.settings?.field !== entry.origin || entry.settings?.sourcePage !== entry.sourcePage || JSON.stringify(entry.repeatContexts.map((item) => aliases.get(item.sourceName))) !== JSON.stringify(entry.settings.repeatFields))) {
+      throw new FillError("E_PRESERVATION", "PDF \uC774\uC5B4\uC4F0\uAE30 \uC124\uC815\uACFC \uC6D0\uB798 \uD544\uB4DC\uC758 \uC5F0\uACB0\uC774 \uC77C\uCE58\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+    }
+    for (const name of [...flow.version === 3 ? [entry.sourceName] : [], ...entry.chunkFields]) {
+      const field = doc.getForm().getTextField(name);
+      if (field.acroField.getWidgets().some((widget) => (fontSizeOf(widget) ?? fontSizeOf(field.acroField)) !== entry.fontSize)) {
+        throw new FillError("E_PRESERVATION", "PDF \uC774\uC5B4\uC4F0\uAE30\uC758 \uACE0\uC815 \uAE00\uC790 \uD06C\uAE30\uAC00 \uB2EC\uB77C\uC84C\uC2B5\uB2C8\uB2E4.");
+      }
+      verifyContinuationBounds(field, font, entry.fontSize);
+    }
+  }
 }
 async function validate(bytes, _context = {}) {
   const doc = await loadPdf(bytes);
   const fields = fieldsOf(doc);
+  const flow = readContinuations(doc);
   verifyAppearances(fields);
+  if (flow) {
+    const aliases = aliasesOf(fields);
+    doc.registerFontkit(import_fontkit.default);
+    const font = await doc.embedFont(await readFile(path.join(_context.skillRoot ?? DEFAULT_ROOT, "assets/fonts/NanumGothic-Regular.ttf")), { subset: false });
+    verifyFlowLayout(doc, flow, font, aliases);
+  }
   return {
-    checks: [{ name: "pdf-structure", status: "pass" }, { name: "appearance-streams", status: "pass" }],
+    checks: [
+      { name: "pdf-structure", status: "pass" },
+      { name: "appearance-streams", status: "pass" },
+      ...flow ? [{ name: "continuation-values-exact", status: "pass" }, { name: "continuation-default-layout", status: "pass" }] : []
+    ],
+    ...flow ? { continuations: flow.entries } : {},
     warnings: [VISUAL_WARNING, ...!fields.length ? ["\uC774 PDF\uC5D0\uB294 \uCC44\uC6B8 \uC218 \uC788\uB294 AcroForm \uD544\uB4DC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4."] : []],
     engine: ENGINE
   };

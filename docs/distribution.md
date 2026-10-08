@@ -7,8 +7,8 @@
 - `plugins/fill-documents/`: portable Agent Plugins 1.0 + Claude/Codex 호환 manifest.
 - `.claude-plugin/marketplace.json`: Claude Code 자체 marketplace.
 - `.agents/plugins/marketplace.json`: Codex 자체 marketplace.
-- `dist/fill-documents-plugin-0.1.0.zip`: 단일 플러그인 디렉터리.
-- `dist/fill-documents-skill-0.1.0.zip`: 독립 스킬 디렉터리.
+- `dist/fill-documents-plugin-0.2.0.zip`: 단일 플러그인 디렉터리.
+- `dist/fill-documents-skill-0.2.0.zip`: 독립 스킬 디렉터리.
 
 공통 CLI·WASM·글꼴·서식·외부 라이선스를 포함한다. MCP 서버, OAuth, 앱 바인딩 또는 제품 내 결제는 없다. 이 ZIP에는 `node_modules`, `.app.json`, 사용자 자료를 넣지 않는다.
 

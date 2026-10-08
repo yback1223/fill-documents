@@ -234,12 +234,13 @@ test('PDF rejects text overflow and newlines in single-line fields', async () =>
   await rejected(() => pdf.fill(multiline, { body: Array.from({ length: 35 }, () => '한 줄').join('\n') }, context), 'E_FIELDS');
 });
 
-test('PDF refuses XFA, signature fields, actions and encryption declarations', async () => {
+test('PDF refuses XFA, actual signatures, actions and encryption declarations', async () => {
   const xfa = await rawPdf();
   xfa.getForm().acroForm.dict.set(PDFName.of('XFA'), PDFString.of('<xfa/>'));
   await rejected(() => xfa.save({ updateFieldAppearances: false }).then((bytes) => pdf.inspect(bytes)), 'E_UNSUPPORTED');
   const signed = await rawPdf();
   signed.getForm().getTextField('body').acroField.dict.set(PDFName.of('FT'), PDFName.of('Sig'));
+  signed.getForm().getField('body').acroField.dict.set(PDFName.of('V'), signed.context.obj({ Type: 'Sig', ByteRange: [0, 10, 20, 30] }));
   await rejected(() => signed.save({ updateFieldAppearances: false }).then((bytes) => pdf.inspect(bytes)), 'E_UNSUPPORTED');
   const active = await rawPdf();
   active.addJavaScript('test', 'void 0');

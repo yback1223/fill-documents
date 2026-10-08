@@ -1,5 +1,11 @@
 import { createRequire as __fillCreateRequire } from 'node:module'; const require = __fillCreateRequire(import.meta.url);
 import {
+  checkValues,
+  isPlainObject,
+  matchManifestFields,
+  normalizeFields
+} from "./chunks/chunk-ORHQCEZZ.mjs";
+import {
   assertSafeZip
 } from "./chunks/chunk-IT3RRXA3.mjs";
 import {
@@ -128,45 +134,6 @@ async function publishNewFile(output, bytes, operations = fs) {
   return { path: destination, warnings };
 }
 
-// lib/fields.mjs
-var isPlainObject = (value) => value !== null && typeof value === "object" && !Array.isArray(value) && (Object.getPrototypeOf(value) === Object.prototype || Object.getPrototypeOf(value) === null);
-var validName = (name) => typeof name === "string" && /^[A-Za-z][A-Za-z0-9_]{0,63}$/.test(name) && !["constructor", "prototype", "__proto__"].includes(name);
-function normalizeFields(fields) {
-  requireCondition(Array.isArray(fields), "E_FIELDS", "\uD544\uB4DC \uBAA9\uB85D\uC774 \uC62C\uBC14\uB974\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
-  const seen = /* @__PURE__ */ new Set();
-  return fields.map((field) => {
-    requireCondition(isPlainObject(field) && validName(field.name) && !seen.has(field.name) && ["text", "checkbox"].includes(field.type), "E_FIELDS", "\uD544\uB4DC \uC774\uB984\uC774\uB098 \uD615\uC2DD\uC774 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
-    seen.add(field.name);
-    const occurrences = field.occurrences ?? 1;
-    const maxLength = field.maxLength ?? 1e4;
-    requireCondition(Number.isInteger(occurrences) && occurrences > 0 && Number.isInteger(maxLength) && maxLength > 0 && maxLength <= 1e4, "E_FIELDS", "\uD544\uB4DC \uAC1C\uC218 \uB610\uB294 \uAE38\uC774 \uC81C\uD55C\uC774 \uC720\uD6A8\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
-    return { ...field, required: true, occurrences, maxLength };
-  });
-}
-function checkValues(input, fields) {
-  requireCondition(isPlainObject(input), "E_FIELDS", "\uD544\uB4DC \uC785\uB825\uC740 JSON \uAC1D\uCCB4\uC5EC\uC57C \uD569\uB2C8\uB2E4.");
-  const byName = new Map(fields.map((field) => [field.name, field]));
-  const unknown = Object.keys(input).filter((key) => !byName.has(key));
-  requireCondition(unknown.length === 0, "E_FIELDS", "\uC11C\uC2DD\uC5D0 \uC5C6\uB294 \uC785\uB825 \uD544\uB4DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.", { fields: unknown });
-  const result = /* @__PURE__ */ Object.create(null);
-  for (const field of fields) {
-    requireCondition(Object.hasOwn(input, field.name), "E_FIELDS", "\uD544\uC218 \uC785\uB825\uC774 \uB204\uB77D\uB410\uC2B5\uB2C8\uB2E4.", { field: field.name });
-    const value = input[field.name];
-    if (field.type === "checkbox") {
-      requireCondition(typeof value === "boolean", "E_FIELDS", "\uCCB4\uD06C\uBC15\uC2A4\uB294 true \uB610\uB294 false\uC5EC\uC57C \uD569\uB2C8\uB2E4.", { field: field.name });
-    } else {
-      requireCondition(typeof value === "string" && value.trim().length > 0 && Array.from(value).length <= field.maxLength && !/[\u0000-\u0008\u000B\u000C\u000E-\u001F]/.test(value), "E_FIELDS", "\uBB38\uC790\uC5F4\uC758 \uD615\uC2DD\xB7\uACF5\uB780\xB7\uAE38\uC774\uB97C \uD655\uC778\uD558\uC138\uC694.", { field: field.name, maxLength: field.maxLength });
-    }
-    result[field.name] = value;
-  }
-  return result;
-}
-function matchManifestFields(found, declared) {
-  const expected = normalizeFields(declared);
-  requireCondition(found.length === expected.length && expected.every((field) => found.some((item) => item.name === field.name && item.type === field.type && item.occurrences === field.occurrences)), "E_TEMPLATE_CHANGED", "\uD15C\uD50C\uB9BF \uD544\uB4DC\uAC00 \uB4F1\uB85D \uC815\uBCF4\uC640 \uB2E4\uB985\uB2C8\uB2E4. \uB2E4\uC2DC \uBD84\uC11D\uD558\uACE0 \uB4F1\uB85D\uD558\uC138\uC694.");
-  return expected;
-}
-
 // lib/catalog.mjs
 var defaultLibrary = () => path2.join(os.homedir(), ".local", "share", "fill-documents", "templates");
 var validId = (id) => typeof id === "string" && /^[a-z0-9]+(?:-[a-z0-9]+)*$/.test(id) && id.length <= 64;
@@ -277,11 +244,101 @@ async function registerTemplate({ filePath, id, title, skillRoot, library = defa
 // lib/engine.mjs
 import fs3 from "node:fs/promises";
 import path3 from "node:path";
+
+// lib/coverage.mjs
+var hasText = (value) => typeof value === "string" && value.trim().length > 0;
+var states = ["filled", "explicitly_excluded", "not_applicable", "blocked"];
+function check(condition, reason, slotIndex) {
+  requireCondition(condition, "E_COVERAGE", "\uC791\uC131 \uB300\uC0C1 \uBAA9\uB85D\uC758 \uD615\uC2DD\xB7\uADFC\uAC70\xB7\uD544\uB4DC \uB300\uC751\uC744 \uD655\uC778\uD558\uC138\uC694.", {
+    reason,
+    ...slotIndex === void 0 ? {} : { slotIndex }
+  });
+}
+function userInstruction(evidence, reason, slotIndex) {
+  check(isPlainObject(evidence) && evidence.kind === "user-instruction" && hasText(evidence.reference), reason, slotIndex);
+  return { kind: "user-instruction", reference: evidence.reference };
+}
+function readCoverage(input, templateSha256) {
+  if (input === void 0) return void 0;
+  check(isPlainObject(input) && input.version === 1, "invalid-version");
+  check(typeof input.templateSha256 === "string" && /^[a-f0-9]{64}$/.test(input.templateSha256), "invalid-template-hash");
+  const scope = input.scope === void 0 ? "full" : input.scope;
+  check(["full", "partial"].includes(scope), "invalid-scope");
+  const scopeEvidence = scope === "partial" ? userInstruction(input.scopeEvidence, "missing-scope-instruction") : void 0;
+  check(Array.isArray(input.slots), "invalid-slots");
+  const ids = /* @__PURE__ */ new Set();
+  const slots = input.slots.map((slot, index) => {
+    check(isPlainObject(slot) && hasText(slot.id), "invalid-slot-id", index);
+    check(!ids.has(slot.id), "duplicate-slot-id", index);
+    ids.add(slot.id);
+    check(hasText(slot.location), "missing-location", index);
+    check(states.includes(slot.status), "invalid-status", index);
+    const copy = { id: slot.id, location: slot.location, status: slot.status };
+    if (slot.status === "blocked") {
+      check(hasText(slot.reason) && hasText(slot.nextAction), "missing-blocker-action", index);
+      return { ...copy, reason: slot.reason, nextAction: slot.nextAction };
+    }
+    if (slot.status === "explicitly_excluded") {
+      return { ...copy, evidence: userInstruction(slot.evidence, "missing-exclusion-instruction", index) };
+    }
+    const evidence = slot.evidence;
+    check(isPlainObject(evidence), "missing-evidence", index);
+    if (slot.status === "not_applicable") {
+      check(evidence.kind === "applicability" && hasText(evidence.condition) && hasText(evidence.reason), "missing-applicability", index);
+      return { ...copy, evidence: { kind: "applicability", condition: evidence.condition, reason: evidence.reason } };
+    }
+    check(["fields", "external-review"].includes(evidence.kind), "invalid-filled-evidence", index);
+    if (evidence.kind === "external-review") {
+      check(hasText(evidence.reference), "missing-review-reference", index);
+      return { ...copy, evidence: { kind: "external-review", reference: evidence.reference } };
+    }
+    check(Array.isArray(evidence.fields) && evidence.fields.length > 0 && evidence.fields.every(hasText), "invalid-evidence-fields", index);
+    return { ...copy, evidence: { kind: "fields", fields: [...evidence.fields] } };
+  });
+  requireCondition(input.templateSha256 === templateSha256, "E_TEMPLATE_CHANGED", "\uC791\uC131 \uB300\uC0C1 \uBAA9\uB85D\uC758 \uC900\uBE44\uBCF8 \uD574\uC2DC\uC640 \uD604\uC7AC \uBB38\uC11C\uAC00 \uB2E4\uB985\uB2C8\uB2E4.");
+  return { version: 1, templateSha256, scope, ...scopeEvidence ? { scopeEvidence } : {}, slots };
+}
+function checkCoverageFields(coverage, fields) {
+  if (!coverage) return;
+  const found = new Set(fields.map((field) => field.name)), linked = /* @__PURE__ */ new Set();
+  for (const [index, slot] of coverage.slots.entries()) {
+    if (slot.evidence?.kind !== "fields") continue;
+    for (const name of slot.evidence.fields) {
+      check(found.has(name), "unknown-field", index);
+      check(!linked.has(name), "duplicate-field", index);
+      linked.add(name);
+    }
+  }
+  check(linked.size === found.size, "unmapped-fields");
+}
+function completionReport(coverage, { structureOnly = false } = {}) {
+  const slots = coverage?.slots ?? [];
+  const counts = {
+    declaredSlots: slots.length,
+    fieldLinkedSlots: slots.filter((slot) => slot.evidence?.kind === "fields").length,
+    externallyDeclaredFilledSlots: slots.filter((slot) => slot.evidence?.kind === "external-review").length,
+    explicitlyExcludedSlots: slots.filter((slot) => slot.status === "explicitly_excluded").length,
+    notApplicableSlots: slots.filter((slot) => slot.status === "not_applicable").length,
+    blockedSlots: slots.filter((slot) => slot.status === "blocked").length
+  };
+  return {
+    scope: coverage?.scope ?? "full",
+    status: !coverage || counts.blockedSlots ? "incomplete" : "requires-review",
+    fullDocumentComplete: false,
+    inventory: coverage ? "declared" : "not-provided",
+    verificationScope: structureOnly ? "structure-only" : coverage ? "explicit-fields-and-manifest-consistency" : "explicit-fields",
+    reason: structureOnly ? "\uBB38\uC11C \uAD6C\uC870\uB9CC \uAC80\uC0AC\uD588\uC73C\uBA70 \uC804\uCCB4 \uC791\uC131 \uB300\uC0C1\uACFC \uCD5C\uC885 \uD45C\uC2DC\uB97C \uD655\uC778\uD558\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4." : !coverage ? "\uBB38\uC11C \uC804\uCCB4 \uC791\uC131 \uB300\uC0C1\uACFC \uCD5C\uC885 \uD45C\uC2DC\uB97C \uD655\uC778\uD558\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4." : counts.blockedSlots ? "\uC791\uC131 \uB300\uC0C1 \uBAA9\uB85D\uC5D0 \uBBF8\uD574\uACB0 \uD56D\uBAA9\uC774 \uC788\uC2B5\uB2C8\uB2E4. \uC804\uCCB4 \uC791\uC131\uACFC \uCD5C\uC885 \uD45C\uC2DC \uD655\uC778\uC774 \uD544\uC694\uD569\uB2C8\uB2E4." : "\uC791\uC131 \uB300\uC0C1 \uBAA9\uB85D\uC758 \uC120\uC5B8\uC740 \uC77C\uAD00\uB418\uC9C0\uB9CC \uC6D0\uBCF8 \uC804\uCCB4\uC640 \uCD5C\uC885 \uD30C\uC77C\uC744 \uB300\uC870\uD55C \uAC80\uC218\uAC00 \uD544\uC694\uD569\uB2C8\uB2E4.",
+    counts,
+    fieldVerification: { source: "not-performed", verifiedFields: 0 }
+  };
+}
+
+// lib/engine.mjs
 var loaders = {
-  hwp: () => import("./chunks/hwp-7U6TCAF2.mjs"),
-  hwpx: () => import("./chunks/hwpx-XDTGN7CA.mjs"),
-  docx: () => import("./chunks/docx-3JTWWSN7.mjs"),
-  pdf: () => import("./chunks/pdf-GD23NVOF.mjs")
+  hwp: () => import("./chunks/hwp-DA4JLAPL.mjs"),
+  hwpx: () => import("./chunks/hwpx-UOS4KLHP.mjs"),
+  docx: () => import("./chunks/docx-OAXC5KWC.mjs"),
+  pdf: () => import("./chunks/pdf-VCGFKAND.mjs")
 };
 function formatFromPath(filePath) {
   const format = path3.extname(filePath).slice(1).toLowerCase();
@@ -297,22 +354,50 @@ async function inspectDocument(input, context) {
   const bytes = Buffer.from(input);
   const format = formatFromPath(context.filePath);
   validateSignature(bytes, format);
+  const templateSha256 = sha256(bytes);
+  const coverage = readCoverage(context.coverage, templateSha256);
+  if (context.layoutProfile !== void 0) {
+    const profile = context.layoutProfile;
+    requireCondition(isPlainObject(profile) && profile.version === 1 && ["hwpx", "pdf"].includes(profile.format) && typeof profile.templateSha256 === "string" && /^[a-f0-9]{64}$/.test(profile.templateSha256), "E_INPUT", "\uB808\uC774\uC544\uC6C3 \uD504\uB85C\uD544\uC758 \uD615\uC2DD\uC774 \uC62C\uBC14\uB974\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+    requireCondition(profile.format === format, "E_UNSUPPORTED", "\uD504\uB85C\uD544\uACFC \uBB38\uC11C\uC758 \uD615\uC2DD\uC774 \uB2E4\uB985\uB2C8\uB2E4.");
+    requireCondition(profile.templateSha256 === sha256(bytes), "E_TEMPLATE_CHANGED", "\uD504\uB85C\uD544\uC758 \uC6D0\uBCF8 \uD574\uC2DC\uC640 \uD604\uC7AC \uBB38\uC11C\uAC00 \uB2E4\uB985\uB2C8\uB2E4.");
+    requireCondition(!(context.manifest && format === "hwpx"), "E_UNSUPPORTED", "HWPX \uBC18\uBCF5 \uD589\uC740 \uB4F1\uB85D ID \uB300\uC2E0 \uD30C\uC77C \uACBD\uB85C\uC640 \uD504\uB85C\uD544\uC744 \uC9C0\uC815\uD558\uC138\uC694.");
+  }
   const adapter = await loaders[format]();
   const info = await adapter.inspect(bytes, context);
-  return { ...info, format, fields: normalizeFields(info.fields), sha256: sha256(bytes), warnings: info.warnings ?? [] };
+  const fields = normalizeFields(info.fields);
+  checkCoverageFields(coverage, fields);
+  return {
+    ...info,
+    format,
+    fields,
+    sha256: templateSha256,
+    warnings: info.warnings ?? [],
+    fieldDiscovery: { scope: "explicit-fields", fullDocumentInventory: false },
+    completion: completionReport(coverage)
+  };
 }
-async function inspectFile(filePath, skillRoot) {
-  return inspectDocument(await readDocument(filePath), { filePath: path3.resolve(filePath), skillRoot });
+async function inspectFile(filePath, skillRoot, options = {}) {
+  return inspectDocument(await readDocument(filePath), { ...options, filePath: path3.resolve(filePath), skillRoot });
 }
 async function validateFile(filePath, skillRoot) {
   const bytes = await readDocument(filePath);
   const format = formatFromPath(filePath);
   validateSignature(bytes, format);
   const report = await (await loaders[format]()).validate(bytes, { filePath: path3.resolve(filePath), skillRoot });
-  requireCondition(!report.checks?.some((check) => check.status === "failed"), "E_PRESERVATION", "\uBB38\uC11C \uAC80\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.");
-  return { format, sha256: sha256(bytes), ...report, visualValidation: "not-performed" };
+  requireCondition(!report.checks?.some((check2) => check2.status === "failed"), "E_PRESERVATION", "\uBB38\uC11C \uAC80\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.");
+  return {
+    format,
+    sha256: sha256(bytes),
+    ...report,
+    operation: "structure-validation",
+    completion: completionReport(void 0, { structureOnly: true }),
+    visualValidation: "not-performed"
+  };
 }
-async function fillDocument({ target, values, output, skillRoot, library, dryRun = false }) {
+async function fillDocument({ target, values, output, skillRoot, library, dryRun = false, overflow = "preserve", layoutProfile, coverage }) {
+  requireCondition(["preserve", "flow"].includes(overflow), "E_INPUT", "overflow\uB294 preserve \uB610\uB294 flow\uC5EC\uC57C \uD569\uB2C8\uB2E4.");
+  requireCondition(layoutProfile === void 0 || overflow === "flow", "E_INPUT", "\uB808\uC774\uC544\uC6C3 \uD504\uB85C\uD544\uC740 overflow=flow\uC640 \uD568\uAED8 \uC0AC\uC6A9\uD558\uC138\uC694.");
   let item;
   try {
     const info2 = await fs3.stat(target);
@@ -322,25 +407,37 @@ async function fillDocument({ target, values, output, skillRoot, library, dryRun
     if (error.code !== "ENOENT") throw error;
     item = await findTemplate(target, skillRoot, library);
   }
-  const context = { filePath: item.filePath, skillRoot, manifest: item.manifest };
+  const context = { filePath: item.filePath, skillRoot, manifest: item.manifest, overflow, layoutProfile, coverage };
   const info = await inspectDocument(item.bytes, context);
   requireCondition(info.fields.length > 0, "E_FIELDS", "\uBA85\uC2DC\uC801\uC778 \uC785\uB825 \uD544\uB4DC\uAC00 \uC5C6\uC2B5\uB2C8\uB2E4. \uC11C\uC2DD \uB4F1\uB85D \uC548\uB0B4\uB97C \uD655\uC778\uD558\uC138\uC694.");
   const fields = item.manifest ? matchManifestFields(info.fields, item.manifest.fields) : info.fields;
   const data = checkValues(values, fields);
   requireCondition(typeof output === "string" && formatFromPath(output) === info.format, "E_INPUT", "\uCD9C\uB825 \uD655\uC7A5\uC790\uB294 \uC785\uB825 \uBB38\uC11C\uC640 \uAC19\uC544\uC57C \uD569\uB2C8\uB2E4.");
   requireCondition(path3.resolve(output) !== path3.resolve(item.filePath), "E_OUTPUT_EXISTS", "\uC6D0\uBCF8\uC744 \uB36E\uC5B4\uC4F8 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4. \uC0C8 \uCD9C\uB825 \uACBD\uB85C\uB97C \uC9C0\uC815\uD558\uC138\uC694.");
-  const base = { format: info.format, templateSha256: info.sha256, fields: fields.map((field) => field.name), visualValidation: "not-performed" };
-  if (dryRun) return { ...base, dryRun: true, output: path3.resolve(output) };
+  const base = { operation: "field-fill", format: info.format, templateSha256: info.sha256, fields: fields.map((field) => field.name), visualValidation: "not-performed" };
   const adapter = await loaders[info.format]();
   const result = await adapter.fill(item.bytes, data, context);
   const candidate = Buffer.from(result.bytes);
   validateSignature(candidate, info.format);
   const validation = await adapter.validate(candidate, context);
   const checks = [...result.checks ?? [], ...validation.checks ?? []];
-  requireCondition(!checks.some((check) => check.status === "failed"), "E_PRESERVATION", "\uC785\uB825 \uACB0\uACFC\uC758 \uAC80\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.");
+  requireCondition(!checks.some((check2) => check2.status === "failed"), "E_PRESERVATION", "\uC785\uB825 \uACB0\uACFC\uC758 \uAC80\uC99D\uC5D0 \uC2E4\uD328\uD588\uC2B5\uB2C8\uB2E4.");
   requireCondition(sha256(await readDocument(item.filePath)) === info.sha256, "E_TEMPLATE_CHANGED", "\uC791\uC5C5 \uC911 \uC6D0\uBCF8\uC774 \uBCC0\uACBD\uB410\uC2B5\uB2C8\uB2E4. \uC0C8 \uC6D0\uBCF8\uC744 \uD655\uC778\uD558\uC138\uC694.");
+  const valuesReread = checks.some((check2) => ["field-values-reread", "exact-field-values"].includes(check2.name) && ["pass", "passed"].includes(check2.status));
+  const report = {
+    ...base,
+    engine: result.engine ?? info.engine,
+    checks,
+    completion: { ...info.completion, fieldVerification: {
+      source: valuesReread ? "candidate-reread" : "not-performed",
+      verifiedFields: valuesReread ? fields.length : 0
+    } },
+    layout: result.layout ?? { policy: overflow },
+    warnings: [...result.warnings ?? [], ...validation.warnings ?? []]
+  };
+  if (dryRun) return { ...report, dryRun: true, output: path3.resolve(output), publication: "not-attempted" };
   const published = await publishNewFile(output, candidate);
-  return { ...base, output: published.path, outputSha256: sha256(candidate), engine: result.engine ?? info.engine, checks, warnings: [...result.warnings ?? [], ...validation.warnings ?? [], ...published.warnings] };
+  return { ...report, output: published.path, outputSha256: sha256(candidate), warnings: [...report.warnings, ...published.warnings] };
 }
 export {
   FillError,

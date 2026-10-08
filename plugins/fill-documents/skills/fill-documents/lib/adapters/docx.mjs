@@ -3,6 +3,7 @@ import Docxtemplater from 'docxtemplater';
 import { DOMParser } from '@xmldom/xmldom';
 import { FillError } from '../errors.mjs';
 import { assertSafeZip } from '../zip-safety.mjs';
+import { fillDocxFlow } from './docx-flow.mjs';
 
 const WORD_NS = 'http://schemas.openxmlformats.org/wordprocessingml/2006/main';
 const FIELD_NAME = /^[A-Za-z][A-Za-z0-9_]{0,63}$/;
@@ -50,7 +51,8 @@ function paragraphText(paragraph) {
   let text = '';
   function visit(node) {
     if (node !== paragraph && node.namespaceURI === WORD_NS && node.localName === 'p') return;
-    if (node.namespaceURI === WORD_NS) {
+    // Paragraph tab stops are formatting; visible text tokens belong to a run.
+    if (node.namespaceURI === WORD_NS && node.parentNode?.namespaceURI === WORD_NS && node.parentNode.localName === 'r') {
       if (node.localName === 't') { text += node.textContent; return; }
       if (node.localName === 'br' || node.localName === 'cr') { text += '\n'; return; }
       if (node.localName === 'tab') { text += '\t'; return; }
@@ -143,7 +145,7 @@ export async function inspect(bytes, _context = {}) {
   return { format: 'docx', fields: template.fields, warnings: [], engine: ENGINE };
 }
 
-export async function fill(bytes, values, _context = {}) {
+export async function fill(bytes, values, context = {}) {
   const original = loadDocx(bytes);
   const template = collectTemplate(original);
   if (!template.fields.length) throw new FillError('E_FIELDS', 'DOCX에 채울 수 있는 명시적 필드가 없습니다.');
@@ -159,18 +161,34 @@ export async function fill(bytes, values, _context = {}) {
     }
     data[name] = value.replace(/\r\n?/g, '\n');
   }
-  const doc = compile(new PizZip(Buffer.from(bytes)), template.parts);
-  try { doc.render(data); }
-  catch { throw new FillError('E_ENGINE', 'DOCX 필드 입력에 실패했습니다.'); }
+  let renderedZip;
+  let layout;
+  let paragraphCounts;
+  if (context.overflow === 'flow') {
+    renderedZip = new PizZip(Buffer.from(bytes));
+    ({ layout, paragraphCounts } = fillDocxFlow(renderedZip, data, template.parts));
+  } else {
+    const doc = compile(new PizZip(Buffer.from(bytes)), template.parts);
+    try { doc.render(data); }
+    catch { throw new FillError('E_ENGINE', 'DOCX 필드 입력에 실패했습니다.'); }
+    renderedZip = doc.getZip();
+  }
 
   // Only copy the field-bearing XML parts back. This preserves all other package entries,
   // including styles, images, relationships and metadata, byte for byte when decompressed.
   for (const [path, texts] of template.parts) {
-    const rendered = doc.getZip().file(path)?.asText();
+    const rendered = renderedZip.file(path)?.asText();
     if (!rendered) throw new FillError('E_PRESERVATION', 'DOCX의 원본 부분이 누락되었습니다.');
     const actual = paragraphs(parseXml(rendered));
     const expected = texts.map((text) => text.replace(/\{\{([A-Za-z][A-Za-z0-9_]{0,63})\}\}/g, (_match, name) => data[name]));
-    if (JSON.stringify(actual) !== JSON.stringify(expected)) {
+    let offset = 0;
+    const exact = expected.every((text, index) => {
+      const count = paragraphCounts?.get(path)?.[index] ?? 1;
+      const match = actual.slice(offset, offset + count).join('\n') === text;
+      offset += count;
+      return match;
+    });
+    if (!exact || offset !== actual.length) {
       throw new FillError('E_PRESERVATION', 'DOCX 입력 결과를 원본 문단과 대조하지 못했습니다.');
     }
     original.file(path, rendered);
@@ -182,6 +200,7 @@ export async function fill(bytes, values, _context = {}) {
     checks: [...checked.checks, { name: 'field-values-reread', status: 'pass' }, { name: 'untouched-package-parts', status: 'pass' }],
     warnings: checked.warnings,
     engine: ENGINE,
+    ...(layout ? { layout, visualValidation: 'not-performed' } : {}),
   };
 }
 

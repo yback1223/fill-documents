@@ -1,10 +1,21 @@
 {
   "name": "fill-documents",
-  "version": "0.1.0",
+  "version": "0.2.0",
   "description": "Fill local HWP, HWPX, DOCX and PDF templates with supplied facts.",
-  "author": { "name": "yback", "url": "https://github.com/yback1223" },
+  "author": {
+    "name": "yback",
+    "url": "https://github.com/yback1223"
+  },
   "homepage": "https://github.com/yback1223/fill-documents",
   "repository": "https://github.com/yback1223/fill-documents",
   "license": "MIT",
-  "keywords": ["documents", "templates", "hwp", "hwpx", "docx", "pdf", "korean"]
+  "keywords": [
+    "documents",
+    "templates",
+    "hwp",
+    "hwpx",
+    "docx",
+    "pdf",
+    "korean"
+  ]
 }

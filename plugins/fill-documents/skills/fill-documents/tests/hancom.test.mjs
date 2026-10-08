@@ -169,7 +169,7 @@ test('HWPX: malformed fields, executable content and external entity declaration
   await assert.rejects(hwpx.inspect(scripts.generate({ type: 'uint8array' }), context), rejectCode('E_UNSUPPORTED'));
 });
 
-test('HWP: mixed character style is rejected at inspection before the lossy patch can run', async () => {
+test('HWP: fixed mixed-style prefix requires flow and preserve still rejects before the lossy patch can run', async () => {
   const bytes = await generatedHwp('고정 제목\n\n앞문구 **굵게** {{value}}');
   const doc = await openHancom(bytes, context);
   try {
@@ -177,7 +177,7 @@ test('HWP: mixed character style is rejected at inspection before the lossy patc
     assert.ok(new Set(characterStyles(doc, target)).size > 1);
   } finally { doc.free(); }
   const before = hash(bytes);
-  await assert.rejects(hwp.inspect(bytes, context), rejectCode('E_PRESERVATION'));
+  assert.equal((await hwp.inspect(bytes, context)).requiredOverflow, 'flow');
   await assert.rejects(hwp.fill(bytes, { value: '새 값' }, context), rejectCode('E_PRESERVATION'));
   assert.equal(hash(bytes), before);
 });

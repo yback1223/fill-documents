@@ -19,8 +19,8 @@ const commands = [
   'templates list [--library DIR]',
   'templates show ID [--library DIR]',
   'templates register FILE --id ID --title TITLE [--library DIR]',
-  'inspect FILE',
-  'fill ID_OR_FILE --data VALUES.json --output OUTPUT [--library DIR] [--dry-run]',
+  'inspect FILE [--layout-profile PROFILE.json] [--coverage COVERAGE.json]',
+  'fill ID_OR_FILE --data VALUES.json --output OUTPUT [--overflow preserve|flow] [--layout-profile PROFILE.json] [--coverage COVERAGE.json] [--library DIR] [--dry-run]',
   'validate FILE',
 ];
 
@@ -28,12 +28,15 @@ async function run() {
   let parsed;
   try { parsed = parseArgs({ allowPositionals: true, options: {
     library: { type: 'string' }, data: { type: 'string' }, output: { type: 'string' },
-    id: { type: 'string' }, title: { type: 'string' }, 'dry-run': { type: 'boolean' },
+    id: { type: 'string' }, title: { type: 'string' }, 'dry-run': { type: 'boolean' }, overflow: { type: 'string' }, 'layout-profile': { type: 'string' }, coverage: { type: 'string' },
     help: { type: 'boolean', short: 'h' },
   } }); } catch { throw Object.assign(new Error('명령의 옵션과 인수를 확인하세요. --help로 사용법을 볼 수 있습니다.'), { code: 'E_INPUT' }); }
   const { values: options, positionals } = parsed;
   const [command, action, operand] = positionals;
-  if (options.help || !command) return { name: 'fill-documents', version: '0.1.0', commands };
+  if (options.help || !command) return { name: 'fill-documents', version: '0.2.0', commands };
+  if (options.coverage !== undefined && !['inspect', 'fill'].includes(command)) {
+    throw Object.assign(new Error('--coverage는 inspect 또는 fill에서 사용하세요.'), { code: 'E_INPUT' });
+  }
   if (command === 'doctor') {
     const formats = {};
     let runtime;
@@ -54,6 +57,9 @@ async function run() {
   const catalog = runtime;
   const engine = runtime;
   const need = (condition, message) => requireCondition(condition, 'E_INPUT', message);
+  need(!options['layout-profile'] || ['inspect', 'fill'].includes(command), '--layout-profile은 inspect 또는 fill에서 사용하세요.');
+  const layoutProfile = options['layout-profile'] ? await readJson(options['layout-profile']) : undefined;
+  const coverage = options.coverage === undefined ? undefined : await readJson(options.coverage);
   if (command === 'templates' && action === 'list') {
     need(positionals.length === 2, 'templates list 명령의 인수를 확인하세요.');
     const { entries, warnings } = await catalog.listTemplates(skillRoot, options.library);
@@ -70,18 +76,18 @@ async function run() {
   }
   if (command === 'inspect' || command === 'validate') {
     need(positionals.length === 2, '문서 파일을 하나 지정하세요.');
-    return command === 'inspect' ? engine.inspectFile(action, skillRoot) : engine.validateFile(action, skillRoot);
+    return command === 'inspect' ? engine.inspectFile(action, skillRoot, { layoutProfile, coverage }) : engine.validateFile(action, skillRoot);
   }
   if (command === 'fill') {
     need(positionals.length === 2 && options.data && options.output, '서식, --data JSON, --output 경로를 지정하세요.');
-    return engine.fillDocument({ target: action, values: await readJson(options.data), output: options.output, skillRoot, library: options.library, dryRun: options['dry-run'] });
+    return engine.fillDocument({ target: action, values: await readJson(options.data), output: options.output, skillRoot, library: options.library, dryRun: options['dry-run'], overflow: options.overflow, layoutProfile, coverage });
   }
   throw new FillError('E_INPUT', '지원하지 않는 명령입니다.', { commands });
 }
 
 try { console.log(JSON.stringify({ ok: true, ...(await run()) }, null, 2)); }
 catch (error) {
-  const known = typeof error.code === 'string' && /^E_(INPUT|FIELDS|TEMPLATE_CHANGED|UNSUPPORTED|PRESERVATION|OUTPUT_EXISTS|IO|ENGINE)$/.test(error.code);
+  const known = typeof error.code === 'string' && /^E_(INPUT|FIELDS|COVERAGE|LAYOUT|TEMPLATE_CHANGED|UNSUPPORTED|PRESERVATION|OUTPUT_EXISTS|IO|ENGINE)$/.test(error.code);
   console.error(JSON.stringify({ ok: false, error: { code: known ? error.code : 'E_ENGINE', message: known ? error.message : '문서 처리에 실패했습니다. 설치 상태와 지원 형식을 확인하세요.', ...(known && error.details ? { details: error.details } : {}) } }, null, 2));
   process.exitCode = 1;
 }

@@ -1,6 +1,11 @@
 import { createRequire as __fillCreateRequire } from 'node:module'; const require = __fillCreateRequire(import.meta.url);
 import {
-  __commonJS
+  FillError,
+  requireCondition
+} from "./chunk-Q2WAVGBC.mjs";
+import {
+  __commonJS,
+  __toESM
 } from "./chunk-WNYIIIUP.mjs";
 
 // node_modules/@xmldom/xmldom/lib/conventions.js
@@ -6190,7 +6195,7 @@ var require_dom_parser = __commonJS({
     function normalizeLineEndings(input) {
       return input.replace(/\r[\n\u0085]/g, "\n").replace(/[\r\u0085\u2028\u2029]/g, "\n");
     }
-    function DOMParser(options) {
+    function DOMParser2(options) {
       options = options || {};
       if (options.locator === void 0) {
         options.locator = true;
@@ -6207,7 +6212,7 @@ var require_dom_parser = __commonJS({
       this.locator = !!options.locator;
       this.xmlns = this.assign(/* @__PURE__ */ Object.create(null), options.xmlns);
     }
-    DOMParser.prototype.parseFromString = function(source, mimeType) {
+    DOMParser2.prototype.parseFromString = function(source, mimeType) {
       if (!isValidMimeType(mimeType)) {
         throw new TypeError('DOMParser.parseFromString: the provided mimeType "' + mimeType + '" is not valid.');
       }
@@ -6431,7 +6436,7 @@ var require_dom_parser = __commonJS({
       throw "onWarningStopParsing";
     }
     exports.__DOMHandler = DOMHandler;
-    exports.DOMParser = DOMParser;
+    exports.DOMParser = DOMParser2;
     exports.normalizeLineEndings = normalizeLineEndings;
     exports.onErrorStopParsing = onErrorStopParsing;
     exports.onWarningStopParsing = onWarningStopParsing;
@@ -6482,6 +6487,112 @@ var require_lib = __commonJS({
   }
 });
 
+// lib/adapters/hancom-utils.mjs
+var import_xmldom = __toESM(require_lib(), 1);
+var visualWarning = "\uBB38\uC11C \uAD6C\uC870\uC640 \uD14D\uC2A4\uD2B8\uB97C \uAC80\uC0AC\uD588\uC2B5\uB2C8\uB2E4. \uD55C\uCEF4 \uC571\uC758 \uD398\uC774\uC9C0 \uBC30\uCE58\xB7\uCD9C\uB825 \uBAA8\uC591\uC740 \uD655\uC778\uD558\uC9C0 \uC54A\uC558\uC2B5\uB2C8\uB2E4.";
+var fieldNamePattern = /^[A-Za-z][A-Za-z0-9_]{0,63}$/;
+var validFieldName = (name) => fieldNamePattern.test(name) && !["constructor", "prototype", "__proto__"].includes(name);
+function placeholders(text) {
+  const matches = [];
+  for (const match of text.matchAll(/\{\{([\s\S]*?)\}\}/g)) {
+    requireCondition(validFieldName(match[1]), "E_FIELDS", "\uC9C0\uC6D0\uD558\uC9C0 \uC54A\uB294 \uD544\uB4DC \uC774\uB984 \uB610\uB294 \uD15C\uD50C\uB9BF \uBB38\uBC95\uC785\uB2C8\uB2E4.");
+    matches.push({ name: match[1], start: match.index, end: match.index + match[0].length });
+  }
+  const remainder = text.replace(/\{\{[\s\S]*?\}\}/g, "");
+  requireCondition(!remainder.includes("{{") && !remainder.includes("}}"), "E_FIELDS", "\uB2EB\uD788\uC9C0 \uC54A\uC740 \uD544\uB4DC \uD45C\uC2DD\uC774 \uC788\uC2B5\uB2C8\uB2E4.");
+  return matches;
+}
+function fieldList(occurrences) {
+  const fields = /* @__PURE__ */ new Map();
+  for (const { name } of occurrences) {
+    requireCondition(validFieldName(name), "E_FIELDS", "\uC9C0\uC6D0\uD558\uC9C0 \uC54A\uB294 \uD544\uB4DC \uC774\uB984\uC785\uB2C8\uB2E4.");
+    const entry = fields.get(name) ?? { name, type: "text", occurrences: 0 };
+    entry.occurrences++;
+    fields.set(name, entry);
+  }
+  return [...fields.values()];
+}
+function checkedValues(fields, values, context = {}) {
+  requireCondition(values && typeof values === "object" && !Array.isArray(values), "E_FIELDS", "\uC785\uB825\uAC12\uC740 \uAC1D\uCCB4\uC5EC\uC57C \uD569\uB2C8\uB2E4.");
+  const known = new Set(fields.map((field) => field.name));
+  requireCondition(Object.keys(values).every((name) => known.has(name)), "E_FIELDS", "\uBB38\uC11C\uC5D0 \uC5C6\uB294 \uC785\uB825 \uD544\uB4DC\uAC00 \uC788\uC2B5\uB2C8\uB2E4.");
+  for (const field of fields) {
+    const value = values[field.name];
+    const configured = context.manifest?.fields?.find((item) => item.name === field.name)?.maxLength;
+    const limit = Math.min(Number.isSafeInteger(configured) && configured > 0 ? configured : 1e4, 1e4);
+    requireCondition(Object.hasOwn(values, field.name) && typeof value === "string" && value.trim().length > 0, "E_FIELDS", "\uD544\uC218 \uD14D\uC2A4\uD2B8 \uC785\uB825\uAC12\uC774 \uC5C6\uAC70\uB098 \uBE44\uC5B4 \uC788\uC2B5\uB2C8\uB2E4.", { field: field.name });
+    requireCondition([...value].length <= limit, "E_FIELDS", "\uC785\uB825\uAC12\uC758 \uCD5C\uB300 \uAE38\uC774\uB97C \uCD08\uACFC\uD588\uC2B5\uB2C8\uB2E4.", { field: field.name, maxLength: limit });
+    requireCondition(!/[\u0000-\u0008\u000B\u000C\u000E-\u001F\uFFFE\uFFFF]/u.test(value) && !/[\uD800-\uDFFF]/u.test(value), "E_FIELDS", "\uC9C0\uC6D0\uD558\uC9C0 \uC54A\uB294 \uC81C\uC5B4 \uBB38\uC790 \uB610\uB294 \uC798\uBABB\uB41C Unicode \uBB38\uC790\uAC00 \uC788\uC2B5\uB2C8\uB2E4.", { field: field.name });
+    requireCondition(!value.includes("{{") && !value.includes("}}"), "E_FIELDS", "\uC785\uB825\uAC12\uC5D0 \uD15C\uD50C\uB9BF \uD45C\uC2DD\uC744 \uB123\uC744 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.", { field: field.name });
+  }
+  return values;
+}
+function xmlEscape(value) {
+  return value.replaceAll("&", "&amp;").replaceAll("<", "&lt;").replaceAll(">", "&gt;").replaceAll('"', "&quot;").replaceAll("'", "&apos;");
+}
+function spliceText(source, edits) {
+  const sorted = [...edits].sort((a, b) => a.start - b.start);
+  const chunks = [];
+  let end = 0;
+  for (const edit of sorted) {
+    requireCondition(edit.start >= end && edit.end >= edit.start && edit.end <= source.length, "E_PRESERVATION", "\uBB38\uC11C\uC758 \uC218\uC815 \uBC94\uC704\uAC00 \uACB9\uCE58\uAC70\uB098 \uC62C\uBC14\uB974\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+    chunks.push(source.slice(end, edit.start), edit.replacement);
+    end = edit.end;
+  }
+  return chunks.join("") + source.slice(end);
+}
+function scanXml(xml) {
+  requireCondition(!/<!DOCTYPE|<!ENTITY/i.test(xml), "E_UNSUPPORTED", "DTD\uC640 \uC678\uBD80 \uC5D4\uD2F0\uD2F0\uAC00 \uC788\uB294 \uBB38\uC11C\uB294 \uC9C0\uC6D0\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+  let invalid = false;
+  let dom;
+  try {
+    dom = new import_xmldom.DOMParser({ onError: () => {
+      invalid = true;
+    } }).parseFromString(xml, "application/xml");
+  } catch {
+    throw new FillError("E_INPUT", "\uBB38\uC11C XML\uC774 \uC62C\uBC14\uB974\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+  }
+  requireCondition(!invalid && dom.documentElement, "E_INPUT", "\uBB38\uC11C XML\uC774 \uC62C\uBC14\uB974\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+  const nodes = [];
+  const stack = [];
+  const domNodes = [...Array.from(dom.getElementsByTagName("*"))];
+  let domIndex = 0;
+  const token = /<!--[\s\S]*?-->|<!\[CDATA\[[\s\S]*?\]\]>|<\?[\s\S]*?\?>|<(?:"[^"]*"|'[^']*'|[^'">])*>/g;
+  for (const match of xml.matchAll(token)) {
+    const raw = match[0];
+    if (/^<(!|\?)/.test(raw)) continue;
+    if (raw.startsWith("</")) {
+      const node2 = stack.pop();
+      requireCondition(node2 && raw.slice(2, -1).trim() === node2.name, "E_INPUT", "XML \uC694\uC18C\uC758 \uB2EB\uD798\uC774 \uC77C\uCE58\uD558\uC9C0 \uC54A\uC2B5\uB2C8\uB2E4.");
+      node2.closeStart = match.index;
+      node2.end = match.index + raw.length;
+      continue;
+    }
+    const name = raw.match(/^<([^\s/>]+)/)?.[1];
+    const element = domNodes[domIndex++];
+    requireCondition(element?.nodeName === name, "E_INPUT", "XML \uC694\uC18C\uC758 \uC704\uCE58\uB97C \uD655\uC778\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
+    const node = { name, local: element.localName, namespace: element.namespaceURI, attrs: Object.fromEntries(Array.from(element.attributes).map((attribute) => [attribute.name, attribute.value])), start: match.index, openEnd: match.index + raw.length, closeStart: match.index + raw.length, end: match.index + raw.length, selfClosing: /\/\s*>$/.test(raw), parent: stack.at(-1), children: [], element };
+    node.parent?.children.push(node);
+    nodes.push(node);
+    if (!node.selfClosing) stack.push(node);
+  }
+  requireCondition(stack.length === 0 && domIndex === domNodes.length, "E_INPUT", "XML \uC694\uC18C\uC758 \uC704\uCE58\uB97C \uD655\uC778\uD560 \uC218 \uC5C6\uC2B5\uB2C8\uB2E4.");
+  return nodes;
+}
+function ancestor(node, predicate) {
+  for (let parent = node.parent; parent; parent = parent.parent) if (predicate(parent)) return parent;
+  return void 0;
+}
+
 export {
-  require_lib
+  require_lib,
+  visualWarning,
+  fieldNamePattern,
+  placeholders,
+  fieldList,
+  checkedValues,
+  xmlEscape,
+  spliceText,
+  scanXml,
+  ancestor
 };
