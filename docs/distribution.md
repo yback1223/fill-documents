@@ -24,7 +24,7 @@ Claude Code의 자체 marketplace는 저장소 URL로 추가할 수 있다. Anth
 
 OpenAI 신청 경로는 [Plugins 대시보드](https://platform.openai.com/plugins)다. 업로드 후 자동 검사를 확인하고 실제 인증한 개인·사업자 명의 및 정책 확인을 거쳐 심사를 신청한다.
 
-현재 온라인 제출·심사·승인 상태는 최종 실행 기록에서 확인한다. 인증이나 신청을 실행하지 않았다면 미제출로 유지한다.
+최신 0.2.0의 공개·검증·공식 신청 상태는 [배포 기록](releases/0.2.0.md)에서 확인한다. GitHub와 자체 marketplace는 공개됐으며 OpenAI·Anthropic 공식 디렉터리는 아직 미등재다.
 
 ## 온라인 실행 기록
 
