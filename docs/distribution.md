@@ -7,8 +7,8 @@
 - `plugins/fill-documents/`: portable Agent Plugins 1.0 + Claude/Codex 호환 manifest.
 - `.claude-plugin/marketplace.json`: Claude Code 자체 marketplace.
 - `.agents/plugins/marketplace.json`: Codex 자체 marketplace.
-- `dist/fill-documents-plugin-0.2.0.zip`: 단일 플러그인 디렉터리.
-- `dist/fill-documents-skill-0.2.0.zip`: 독립 스킬 디렉터리.
+- `dist/fill-documents-plugin-0.2.1.zip`: 단일 플러그인 디렉터리.
+- `dist/fill-documents-skill-0.2.1.zip`: 독립 스킬 디렉터리.
 
 공통 CLI·WASM·글꼴·서식·외부 라이선스를 포함한다. MCP 서버, OAuth, 앱 바인딩 또는 제품 내 결제는 없다. 이 ZIP에는 `node_modules`, `.app.json`, 사용자 자료를 넣지 않는다.
 
@@ -24,7 +24,7 @@ Claude Code의 자체 marketplace는 저장소 URL로 추가할 수 있다. Anth
 
 OpenAI 신청 경로는 [Plugins 대시보드](https://platform.openai.com/plugins)다. 업로드 후 자동 검사를 확인하고 실제 인증한 개인·사업자 명의 및 정책 확인을 거쳐 심사를 신청한다.
 
-최신 0.2.0의 공개·검증·공식 신청 상태는 [배포 기록](releases/0.2.0.md)에서 확인한다. GitHub와 자체 marketplace는 공개됐으며 OpenAI·Anthropic 공식 디렉터리는 아직 미등재다.
+0.2.1은 기본 소개·추천 프롬프트·공개 안내를 영어로 정리하고 한국어 마켓 번역과 한국어 문서를 함께 제공한다. 문서 처리 기능은 0.2.0과 동일하다. [0.2.1 준비 및 검증 기록](releases/0.2.1.md)과 [0.2.0 공개 기록](releases/0.2.0.md)을 구분한다. GitHub와 자체 marketplace는 공개됐으며 OpenAI·Anthropic 공식 디렉터리는 아직 미등재다.
 
 ## 온라인 실행 기록
 

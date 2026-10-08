@@ -1,21 +1,29 @@
-# 변경 기록
+# Changelog
+
+English · [한국어](CHANGELOG.ko.md)
+
+## 0.2.1 — 2026-10-08
+
+- Make English the default for listing text, suggested prompts, public README, privacy, terms and support pages.
+- Retain the Korean marketplace translation and provide linked Korean documentation.
+- Keep document processing and existing format limitations unchanged from 0.2.0.
 
 ## 0.2.0 — 2026-10-08
 
-지원되는 서식의 장문 처리와 전체 작성 검수 절차를 보완한 초기 공개 버전입니다.
+An early release with controlled long-content handling and a whole-document review workflow.
 
-- 사용자가 범위를 줄이지 않으면 본문·표·별첨·부록의 모든 적용 작성란을 조사하고 작성하도록 스킬을 수정했습니다. 가상 예시는 일관된 사례로 형식마다 하나만 제공합니다.
-- CLI 필드 처리와 문서 전체 완료를 구분합니다. 작성 범위 목록과 준비본 해시를 검사하며 미해결 영역을 완료로 표시하지 않습니다.
-- 지원되는 HWP·HWPX·DOCX·PDF 구조에 장문 이어쓰기를 추가했습니다. HWPX 반복 행과 PDF 이어쓰기는 해당 원본에 연결된 레이아웃 프로필이 필요합니다.
-- DOCX의 탭 정지점 서식을 실제 탭 문자로 읽던 문제를 수정하고 원래 탭 배치를 유지합니다.
-- Claude Code·Codex 플러그인과 독립 스킬에 같은 실행 번들·16종 기본 서식·한글 글꼴을 제공합니다. 무료이며 제품 내 결제가 없습니다.
+- The skill inventories and fills every applicable writing area in the body, tables, annexes and appendices unless the user narrows the scope. Fictional examples use one consistent scenario and one result per requested format.
+- Distinguish CLI field filling from whole-document completion. Check coverage inventories against the prepared-copy hash and do not mark unresolved areas complete.
+- Add long-content flow for supported HWP, HWPX, DOCX and PDF structures. HWPX repeated rows and PDF continuation require a layout profile tied to the source template.
+- Preserve DOCX tab stops instead of treating tab-stop declarations as text tabs.
+- Ship the same runtime, 16 templates and Korean font in the Claude Code plugin, Codex plugin and standalone skill. The tool is free, with no in-product payments.
 
-### 지원하지 않는 기능
+### Limitations
 
-일반 빈칸을 모두 자동으로 찾는 기능, 완성본의 범용 재작성, 지정 부분만 고치는 공통 편집 기능은 아직 없습니다. 스캔 PDF·일반 PDF 본문 편집도 지원하지 않습니다. 문서별 준비·보정으로 만든 검수 예시는 이런 범용 기능의 구현을 뜻하지 않습니다. 한컴오피스와 Microsoft Word 자체 앱의 표시·편집·인쇄는 미검증입니다.
+Automatic discovery of arbitrary blanks, general rewriting of completed documents and general targeted editing are not implemented. Scanned PDFs and normal PDF body editing are unsupported. Reviewed examples made with document-specific preparation do not establish those general capabilities. Native Hancom Office and Microsoft Word display, editing and printing have not been verified.
 
-자동 검사 통과는 지원 범위의 동작 증거이며 모든 문서의 무손실 편집이나 공식 마켓 승인 증거가 아닙니다.
+Passing automated checks provides evidence within the supported scope; it does not prove lossless editing of every document or official marketplace approval.
 
 ## 0.1.0 — 2026-10-08
 
-HWP·HWPX·DOCX·PDF의 명시적 입력 필드 채우기, 기본 서식 16종, 사용자 서식 등록, 원본 보존 및 로컬 실행을 처음 공개했습니다.
+Initial release of explicit-field filling for HWP, HWPX, DOCX and PDF, with 16 templates, local template registration, original-file preservation and local execution.

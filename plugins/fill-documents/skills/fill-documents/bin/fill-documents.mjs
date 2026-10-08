@@ -33,7 +33,7 @@ async function run() {
   } }); } catch { throw Object.assign(new Error('명령의 옵션과 인수를 확인하세요. --help로 사용법을 볼 수 있습니다.'), { code: 'E_INPUT' }); }
   const { values: options, positionals } = parsed;
   const [command, action, operand] = positionals;
-  if (options.help || !command) return { name: 'fill-documents', version: '0.2.0', commands };
+  if (options.help || !command) return { name: 'fill-documents', version: '0.2.1', commands };
   if (options.coverage !== undefined && !['inspect', 'fill'].includes(command)) {
     throw Object.assign(new Error('--coverage는 inspect 또는 fill에서 사용하세요.'), { code: 'E_INPUT' });
   }

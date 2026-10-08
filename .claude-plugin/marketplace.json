@@ -10,8 +10,8 @@
     {
       "name": "fill-documents",
       "source": "./plugins/fill-documents",
-      "description": "HWP·HWPX·Word·PDF 템플릿 제공 및 채우기",
-      "version": "0.2.0"
+      "description": "Reusable HWP, HWPX, Word and PDF templates with local field filling.",
+      "version": "0.2.1"
     }
   ]
 }

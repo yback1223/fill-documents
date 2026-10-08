@@ -1,13 +1,15 @@
-# Fill Documents 개인정보 및 파일 처리 안내
+# Fill Documents privacy and file handling
 
-게시자: **yback** · 적용 대상: 이 저장소의 Fill Documents 로컬 CLI 및 스킬 0.2.0.
+English · [한국어](PRIVACY.ko.md)
 
-Fill Documents CLI는 사용자가 지정한 문서와 JSON 입력을 로컬에서 읽고, 새 결과 파일을 사용자가 지정한 경로에 씁니다. 템플릿 등록을 요청하면 원본 사본, 필드 이름과 파일 해시를 사용자 라이브러리에 저장합니다. 기본 라이브러리는 `~/.local/share/fill-documents/templates`이며 변경할 수 있습니다.
+Publisher: **yback**. Applies to the Fill Documents local CLI and skill, version 0.2.1.
 
-선택적으로 전달한 작성 범위 목록과 레이아웃 프로필도 로컬에서 읽습니다. 이 파일과 검수 기록에는 문서 위치나 사용자가 입력한 근거가 들어갈 수 있으므로 사용자가 원본·결과와 함께 관리하고 삭제합니다. 참조 문자열을 외부에 전송하거나 원격 주소로 열지 않습니다.
+The CLI reads user-selected documents and JSON values locally and writes a new result to the user-selected path. Registering a template stores a copy, field names and a file hash in the user's local library. The default location is `~/.local/share/fill-documents/templates` and can be changed.
 
-CLI에는 서비스 계정, 자체 원격 서버, 광고, 분석용 텔레메트리, 결제 기능 또는 문서 업로드 기능이 없습니다. 문서 처리 중 인터넷 통신을 요구하지 않습니다. 게시자는 이 CLI를 통해 문서 내용을 받지 않습니다. 결과 JSON에는 파일 경로, 해시, 필드 이름과 검사 결과가 포함될 수 있습니다. 입력 JSON과 결과 파일은 사용자가 삭제할 때까지 사용자의 저장장치에 남습니다. 사용자 라이브러리도 직접 삭제할 수 있습니다. 임시파일 정리가 실패하면 해당 경로를 경고로 알립니다.
+Optional coverage inventories and layout profiles are also read locally. These files and review records may contain document locations or evidence provided by the user. The user manages and deletes them alongside the originals and results. The CLI does not transmit reference strings or open them as remote URLs.
 
-Claude·Codex 등 호스트에서 대화하거나 파일을 첨부하면 호스트가 해당 내용을 처리할 수 있습니다. 이 동작은 호스트의 개인정보 정책과 계정 설정을 따르며, CLI의 로컬 처리와 별개입니다. GitHub에서 저장소를 내려받거나 공개 이슈를 작성할 때에는 GitHub가 해당 요청과 게시 내용을 처리합니다.
+The CLI has no service account, remote server, advertising, analytics telemetry, payment feature or document-upload feature. Document processing does not require internet communication. The publisher does not receive document content through the CLI. JSON results may include file paths, hashes, field names and validation results. Input JSON, output files and the local template library remain on the user's storage until the user deletes them. If temporary-file cleanup fails, the CLI reports the affected path in a warning.
 
-문서나 개인정보가 포함된 공개 이슈를 만들지 마세요. 이 프로젝트의 문의 경로는 [지원 안내](SUPPORT.md)에 있습니다. 향후 파일 처리 방식이 변경되면 이 안내와 버전을 함께 갱신합니다.
+When you chat with or attach a file to a host such as Claude or Codex, that host may process the content under its own privacy policy and account settings. This is separate from the CLI's local processing. GitHub processes requests and public content when you download the repository or post an issue there.
+
+Do not post documents or personal data in public issues. See [Support](SUPPORT.md) for contact instructions. Changes to file handling will be accompanied by an updated notice and version.
