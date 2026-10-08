@@ -2,7 +2,7 @@
 
 [English](PRIVACY.md) · 한국어
 
-게시자: **yback** · 적용 대상: 이 저장소의 Fill Documents 로컬 CLI 및 스킬 0.2.1.
+게시자: **yback** · 적용 대상: 이 저장소의 Fill Documents 로컬 CLI 및 스킬 0.2.2.
 
 Fill Documents CLI는 사용자가 지정한 문서와 JSON 입력을 로컬에서 읽고, 새 결과 파일을 사용자가 지정한 경로에 씁니다. 템플릿 등록을 요청하면 원본 사본, 필드 이름과 파일 해시를 사용자 라이브러리에 저장합니다. 기본 라이브러리는 `~/.local/share/fill-documents/templates`이며 변경할 수 있습니다.
 

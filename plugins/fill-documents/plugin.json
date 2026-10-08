@@ -1,7 +1,7 @@
 {
   "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
   "name": "fill-documents",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "description": "Fill local HWP, HWPX, DOCX and PDF templates with supplied facts.",
   "author": {
     "name": "yback",
@@ -24,8 +24,8 @@
       "interface": {
         "displayName": "Fill Documents",
         "shortDescription": "Fill document templates",
-        "longDescription": "Fill Documents by yback provides 16 local templates for letters, reports, meeting minutes and applications in HWP, HWPX, DOCX and PDF. The skill inventories applicable writing areas and requires completion and review; the bundled CLI fills supported explicit fields and preserves the original file. Controlled long-content flow and completion-coverage reporting are included. Unmarked or complex forms require document-specific preparation and review. Arbitrary rewriting of completed documents, general partial editing, scanned PDFs and normal PDF body editing are not supported. Node.js 20 or later is required. No separate server, API key or in-product payment is needed. Native Hancom Office and Microsoft Word rendering has not been verified.",
-        "developerName": "YONG MIN BACK",
+        "longDescription": "Fill Documents by yback provides 16 local templates for letters, reports, meeting minutes and applications in HWP, HWPX, DOCX and PDF. The skill inventories applicable writing areas and requires completion and review; the bundled CLI fills supported explicit fields and preserves the original file. Controlled long-content flow and completion-coverage reporting are included. Unmarked or complex forms require document-specific preparation and review. Arbitrary rewriting of completed documents, general partial editing, scanned PDFs and normal PDF body editing are not supported. Node.js 20 or later is required. Documents are processed locally with the bundled CLI. Native Hancom Office and Microsoft Word rendering has not been verified.",
+        "developerName": "yback",
         "category": "Productivity",
         "defaultPrompt": [
           "Choose an official letter template and fill it with the details I provide.",
@@ -50,11 +50,11 @@
       },
       "publication": {
         "countries": [],
-        "release_notes": "0.2.1 makes English the default for listing text, suggested prompts and public documentation while retaining Korean listing and documentation translations. Document processing is unchanged from 0.2.0: supported explicit fields, controlled long-content flow and completion-coverage reporting. General completed-document rewriting and partial editing remain unsupported.",
+        "release_notes": "0.2.2 updates the English and Korean listing descriptions and requests yback as the package developer display name. Document-processing behavior is unchanged from 0.2.1. The public directory may use the selected verified publishing identity instead of the package display name.",
         "translations": {
           "ko-KR": {
             "subtitle": "한글·Word·PDF 서식 채우기",
-            "description": "yback의 Fill Documents는 공문·보고서·회의록·신청서 16종을 HWP·HWPX·DOCX·PDF로 제공합니다. 스킬은 모든 적용 작성란을 조사하고 작성·검수하도록 지시하며, 포함된 CLI는 지원되는 명시적 필드를 채우고 원본을 보존합니다. 제한된 장문 이어쓰기와 작성 범위 보고를 포함합니다. 표식 없는 빈칸과 복잡한 서식은 문서별 준비·편집·검수가 필요합니다. 완성본의 범용 재작성·부분 편집, 스캔 PDF와 일반 PDF 본문 편집은 지원하지 않습니다. Node.js 20 이상이 필요하며 별도 서버·API 키·제품 내 결제가 없습니다. 한컴오피스와 Microsoft Word 자체 앱의 표시는 미검증입니다."
+            "description": "yback의 Fill Documents는 공문·보고서·회의록·신청서 16종을 HWP·HWPX·DOCX·PDF로 제공합니다. 스킬은 모든 적용 작성란을 조사하고 작성·검수하도록 지시하며, 포함된 CLI는 지원되는 명시적 필드를 채우고 원본을 보존합니다. 제한된 장문 이어쓰기와 작성 범위 보고를 포함합니다. 표식 없는 빈칸과 복잡한 서식은 문서별 준비·편집·검수가 필요합니다. 완성본의 범용 재작성·부분 편집, 스캔 PDF와 일반 PDF 본문 편집은 지원하지 않습니다. Node.js 20 이상이 필요하며 포함된 CLI로 문서를 로컬에서 처리합니다. 한컴오피스와 Microsoft Word 자체 앱의 표시는 미검증입니다."
           }
         }
       }

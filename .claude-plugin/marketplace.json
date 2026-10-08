@@ -11,7 +11,7 @@
       "name": "fill-documents",
       "source": "./plugins/fill-documents",
       "description": "Reusable HWP, HWPX, Word and PDF templates with local field filling.",
-      "version": "0.2.1"
+      "version": "0.2.2"
     }
   ]
 }

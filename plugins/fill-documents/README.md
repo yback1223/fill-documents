@@ -4,7 +4,7 @@ English · [한국어](README.ko.md)
 
 **Choose a document template and fill it with your information.**
 
-Fill Documents is a free, open-source document filling skill by **yback**. It runs locally in Claude Code and Codex with Node.js 20 or later. Choose a template, provide the requested values, and receive a new document in the same format. The original template and existing output files are preserved.
+Fill Documents is an open-source document filling skill by **yback**. It runs locally in Claude Code and Codex with Node.js 20 or later. Choose a template, provide the requested values, and receive a new document in the same format. The original template and existing output files are preserved.
 
 It includes 16 Korean-language templates for letters, reports, meeting minutes and applications in HWP, HWPX, Word DOCX and PDF. These are original general-purpose templates, not official forms approved by an institution. Fictional example values are included. You can register your own templates with supported explicit fields for reuse.
 
@@ -12,7 +12,7 @@ Try: “Use fill-documents to find a meeting-minutes template and fill it with t
 
 A successful CLI operation does not establish whole-document completion. `inspect` finds explicit fields only, and `--coverage` checks an inventory without replacing page-by-page content and visual review. Unresolved coverage is `incomplete`; consistent declarations are `requires-review`. The CLI always reports `fullDocumentComplete: false`. Unsupported areas remain in scope and require safe preparation or authorized document-specific editing. See the [completion workflow](skills/fill-documents/references/full-document-completion.md).
 
-**0.2.1 limitations:** Automatic recognition of arbitrary blanks, general rewriting of completed documents and general targeted editing are not implemented. Unsupported areas require document-specific work and are not reported as complete.
+**0.2.2 limitations:** Automatic recognition of arbitrary blanks, general rewriting of completed documents and general targeted editing are not implemented. Unsupported areas require document-specific work and are not reported as complete.
 
 ## Supported formats
 
@@ -27,7 +27,7 @@ The CLI rejects encryption, signed documents, executable actions, unsupported st
 
 The skill runs its bundled Node.js CLI to read local files and write new results. It includes executable JavaScript, a gzip-compressed HWP WASM engine, a Korean font and binary document templates. WASM is decompressed in memory; the tool does not download an external engine. Normal use needs no npm install, separate server or API key.
 
-The local CLI does not upload documents, contact a service, run a package installer or send telemetry. Input values may contain personal data supplied by the user. Results and registered templates remain on the local filesystem until the user removes them. The host AI application's own data handling and account requirements still apply. There are no in-product payments.
+The local CLI does not upload documents, contact a service, run a package installer or send telemetry. Input values may contain personal data supplied by the user. Results and registered templates remain on the local filesystem until the user removes them. The host AI application's own data handling and account requirements still apply.
 
 Source code and original third-party licenses and attribution are included. Compressed engines, templates and large code files may require human review in a directory submission.
 

@@ -22,6 +22,6 @@
     "lib/adapters/pdf.mjs": "600c8ae080d93fc002dd85bd26d4becbc9c0f54db8facc000eb9eeac0c4295d6",
     "lib/engine.mjs": "50ffb426fcf7eec7b809e64eef1bf197350357114aadfeb98c0c1f0409410de1",
     "scripts/runtime-entry.mjs": "ee924fb501aaef5ac6b1b2f1694bc9ec15e93a5e7e71c3927ec47727b15f2e23",
-    "package-lock.json": "b2ecbd3ffe416e5809096c72ce6ed21743bc95d4916f245eb7b69dfd2a1c9914"
+    "package-lock.json": "d15855b66d2d81ad7a504dd1977e6ac50fa5d18ab28fa4e90ce149136506f33e"
   }
 }

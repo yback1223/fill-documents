@@ -26,12 +26,15 @@ assert.deepEqual(publication.countries, [], 'Release must retain the selected al
 assert(publication.release_notes.trim().length > 0);
 assert(publication.translations['ko-KR'].subtitle.length <= 30);
 assert(publication.translations['ko-KR'].description.trim().length > 0);
+assert.doesNotMatch(ui.longDescription, /\b(?:free|pricing|subscription|payments?|purchases?|discounts?|promotions?)\b/i, 'Listing descriptions must not advertise pricing or promotions');
+assert.doesNotMatch(publication.translations['ko-KR'].description, /무료|구독|결제|할인|프로모션/, 'Korean listing descriptions must not advertise pricing or promotions');
 assert.equal(manifest.extensions['com.openai'].review.commerce, false);
 assert(Array.isArray(ui.capabilities) && ui.capabilities.every(value => typeof value === 'string'));
 for (const filename of ['package.json', 'plugins/fill-documents/skills/fill-documents/package.json', 'plugins/fill-documents/skills/fill-documents/package-lock.json']) {
   assert.equal((await json(path.join(root, filename))).version, manifest.version, `Release version mismatch: ${filename}`);
 }
-assert.equal(ui.developerName, 'YONG MIN BACK');
+// The publisher requested yback as package branding; the directory can override it with its verified identity.
+assert.equal(ui.developerName, 'yback');
 assert.equal(manifest.author.name, 'yback');
 assert.equal(manifest.license, 'MIT');
 for (const field of ['websiteURL', 'supportURL', 'privacyPolicyURL', 'termsOfServiceURL']) assert.match(ui[field], /^https:\/\/github\.com\/yback1223\/fill-documents/);

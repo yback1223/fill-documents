@@ -1,6 +1,6 @@
 {
   "name": "@yback1223/fill-documents",
-  "version": "0.2.1",
+  "version": "0.2.2",
   "private": true,
   "type": "module",
   "description": "Fill HWP, HWPX, DOCX and PDF templates locally",

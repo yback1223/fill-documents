@@ -2,6 +2,13 @@
 
 English · [한국어](CHANGELOG.ko.md)
 
+## 0.2.2 — 2026-10-08
+
+- Remove payment-related wording from English and Korean listing descriptions and the plugin listing README.
+- Use `yback` as the requested developer display name in the package. OpenAI's directory may override it with the selected verified identity; this change does not establish a new verified identity.
+- Add a package check against pricing and promotion wording in listing descriptions. Keep the review-only commerce declaration accurate.
+- Document-processing behavior is unchanged from 0.2.1.
+
 ## 0.2.1 — 2026-10-08
 
 - Make English the default for listing text, suggested prompts, public README, privacy, terms and support pages.

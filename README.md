@@ -8,7 +8,7 @@ Fill Documents is a free, open-source tool by **yback**. The same skill works wi
 
 The skill's default workflow covers all applicable writing areas in the body, tables, annexes and appendices. Only the user's explicit exclusions narrow that scope. It asks for missing facts in real documents and uses a coherent, clearly fictional scenario when an example is requested. It delivers one reviewed example per requested format, clearly distinguished from the original.
 
-> **Scope of the 0.2.1 early release:** The CLI fills explicit input fields. Automatic discovery of arbitrary blanks, general rewriting of completed documents and general targeted editing are not implemented. Areas outside supported fields need document-specific preparation, editing and review. Whole-document instructions do not guarantee automatic completion of every attachment.
+> **Scope of the 0.2.2 early release:** The CLI fills explicit input fields. Automatic discovery of arbitrary blanks, general rewriting of completed documents and general targeted editing are not implemented. Areas outside supported fields need document-specific preparation, editing and review. Whole-document instructions do not guarantee automatic completion of every attachment.
 
 [Download the skill or plugin ZIP](https://github.com/yback1223/fill-documents/releases) · [Release notes](CHANGELOG.md)
 
