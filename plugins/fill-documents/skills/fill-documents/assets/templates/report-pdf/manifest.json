@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "report-pdf",
+  "version": "1.0.0",
+  "title": "보고서",
+  "category": "report",
+  "format": "pdf",
+  "file": "template.pdf",
+  "sha256": "0eeffcc3626d2bd15d3304aba4114a5a04ea1bea87b9dc3dc0ad5e08c8b1e30f",
+  "license": "MIT",
+  "source": "original",
+  "fields": [
+    {
+      "name": "title",
+      "label": "제목",
+      "type": "text",
+      "required": true,
+      "maxLength": 180,
+      "occurrences": 1
+    },
+    {
+      "name": "author",
+      "label": "작성자",
+      "type": "text",
+      "required": true,
+      "maxLength": 80,
+      "occurrences": 1
+    },
+    {
+      "name": "date",
+      "label": "작성일",
+      "type": "text",
+      "required": true,
+      "maxLength": 30,
+      "occurrences": 1
+    },
+    {
+      "name": "summary",
+      "label": "요약",
+      "type": "text",
+      "required": true,
+      "maxLength": 900,
+      "occurrences": 1
+    },
+    {
+      "name": "findings",
+      "label": "주요 내용",
+      "type": "text",
+      "required": true,
+      "maxLength": 1800,
+      "occurrences": 1
+    },
+    {
+      "name": "next_steps",
+      "label": "후속 조치",
+      "type": "text",
+      "required": true,
+      "maxLength": 900,
+      "occurrences": 1
+    }
+  ]
+}

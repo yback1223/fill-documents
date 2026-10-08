@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "application-hwpx",
+  "version": "1.0.0",
+  "title": "신청서",
+  "category": "application",
+  "format": "hwpx",
+  "file": "template.hwpx",
+  "sha256": "4782c5ab17cd3654cbc50fa9214026da309a41a1148638a58e378d130986c6bc",
+  "license": "MIT",
+  "source": "original",
+  "fields": [
+    {
+      "name": "title",
+      "label": "신청명",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "applicant",
+      "label": "신청자",
+      "type": "text",
+      "required": true,
+      "maxLength": 100,
+      "occurrences": 1
+    },
+    {
+      "name": "organization",
+      "label": "소속",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "contact",
+      "label": "연락처",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "request",
+      "label": "신청 내용",
+      "type": "text",
+      "required": true,
+      "maxLength": 3000,
+      "occurrences": 1
+    },
+    {
+      "name": "reason",
+      "label": "신청 사유",
+      "type": "text",
+      "required": true,
+      "maxLength": 3000,
+      "occurrences": 1
+    },
+    {
+      "name": "date",
+      "label": "신청일",
+      "type": "text",
+      "required": true,
+      "maxLength": 40,
+      "occurrences": 1
+    }
+  ]
+}

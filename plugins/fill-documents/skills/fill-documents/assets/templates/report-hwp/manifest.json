@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "report-hwp",
+  "version": "1.0.0",
+  "title": "보고서",
+  "category": "report",
+  "format": "hwp",
+  "file": "template.hwp",
+  "sha256": "300fb317668e87f36d38221c15ca70727f7d993d076c66e8c7787d17fc122c51",
+  "license": "MIT",
+  "source": "original",
+  "fields": [
+    {
+      "name": "title",
+      "label": "제목",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "date",
+      "label": "작성일",
+      "type": "text",
+      "required": true,
+      "maxLength": 40,
+      "occurrences": 1
+    },
+    {
+      "name": "author",
+      "label": "작성자",
+      "type": "text",
+      "required": true,
+      "maxLength": 100,
+      "occurrences": 1
+    },
+    {
+      "name": "summary",
+      "label": "요약",
+      "type": "text",
+      "required": true,
+      "maxLength": 2000,
+      "occurrences": 1
+    },
+    {
+      "name": "findings",
+      "label": "주요 내용",
+      "type": "text",
+      "required": true,
+      "maxLength": 4000,
+      "occurrences": 1
+    },
+    {
+      "name": "next_steps",
+      "label": "후속 조치",
+      "type": "text",
+      "required": true,
+      "maxLength": 2000,
+      "occurrences": 1
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "fill-documents-project",
+  "version": "0.1.0",
+  "private": true,
+  "description": "Template-based document filling for Claude and Codex",
+  "license": "MIT",
+  "scripts": {
+    "setup": "npm --prefix plugins/fill-documents/skills/fill-documents ci --ignore-scripts",
+    "test": "npm --prefix plugins/fill-documents/skills/fill-documents test",
+    "build": "node scripts/build-release.mjs",
+    "validate": "node scripts/validate-package.mjs"
+  }
+}

@@ -1,0 +1,77 @@
+{
+  "schemaVersion": 1,
+  "id": "application-pdf",
+  "version": "1.0.0",
+  "title": "신청서",
+  "category": "application",
+  "format": "pdf",
+  "file": "template.pdf",
+  "sha256": "0c230b8196a40477bd99f42da76dacbc98f0fbc2f9c76c4eaab820c3e73f8b98",
+  "license": "MIT",
+  "source": "original",
+  "fields": [
+    {
+      "name": "title",
+      "label": "신청명",
+      "type": "text",
+      "required": true,
+      "maxLength": 160,
+      "occurrences": 1
+    },
+    {
+      "name": "applicant",
+      "label": "신청인",
+      "type": "text",
+      "required": true,
+      "maxLength": 80,
+      "occurrences": 1
+    },
+    {
+      "name": "organization",
+      "label": "소속",
+      "type": "text",
+      "required": true,
+      "maxLength": 120,
+      "occurrences": 1
+    },
+    {
+      "name": "contact",
+      "label": "연락처",
+      "type": "text",
+      "required": true,
+      "maxLength": 100,
+      "occurrences": 1
+    },
+    {
+      "name": "details",
+      "label": "신청 내용",
+      "type": "text",
+      "required": true,
+      "maxLength": 1600,
+      "occurrences": 1
+    },
+    {
+      "name": "reason",
+      "label": "신청 사유",
+      "type": "text",
+      "required": true,
+      "maxLength": 1000,
+      "occurrences": 1
+    },
+    {
+      "name": "date",
+      "label": "신청일",
+      "type": "text",
+      "required": true,
+      "maxLength": 30,
+      "occurrences": 1
+    },
+    {
+      "name": "confirmed",
+      "label": "신청 내용 확인",
+      "type": "checkbox",
+      "required": true,
+      "occurrences": 1
+    }
+  ]
+}

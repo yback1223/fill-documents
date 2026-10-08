@@ -1,0 +1,62 @@
+{
+  "schemaVersion": 1,
+  "id": "report-docx",
+  "version": "1.0.0",
+  "title": "보고서",
+  "category": "report",
+  "format": "docx",
+  "file": "template.docx",
+  "sha256": "a5b9e90564f07c2ffdd474bf9a62993f4069c6f5a6c4a5038c64ca9137249088",
+  "license": "MIT",
+  "source": "original",
+  "fields": [
+    {
+      "name": "title",
+      "label": "제목",
+      "type": "text",
+      "required": true,
+      "maxLength": 180,
+      "occurrences": 1
+    },
+    {
+      "name": "author",
+      "label": "작성자",
+      "type": "text",
+      "required": true,
+      "maxLength": 80,
+      "occurrences": 1
+    },
+    {
+      "name": "date",
+      "label": "작성일",
+      "type": "text",
+      "required": true,
+      "maxLength": 30,
+      "occurrences": 1
+    },
+    {
+      "name": "summary",
+      "label": "요약",
+      "type": "text",
+      "required": true,
+      "maxLength": 900,
+      "occurrences": 1
+    },
+    {
+      "name": "findings",
+      "label": "주요 내용",
+      "type": "text",
+      "required": true,
+      "maxLength": 1800,
+      "occurrences": 1
+    },
+    {
+      "name": "next_steps",
+      "label": "후속 조치",
+      "type": "text",
+      "required": true,
+      "maxLength": 900,
+      "occurrences": 1
+    }
+  ]
+}

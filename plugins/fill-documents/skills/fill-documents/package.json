@@ -1,0 +1,30 @@
+{
+  "name": "@yback1223/fill-documents",
+  "version": "0.1.0",
+  "private": true,
+  "type": "module",
+  "description": "Fill HWP, HWPX, DOCX and PDF templates locally",
+  "license": "MIT",
+  "engines": {
+    "node": ">=20"
+  },
+  "bin": {
+    "fill-documents": "./bin/fill-documents.mjs"
+  },
+  "scripts": {
+    "test": "node --test tests/*.test.mjs"
+  },
+  "dependencies": {
+    "@pdf-lib/fontkit": "1.1.1",
+    "@rhwp/core": "0.8.7",
+    "@xmldom/xmldom": "0.9.12",
+    "cfb": "1.2.2",
+    "docxtemplater": "3.71.0",
+    "kordoc": "4.19.2",
+    "pdf-lib": "1.17.1",
+    "pizzip": "3.3.0"
+  },
+  "devDependencies": {
+    "esbuild": "0.25.12"
+  }
+}

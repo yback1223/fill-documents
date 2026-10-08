@@ -1,0 +1,79 @@
+import fs from 'node:fs/promises';
+import path from 'node:path';
+import { FillError, requireCondition } from './errors.mjs';
+import { readDocument, sha256, publishNewFile } from './io.mjs';
+import { findTemplate } from './catalog.mjs';
+import { normalizeFields, checkValues, matchManifestFields } from './fields.mjs';
+import { assertSafeZip } from './zip-safety.mjs';
+
+const loaders = {
+  hwp: () => import('./adapters/hwp.mjs'),
+  hwpx: () => import('./adapters/hwpx.mjs'),
+  docx: () => import('./adapters/docx.mjs'),
+  pdf: () => import('./adapters/pdf.mjs'),
+};
+
+export function formatFromPath(filePath) {
+  const format = path.extname(filePath).slice(1).toLowerCase();
+  requireCondition(Object.hasOwn(loaders, format), 'E_UNSUPPORTED', '지원 형식은 .hwp, .hwpx, .docx, .pdf입니다.');
+  return format;
+}
+
+function validateSignature(bytes, format) {
+  if (format === 'hwp') requireCondition(bytes.subarray(0, 8).equals(Buffer.from('d0cf11e0a1b11ae1', 'hex')), 'E_INPUT', '확장자와 HWP 파일 서명이 다릅니다.');
+  else if (format === 'pdf') requireCondition(bytes.subarray(0, 5).toString() === '%PDF-', 'E_INPUT', '확장자와 PDF 파일 서명이 다릅니다.');
+  else assertSafeZip(bytes);
+}
+
+export async function inspectDocument(input, context) {
+  const bytes = Buffer.from(input);
+  const format = formatFromPath(context.filePath);
+  validateSignature(bytes, format);
+  const adapter = await loaders[format]();
+  const info = await adapter.inspect(bytes, context);
+  return { ...info, format, fields: normalizeFields(info.fields), sha256: sha256(bytes), warnings: info.warnings ?? [] };
+}
+
+export async function inspectFile(filePath, skillRoot) {
+  return inspectDocument(await readDocument(filePath), { filePath: path.resolve(filePath), skillRoot });
+}
+
+export async function validateFile(filePath, skillRoot) {
+  const bytes = await readDocument(filePath);
+  const format = formatFromPath(filePath);
+  validateSignature(bytes, format);
+  const report = await (await loaders[format]()).validate(bytes, { filePath: path.resolve(filePath), skillRoot });
+  requireCondition(!report.checks?.some(check => check.status === 'failed'), 'E_PRESERVATION', '문서 검증에 실패했습니다.');
+  return { format, sha256: sha256(bytes), ...report, visualValidation: 'not-performed' };
+}
+
+export async function fillDocument({ target, values, output, skillRoot, library, dryRun = false }) {
+  let item;
+  try {
+    const info = await fs.stat(target);
+    requireCondition(info.isFile(), 'E_INPUT', '문서 파일 경로를 지정하세요.');
+    item = { filePath: path.resolve(target), bytes: await readDocument(target) };
+  } catch (error) {
+    if (error.code !== 'ENOENT') throw error;
+    item = await findTemplate(target, skillRoot, library);
+  }
+  const context = { filePath: item.filePath, skillRoot, manifest: item.manifest };
+  const info = await inspectDocument(item.bytes, context);
+  requireCondition(info.fields.length > 0, 'E_FIELDS', '명시적인 입력 필드가 없습니다. 서식 등록 안내를 확인하세요.');
+  const fields = item.manifest ? matchManifestFields(info.fields, item.manifest.fields) : info.fields;
+  const data = checkValues(values, fields);
+  requireCondition(typeof output === 'string' && formatFromPath(output) === info.format, 'E_INPUT', '출력 확장자는 입력 문서와 같아야 합니다.');
+  requireCondition(path.resolve(output) !== path.resolve(item.filePath), 'E_OUTPUT_EXISTS', '원본을 덮어쓸 수 없습니다. 새 출력 경로를 지정하세요.');
+  const base = { format: info.format, templateSha256: info.sha256, fields: fields.map(field => field.name), visualValidation: 'not-performed' };
+  if (dryRun) return { ...base, dryRun: true, output: path.resolve(output) };
+  const adapter = await loaders[info.format]();
+  const result = await adapter.fill(item.bytes, data, context);
+  const candidate = Buffer.from(result.bytes);
+  validateSignature(candidate, info.format);
+  const validation = await adapter.validate(candidate, context);
+  const checks = [...(result.checks ?? []), ...(validation.checks ?? [])];
+  requireCondition(!checks.some(check => check.status === 'failed'), 'E_PRESERVATION', '입력 결과의 검증에 실패했습니다.');
+  requireCondition(sha256(await readDocument(item.filePath)) === info.sha256, 'E_TEMPLATE_CHANGED', '작업 중 원본이 변경됐습니다. 새 원본을 확인하세요.');
+  const published = await publishNewFile(output, candidate);
+  return { ...base, output: published.path, outputSha256: sha256(candidate), engine: result.engine ?? info.engine, checks, warnings: [...(result.warnings ?? []), ...(validation.warnings ?? []), ...published.warnings] };
+}

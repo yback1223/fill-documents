@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "meeting-minutes-hwpx",
+  "version": "1.0.0",
+  "title": "회의록",
+  "category": "meeting-minutes",
+  "format": "hwpx",
+  "file": "template.hwpx",
+  "sha256": "c1cb4fd56d4efd24f255a38b3a4d6b403315d57119ea7593520de6184e761044",
+  "license": "MIT",
+  "source": "original",
+  "fields": [
+    {
+      "name": "title",
+      "label": "회의명",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "date",
+      "label": "일시",
+      "type": "text",
+      "required": true,
+      "maxLength": 80,
+      "occurrences": 1
+    },
+    {
+      "name": "location",
+      "label": "장소",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "attendees",
+      "label": "참석자",
+      "type": "text",
+      "required": true,
+      "maxLength": 500,
+      "occurrences": 1
+    },
+    {
+      "name": "agenda",
+      "label": "안건",
+      "type": "text",
+      "required": true,
+      "maxLength": 2000,
+      "occurrences": 1
+    },
+    {
+      "name": "decisions",
+      "label": "결정 사항",
+      "type": "text",
+      "required": true,
+      "maxLength": 3000,
+      "occurrences": 1
+    },
+    {
+      "name": "actions",
+      "label": "후속 업무",
+      "type": "text",
+      "required": true,
+      "maxLength": 3000,
+      "occurrences": 1
+    }
+  ]
+}

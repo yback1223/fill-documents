@@ -1,0 +1,31 @@
+{
+  "$schema": "https://agent-plugins.org/schemas/1.0.0/plugin.schema.json",
+  "name": "fill-documents",
+  "version": "0.1.0",
+  "description": "Fill local HWP, HWPX, DOCX and PDF templates with supplied facts.",
+  "author": { "name": "yback", "url": "https://github.com/yback1223" },
+  "homepage": "https://github.com/yback1223/fill-documents",
+  "repository": "https://github.com/yback1223/fill-documents",
+  "license": "MIT",
+  "keywords": ["documents", "templates", "hwp", "hwpx", "docx", "pdf", "korean"],
+  "extensions": {
+    "com.openai": {
+      "interface": {
+        "displayName": "Fill Documents",
+        "shortDescription": "한글·Word·PDF 서식 채우기",
+        "longDescription": "공문·보고서·회의록·신청서 기본 템플릿을 제공하고, 사용자가 준 사실을 HWP·HWPX·DOCX·AcroForm PDF의 명시적 입력 필드에 채웁니다. 원본을 보존하고 새 파일로 저장하며 누락값과 지원하지 않는 서식은 알립니다. Node.js 20 이상이 필요합니다. HWP는 균일한 서식의 표식 문단 등 검증된 조건에서 지원합니다. 스캔 PDF·일반 PDF 본문 재작성·모든 문서의 무손실 변환은 지원하지 않습니다. 로컬 파일 처리는 별도 서버·계정·API 키 없이 실행됩니다.",
+        "developerName": "yback",
+        "category": "Productivity",
+        "defaultPrompt": ["공문 서식을 골라 내가 준 내용으로 채워줘.", "이 문서의 입력 필드를 확인하고 내용을 채워줘."],
+        "websiteURL": "https://github.com/yback1223/fill-documents",
+        "supportURL": "https://github.com/yback1223/fill-documents/blob/main/SUPPORT.md",
+        "privacyPolicyURL": "https://github.com/yback1223/fill-documents/blob/main/PRIVACY.md",
+        "termsOfServiceURL": "https://github.com/yback1223/fill-documents/blob/main/TERMS.md",
+        "logo": "./assets/icon.png",
+        "composerIcon": "./assets/icon.png",
+        "logoDark": "./assets/icon-dark.png",
+        "composerIconDark": "./assets/icon-dark.png"
+      }
+    }
+  }
+}

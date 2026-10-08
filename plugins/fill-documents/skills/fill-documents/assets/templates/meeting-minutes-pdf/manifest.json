@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "meeting-minutes-pdf",
+  "version": "1.0.0",
+  "title": "회의록",
+  "category": "meeting-minutes",
+  "format": "pdf",
+  "file": "template.pdf",
+  "sha256": "c10840eea22401cc52dbd43350fecd59a656a40f1db492b81239cec474a2f68e",
+  "license": "MIT",
+  "source": "original",
+  "fields": [
+    {
+      "name": "title",
+      "label": "회의명",
+      "type": "text",
+      "required": true,
+      "maxLength": 160,
+      "occurrences": 1
+    },
+    {
+      "name": "date",
+      "label": "일시",
+      "type": "text",
+      "required": true,
+      "maxLength": 80,
+      "occurrences": 1
+    },
+    {
+      "name": "location",
+      "label": "장소",
+      "type": "text",
+      "required": true,
+      "maxLength": 80,
+      "occurrences": 1
+    },
+    {
+      "name": "attendees",
+      "label": "참석자",
+      "type": "text",
+      "required": true,
+      "maxLength": 300,
+      "occurrences": 1
+    },
+    {
+      "name": "agenda",
+      "label": "안건",
+      "type": "text",
+      "required": true,
+      "maxLength": 800,
+      "occurrences": 1
+    },
+    {
+      "name": "decisions",
+      "label": "논의·결정",
+      "type": "text",
+      "required": true,
+      "maxLength": 1400,
+      "occurrences": 1
+    },
+    {
+      "name": "actions",
+      "label": "후속 조치",
+      "type": "text",
+      "required": true,
+      "maxLength": 1000,
+      "occurrences": 1
+    }
+  ]
+}

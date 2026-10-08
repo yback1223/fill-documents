@@ -1,0 +1,70 @@
+{
+  "schemaVersion": 1,
+  "id": "official-letter-hwpx",
+  "version": "1.0.0",
+  "title": "공문",
+  "category": "official-letter",
+  "format": "hwpx",
+  "file": "template.hwpx",
+  "sha256": "ff7cee877f62971a1fb0d9ec2ed5ef738f72b163f5ab0056dcdb6ba83cdaa9d8",
+  "license": "MIT",
+  "source": "original",
+  "fields": [
+    {
+      "name": "title",
+      "label": "제목",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "document_number",
+      "label": "문서번호",
+      "type": "text",
+      "required": true,
+      "maxLength": 80,
+      "occurrences": 1
+    },
+    {
+      "name": "date",
+      "label": "시행일",
+      "type": "text",
+      "required": true,
+      "maxLength": 40,
+      "occurrences": 1
+    },
+    {
+      "name": "recipient",
+      "label": "수신",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "sender",
+      "label": "발신",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    },
+    {
+      "name": "body",
+      "label": "내용",
+      "type": "text",
+      "required": true,
+      "maxLength": 4000,
+      "occurrences": 1
+    },
+    {
+      "name": "contact",
+      "label": "담당 및 연락처",
+      "type": "text",
+      "required": true,
+      "maxLength": 200,
+      "occurrences": 1
+    }
+  ]
+}

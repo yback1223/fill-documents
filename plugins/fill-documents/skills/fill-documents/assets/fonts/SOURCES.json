@@ -1,0 +1,13 @@
+{
+  "family": "Nanum Gothic",
+  "file": "NanumGothic-Regular.ttf",
+  "license": "OFL-1.1",
+  "licenseFile": "../../licenses/NanumGothic-OFL.txt",
+  "copyright": "Copyright (c) 2010, NHN Corporation",
+  "source": "https://github.com/google/fonts/tree/main/ofl/nanumgothic",
+  "downloadUrl": "https://raw.githubusercontent.com/google/fonts/main/ofl/nanumgothic/NanumGothic-Regular.ttf",
+  "downloadedAt": "2026-10-08",
+  "sha256": "76f45ef4a6bcff344c837c95a7dcc26e017e38b5846d5ae0cdcb5b86be2e2d31",
+  "licenseSha256": "eeacf16032901d0ed0456876ec77b8f0fda6b3fecec7d972f8543eb602e6c30f",
+  "modified": false
+}

@@ -1,0 +1,10 @@
+{
+  "title": "가상 문서 워크숍 참가 신청",
+  "applicant": "예시 신청인",
+  "organization": "가상 문서연구소",
+  "contact": "example@example.invalid",
+  "details": "실제 신청이 아닌 서식 작성 예시입니다.\n문서 작성 워크숍에 1명 참가를 신청합니다.",
+  "reason": "빈 서식을 이용한 문서 작성 과정을 익히기 위한 가상 예시입니다.",
+  "date": "2026-10-08",
+  "confirmed": true
+}

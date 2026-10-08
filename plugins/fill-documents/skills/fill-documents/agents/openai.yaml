@@ -1,0 +1,8 @@
+interface:
+  display_name: "Fill Documents"
+  short_description: "HWP·HWPX·Word·PDF 서식을 고르고 내용을 채웁니다"
+  icon_small: "./assets/icon.png"
+  icon_large: "./assets/icon.png"
+  default_prompt: "$fill-documents로 알맞은 문서 서식을 골라 내가 제공한 내용으로 채워줘."
+policy:
+  allow_implicit_invocation: true
