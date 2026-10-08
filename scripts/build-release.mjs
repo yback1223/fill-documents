@@ -3,6 +3,7 @@ import path from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { createRequire } from 'node:module';
 import { createHash } from 'node:crypto';
+import { gzipSync } from 'node:zlib';
 
 const root = fileURLToPath(new URL('../', import.meta.url));
 const plugin = path.join(root, 'plugins/fill-documents');
@@ -12,13 +13,15 @@ const { build } = require('esbuild');
 const PizZip = require('pizzip');
 const vendor = path.join(skill, 'lib/vendor');
 await fs.mkdir(vendor, { recursive: true });
+await fs.rm(path.join(vendor, 'chunks'), { recursive: true, force: true });
 
 // kordoc's two CFB imports use createRequire, which esbuild cannot discover.
 // Rewrite only these locked dependency imports while bundling; preserve upstream source.
 const result = await build({
   absWorkingDir: skill,
-  entryPoints: ['scripts/runtime-entry.mjs'],
-  outfile: path.join(vendor, 'runtime.mjs'),
+  entryPoints: { runtime: 'scripts/runtime-entry.mjs' },
+  outdir: vendor, outExtension: { '.js': '.mjs' },
+  splitting: true, chunkNames: 'chunks/[name]-[hash]',
   bundle: true, platform: 'node', target: 'node20', format: 'esm',
   minify: false, sourcemap: false, legalComments: 'eof', metafile: true,
   // These optional kordoc features are outside our HWP/HWPX API paths.
@@ -35,8 +38,11 @@ const result = await build({
     });
   } }],
 });
-await fs.copyFile(path.join(path.dirname(require.resolve('@rhwp/core')), 'rhwp_bg.wasm'), path.join(vendor, 'rhwp_bg.wasm'));
+const wasm = await fs.readFile(path.join(path.dirname(require.resolve('@rhwp/core')), 'rhwp_bg.wasm'));
+await fs.writeFile(path.join(vendor, 'rhwp_bg.wasm.gz'), gzipSync(wasm, { level: 9 }));
+await fs.rm(path.join(vendor, 'rhwp_bg.wasm'), { force: true });
 await fs.copyFile(path.join(root, 'LICENSE'), path.join(skill, 'LICENSE'));
+await fs.copyFile(path.join(root, 'LICENSE'), path.join(plugin, 'LICENSE'));
 
 const packages = new Map();
 for (const input of Object.keys(result.metafile.inputs)) {

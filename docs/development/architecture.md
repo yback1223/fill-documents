@@ -8,6 +8,8 @@
 
 Node.js 20 이상 한 런타임을 사용한다. `plugins/fill-documents/skills/fill-documents/` 안에 스킬, CLI, 소스, 템플릿, 폰트, 라이선스가 있다. 소스 설치는 잠금된 npm 의존성을 명시적으로 설치한다. 배포 ZIP은 같은 스킬의 실행 의존성을 포함하고, 경로가 다른 격리 디렉터리에서 실제 실행한다. 작업 도중 엔진을 자동 다운로드하거나 설치하지 않는다.
 
+Claude 디렉터리의 파일 크기 상한을 맞추기 위해 실행 번들은 기존 형식별 동적 import를 유지한 읽을 수 있는 ESM 파일로 분할한다. WASM은 gzip으로 포함하고 Node 표준 zlib로 메모리에서만 해제하며 16 MiB 상한을 둔다. 손상된 압축 엔진은 `E_ENGINE`으로 거부하고 다음 초기화에서 재시도할 수 있다. 이 패키징 변경은 필드·저장·파일 API를 바꾸지 않는다. 바이너리 서식과 엔진, 대형 코드에 대한 사람의 심사 가능성은 별도로 남는다.
+
 저장소 루트는 Claude와 Codex의 marketplace 목록을 제공한다. `plugins/fill-documents/`에는 portable `plugin.json`, `.claude-plugin/plugin.json`, `.codex-plugin/plugin.json`을 제공한다. 스킬은 두 플랫폼에 동일하다. 제품 고유 모델 API 호출은 없다.
 
 ## 실행 API

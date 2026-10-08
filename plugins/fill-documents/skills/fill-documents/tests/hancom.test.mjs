@@ -1,9 +1,11 @@
 import test from 'node:test';
 import assert from 'node:assert/strict';
-import { readFile } from 'node:fs/promises';
+import { readFile, mkdtemp, mkdir, writeFile, rm } from 'node:fs/promises';
 import { createHash } from 'node:crypto';
 import { dirname, join } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { tmpdir } from 'node:os';
+import { gzipSync } from 'node:zlib';
 import CFB from 'cfb';
 import PizZip from 'pizzip';
 import { markdownToHwpx, parse, patchHwp } from 'kordoc';
@@ -54,6 +56,22 @@ async function textOf(bytes) {
   const document = await openHancom(bytes, context);
   try { return paragraphSnapshot(document).map(paragraph => paragraph.text).join('\n\n'); } finally { document.free(); }
 }
+
+test('compressed engine rejects corruption and excessive expansion, then retries with valid bytes', async () => {
+  const directory = await mkdtemp(join(tmpdir(), 'fill-engine-'));
+  const filename = join(directory, 'lib/vendor/rhwp_bg.wasm.gz');
+  const { initHancom } = await import('../lib/adapters/hancom-runtime.mjs?compressed-engine-regression');
+  try {
+    await mkdir(dirname(filename), { recursive: true });
+    await writeFile(filename, 'not a gzip engine');
+    await assert.rejects(initHancom({ skillRoot: directory }), rejectCode('E_ENGINE'));
+    await writeFile(filename, gzipSync(Buffer.alloc(17 * 1024 * 1024)));
+    await assert.rejects(initHancom({ skillRoot: directory }), rejectCode('E_ENGINE'));
+    const original = await readFile(new URL('rhwp_bg.wasm', import.meta.resolve('@rhwp/core')));
+    await writeFile(filename, gzipSync(original));
+    await initHancom({ skillRoot: directory });
+  } finally { await rm(directory, { recursive: true, force: true }); }
+});
 
 for (const [format, adapter] of [['hwp', hwp], ['hwpx', hwpx]]) {
   for (const name of ['official-letter', 'report', 'meeting-minutes', 'application']) {

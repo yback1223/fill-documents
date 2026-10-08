@@ -7,7 +7,7 @@
     "lib/catalog.mjs": "78fc81c970083b8e935358531353319c679973aa2176fd58e404151c734c7c28",
     "lib/zip-safety.mjs": "60d87671fe5391ebafbaed5c0306c114483e210fbb78f78f168da1266db67641",
     "lib/adapters/hancom-utils.mjs": "0cc29286da9ddb1c30af77e5be42048293065de89cb1d915244ee6c719f35d6d",
-    "lib/adapters/hancom-runtime.mjs": "4994c9c5b6f23c2ed466a48621c3767add97e7bbfc2aa5dc7c06e362abe2e0af",
+    "lib/adapters/hancom-runtime.mjs": "ae6d34166571e35eff84d55840aab9d26edb85ffa74e388f7a1fe1b324173fcc",
     "lib/adapters/hwp.mjs": "6f4b810932b084c179dd8e65ce0240904b3adec37a24d4682ea2a6f809b467a5",
     "lib/adapters/hwpx.mjs": "ddbb9c9e1e75d0080e92befc1da8e2308e1aefdef9e1c07a45ef49c6aa9d750c",
     "lib/adapters/docx.mjs": "0859cc01215cf3b641f4122fff51d5a10aa3ded225724f8242837b16c9286c06",

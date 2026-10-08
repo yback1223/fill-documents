@@ -47,6 +47,17 @@ for (const name of ['.claude-plugin/marketplace.json', '.agents/plugins/marketpl
 }
 const build = await json(path.join(skillRoot, 'lib/vendor/build-info.json'));
 for (const [source, expected] of Object.entries(build.sourceHashes)) assert.equal(hash(await fs.readFile(path.join(skillRoot, source))), expected, `Stale runtime: ${source}`);
+assert((await fs.readFile(path.join(pluginRoot, 'README.md'), 'utf8')).split(/\s+/).length >= 40, 'Plugin needs its own listing README');
+async function validateFileSizes(directory) {
+  for (const entry of await fs.readdir(directory, { withFileTypes: true })) {
+    if (entry.name === 'node_modules') continue;
+    const filename = path.join(directory, entry.name);
+    assert(!entry.isSymbolicLink(), `Plugin must not load symlinks: ${filename}`);
+    if (entry.isDirectory()) await validateFileSizes(filename);
+    else assert((await fs.stat(filename)).size < 5 * 1024 * 1024, `Claude directory file exceeds 5 MiB: ${filename}`);
+  }
+}
+await validateFileSizes(pluginRoot);
 
 const temporary = await fs.mkdtemp(path.join(os.tmpdir(), 'fill-documents 한글 경로-'));
 let count = 0;

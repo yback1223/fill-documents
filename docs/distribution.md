@@ -12,6 +12,8 @@
 
 공통 CLI·WASM·글꼴·서식·외부 라이선스를 포함한다. MCP 서버, OAuth, 앱 바인딩 또는 제품 내 결제는 없다. 이 ZIP에는 `node_modules`, `.app.json`, 사용자 자료를 넣지 않는다.
 
+Claude 디렉터리의 파일당 5 MiB 상한에 맞춰 JavaScript를 ESM으로 분할하고 WASM을 gzip으로 포함한다. 가장 큰 파일은 압축 엔진 4,383,889 바이트다. 플러그인 폴더 자체에 README와 LICENSE가 있다. 바이너리 서식·압축 엔진과 256 KiB를 넘는 코드는 여전히 사람이 검토하는 대상으로 안내되므로, 크기 검사를 통과했다고 심사 승인을 뜻하지 않는다.
+
 ## 공식 디렉터리
 
 GitHub 자체 marketplace에 공개하는 것과 각 서비스가 운영하는 공식 디렉터리의 심사·승인은 별개다. 준비된 manifest나 ZIP을 공식 등록 완료로 표시하지 않는다.
@@ -24,9 +26,16 @@ OpenAI 신청 경로는 [Plugins 대시보드](https://platform.openai.com/plugi
 
 현재 온라인 제출·심사·승인 상태는 최종 실행 기록에서 확인한다. 인증이나 신청을 실행하지 않았다면 미제출로 유지한다.
 
+## 온라인 실행 기록
+
+- 2026-10-08: 첫 공개 커밋 `0d3c1f1`을 `main`에 푸시했다. 저장소는 PUBLIC이며 원격 기본 브랜치는 `main`이다.
+- README·지원·개인정보·이용 안내·두 marketplace 파일을 인증 없는 HTTP 요청으로 읽고 로컬 내용과 같음을 확인했다. manifest의 웹사이트·지원·개인정보·약관 URL도 HTTP 200과 프로젝트·게시자 내용을 확인했다.
+- 공식 디렉터리: 아직 업로드·심사 신청·승인·게시하지 않았다. GitHub 공개와 자체 marketplace 배포만으로 공식 등재를 주장하지 않는다.
+
 공식 근거:
 
 - [OpenAI plugin build](https://developers.openai.com/plugins/build/plugins)
 - [OpenAI submission](https://developers.openai.com/plugins/deploy/submission)
 - [Claude plugin marketplaces](https://code.claude.com/docs/en/plugin-marketplaces)
 - [Claude publish and distribute](https://code.claude.com/docs/en/plugins/publish)
+- [Claude pre-submission checklist](https://claude.com/docs/plugins/pre-submission-checklist)

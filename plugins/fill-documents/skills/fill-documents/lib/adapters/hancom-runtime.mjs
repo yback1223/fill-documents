@@ -1,7 +1,7 @@
 import { readFile } from 'node:fs/promises';
 import { join } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { inflateRawSync } from 'node:zlib';
+import { inflateRawSync, gunzipSync } from 'node:zlib';
 import CFB from 'cfb';
 import { HwpDocument, initSync } from '@rhwp/core';
 import { FillError, requireCondition } from '../errors.mjs';
@@ -10,11 +10,15 @@ let initialized;
 
 export async function initHancom(context = {}) {
   initialized ??= (async () => {
-    const candidates = context.skillRoot ? [join(context.skillRoot, 'lib/vendor/rhwp_bg.wasm')] : [];
+    const candidates = context.skillRoot ? [join(context.skillRoot, 'lib/vendor/rhwp_bg.wasm.gz')] : [];
     try { candidates.push(fileURLToPath(new URL('rhwp_bg.wasm', import.meta.resolve('@rhwp/core')))); } catch { /* bundled runtime uses the first path */ }
     for (const path of candidates) {
       let bytes;
       try { bytes = await readFile(path); } catch (error) { if (error.code === 'ENOENT') continue; throw new FillError('E_ENGINE', '한글 엔진 파일을 읽을 수 없습니다.'); }
+      if (path.endsWith('.gz')) {
+        try { bytes = gunzipSync(bytes, { maxOutputLength: 16 * 1024 * 1024 }); }
+        catch { throw new FillError('E_ENGINE', '압축된 한글 엔진이 손상되었거나 너무 큽니다. 패키지를 다시 설치하세요.'); }
+      }
       try { initSync({ module: bytes }); return; } catch { throw new FillError('E_ENGINE', '한글 WASM 엔진을 초기화할 수 없습니다.'); }
     }
     throw new FillError('E_ENGINE', '한글 WASM 엔진이 설치되지 않았습니다. 패키지를 다시 설치하세요.');
